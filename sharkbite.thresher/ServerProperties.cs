@@ -58,6 +58,10 @@ namespace Sharkbite.Irc
 		/// </summary>
 		internal void SetProperty( string key, string propertyValue )
 		{
+            if (properties.ContainsKey(key)) {
+                properties[key] = propertyValue;
+                return;
+            }
 			properties.Add( key, propertyValue );
 		}
 

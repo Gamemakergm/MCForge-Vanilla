@@ -14,6 +14,8 @@ namespace MCForge.GUI
     public partial class Textures : Form
     {
         public Level l;
+        //The bad code just brings it out 
+        private bool started = false;
         public Textures()
         {
             InitializeComponent();
@@ -168,6 +170,7 @@ namespace MCForge.GUI
             comboBox2.SelectedIndex = comboBox2.Items.IndexOf(l.textures.LowestRank.name);
             checkBox1.Checked = l.textures.enabled;
             checkBox1.Checked = l.textures.autou;
+            started = true;
         }
         private void sky_TextChanged(object sender, EventArgs e)
         {
@@ -196,7 +199,7 @@ namespace MCForge.GUI
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (l != Server.mainLevel)
+            if (l != Server.mainLevel || !started)
                 return;
             MessageBox.Show("Rank Level must be the lowest for the main level!", "Oh no you dont!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             comboBox2.SelectedIndex = comboBox2.Items.IndexOf(Group.standard.name);
@@ -205,7 +208,7 @@ namespace MCForge.GUI
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (l != Server.mainLevel)
+            if (l != Server.mainLevel  || !started )
                 return;
             MessageBox.Show("Textures must be enabled for the main level!", "Oh no you dont!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             checkBox1.Checked = true;

@@ -736,6 +736,9 @@ namespace MCForge.Gui {
             l.growTrees = TreeGrowChk.Checked;
             {
                 List<string> oldlines = new List<string>();
+                if(!File.Exists("text/autoload.txt"))
+                    using (var nulled = File.CreateText("text/autoload.txt")) { }
+
                 using (StreamReader r = new StreamReader("text/autoload.txt")) {
                     bool done = false;
                     string line;
@@ -753,7 +756,7 @@ namespace MCForge.Gui {
                     }
                 }
                 File.Delete("text/autoload.txt");
-                using (StreamWriter SW = new StreamWriter("text/autoload.txt")) {
+                using (StreamWriter SW = File.CreateText("text/autoload.txt")) {
                     foreach (string line in oldlines.Where(line => line.Trim() != "")) {
                         SW.WriteLine(line);
                     }
@@ -1633,11 +1636,8 @@ namespace MCForge.Gui {
             }
             if (GetSelectedLevelTab() == null) return;
             var textures = new GUI.Textures { l = GetSelectedLevelTab() };
-            Server.s.Log(textures.l.name);
             textures.Show();
             textures.FormClosing += delegate {
-                textures.l = null;
-                textures.Hide();
                 textures.Dispose();
             };
         }

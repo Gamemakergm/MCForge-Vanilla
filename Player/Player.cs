@@ -1767,7 +1767,7 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                 }
 
                 text = Regex.Replace(text, @"\s\s+", " ");
-                if (text.Any(ch => ch < 32 || ch >= 127 || ch == '&')){
+                if (text.Any(ch => ch < 32 || ch >= 127 || ch == '&')) {
                     Kick("Illegal character in chat message!");
                     return;
                 }
@@ -1810,7 +1810,7 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                     HandleCommand(cmd, msg);
                     return;
                 }
-                hello:
+            hello:
                 // People who are muted can't speak or vote
                 if (muted) { this.SendMessage("You are muted."); return; } //Muted: Only allow commands
 
@@ -2419,6 +2419,7 @@ else goto retry;
             sb.Replace("$date", DateTime.Now.ToString("yyyy-MM-dd"));
             sb.Replace("$time", DateTime.Now.ToString("HH:mm:ss"));
             sb.Replace("$ip", ip);
+            sb.Replace("$serverip", IsLocalIpAddress(ip) ? ip : Server.IP);
             if (colorParse) sb.Replace("$color", color);
             sb.Replace("$rank", group.name);
             sb.Replace("$level", level.name);
@@ -2497,7 +2498,7 @@ else goto retry;
                 cancelmessage = false;
                 return;
             }
-            retryTag: try {
+        retryTag: try {
                 foreach (string line in Wordwrap(message)) {
                     string newLine = line;
                     if (newLine.TrimEnd(' ')[newLine.TrimEnd(' ').Length - 1] < '!') {
@@ -2522,7 +2523,7 @@ else goto retry;
             StringFormat(Server.name, 64).CopyTo(buffer, 1);
 
             if (Server.UseTextures)
-                StringFormat("&0cfg=" + Server.IP + ":" + Server.port + "/" + level.name + "~motd", 64).CopyTo(buffer, 65);
+                StringFormat("&0cfg=" + (IsLocalIpAddress(ip) ? ip : Server.IP) + ":" + Server.port + "/" + level.name + "~motd", 64).CopyTo(buffer, 65);
             else {
                 if (!String.IsNullOrEmpty(group.MOTD)) StringFormat(group.MOTD, 64).CopyTo(buffer, 65);
                 else StringFormat(Server.motd, 64).CopyTo(buffer, 65);
@@ -2543,7 +2544,7 @@ else goto retry;
             byte[] buffer = new byte[130];
             Random rand = new Random();
             buffer[0] = Server.version;
-            if (UsingWom && (level.textures.enabled || level.motd == "texture") && group.Permission >= level.textures.LowestRank.Permission) { StringFormat(Server.name, 64).CopyTo(buffer, 1); StringFormat("&0cfg=" + Server.IP + ":" + Server.port + "/" + level.name, 64).CopyTo(buffer, 65); }
+            if (UsingWom && (level.textures.enabled || level.motd == "texture") && group.Permission >= level.textures.LowestRank.Permission) { StringFormat(Server.name, 64).CopyTo(buffer, 1); StringFormat("&0cfg=" + (IsLocalIpAddress(ip) ? ip : Server.IP) + ":" + Server.port + "/" + level.name, 64).CopyTo(buffer, 65); }
             if (level.motd == "ignore") {
                 StringFormat(Server.name, 64).CopyTo(buffer, 1);
                 if (!String.IsNullOrEmpty(group.MOTD)) StringFormat(group.MOTD, 64).CopyTo(buffer, 65);
@@ -3080,6 +3081,31 @@ changed |= 4;*/
             return false;
 
         }
+
+        public static bool HasBadColorCodes(string message) {
+            string[] checkmessagesplit = message.Split(' ');
+            bool lastendwithcolour = false;
+            foreach (string s in checkmessagesplit) {
+                s.Trim();
+                if (s.StartsWith("%")) {
+                    if (lastendwithcolour == true) {
+                        return true;
+                    }
+                    else if (s.Length == 2) {
+                        lastendwithcolour = true;
+                    }
+                }
+                if (s.TrimEnd(Server.ColourCodesNoPercent).EndsWith("%")) {
+                    lastendwithcolour = true;
+                }
+                else {
+                    lastendwithcolour = false;
+                }
+
+            }
+            return false;
+        }
+
         public static bool CommandHasBadColourCodes(Player who, string message) {
             string[] checkmessagesplit = message.Split(' ');
             bool lastendwithcolour = false;
@@ -3243,7 +3269,7 @@ changed |= 4;*/
             players.ForEach(delegate(Player p) {
                 if (p.level != from.level || (from.hidden && !self)) { return; }
                 if (p != from) { p.SendDie(from.id); }
-                else if (self) { unchecked { p.SendDie((byte)-1); } }
+                else if (self) { p.SendDie(255); }
             });
         }
 
@@ -3279,8 +3305,8 @@ changed |= 4;*/
             }
             catch (Exception e) {
 #if DEBUG
-                    Exception ex = new Exception("Failed to shutdown socket for " + this.name ?? this.ip, e);
-                    Server.ErrorLog(ex);
+                Exception ex = new Exception("Failed to shutdown socket for " + this.name ?? this.ip, e);
+                Server.ErrorLog(ex);
 #endif
             }
 
@@ -3292,13 +3318,13 @@ changed |= 4;*/
             }
             catch (Exception e) {
 #if DEBUG
-                    Exception ex = new Exception("Failed to close socket for " + this.name ?? this.ip, e);
-                    Server.ErrorLog(ex);
+                Exception ex = new Exception("Failed to close socket for " + this.name ?? this.ip, e);
+                Server.ErrorLog(ex);
 #endif
             }
         }
 
-        public void leftGame(string kickString = "", bool skip = false){
+        public void leftGame(string kickString = "", bool skip = false) {
 
             OnPlayerDisconnectEvent.Call(this, kickString);
 
@@ -3598,7 +3624,7 @@ Next: continue;
                         goto Next;
                     }
 
-                retry:
+            retry:
                 if (message.Length == 0 || limit == 0) { return lines; }
 
                 try {
@@ -3616,7 +3642,7 @@ Next: continue;
                 catch { return lines; }
                 lines.Add(message.Substring(0, limit));
 
-                Next: message = message.Substring(lines[lines.Count - 1].Length);
+            Next: message = message.Substring(lines[lines.Count - 1].Length);
                 if (lines.Count == 1) limit = 60;
 
                 int index = lines[lines.Count - 1].LastIndexOf('&');
@@ -3727,24 +3753,27 @@ Next: continue;
         #endregion
 
         public static bool IPInPrivateRange(string ip) {
-            //Official loopback is 127.0.0.1/8
-            if (ip.StartsWith("127.0.0.") || ip.StartsWith("192.168.") || ip.StartsWith("10."))
-                return true;
+            //Too lazy to change usages
+            return IsLocalIpAddress(ip);
+        }
 
-            if (ip.StartsWith("172.")) {
-                string[] split = ip.Split('.');
-                if (split.Length >= 2) {
-                    try {
-                        int secondPart = Convert.ToInt32(split[1]);
-                        return (secondPart >= 16 && secondPart <= 31);
-                    }
-                    catch/* (Exception ex)*/
-                    {
-                        return false;
+        public static bool IsLocalIpAddress(string host) {
+            try { // get host IP addresses
+                IPAddress[] hostIPs = Dns.GetHostAddresses(host);
+                // get local IP addresses
+                IPAddress[] localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+
+                // test if any host IP equals to any local IP or to localhost
+                foreach (IPAddress hostIP in hostIPs) {
+                    // is localhost
+                    if (IPAddress.IsLoopback(hostIP)) return true;
+                    // is local address
+                    foreach (IPAddress localIP in localIPs) {
+                        if (hostIP.Equals(localIP)) return true;
                     }
                 }
             }
-
+            catch { }
             return false;
         }
 

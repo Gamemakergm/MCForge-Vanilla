@@ -598,8 +598,9 @@ namespace MCForge.Commands
             Player.SendMessage(p, "/eco info <title/color/rank/map> - view information about buying");
             if ((int)p.group.Permission >= CommandOtherPerms.GetPerm(this))
             {
-                Player.SendMessage(p, "/eco setup - to setup economy");
+                Player.SendMessage(p, "/eco setup <type> - to setup economy");
                 Player.SendMessage(p, "/eco help [buy/stats/info/setup] - get more specific help");
+                Player.SendMessage(p, "Valid types: maps, titles, colors/colurs,ranks, enable, disable");
             }
             else { Player.SendMessage(p, "/eco help [buy/stats/info] - get more specific help"); }
         }

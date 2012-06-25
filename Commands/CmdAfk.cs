@@ -40,6 +40,12 @@ namespace MCForge.Commands
         {
             if (p != null)
             {
+
+                if (Server.chatmod) {
+                    Player.SendMessage(p, "You cannot use /afk while chat moderation is enabled");
+                    return;
+                }
+
                 if (message != "list")
                 {
                     if (p.joker)

@@ -42,7 +42,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -52,6 +52,7 @@
     <CodeAnalysisRuleSet>..\..\Source\General.ruleset</CodeAnalysisRuleSet>
     <DocumentationFile>
     </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>MCForge.ico</ApplicationIcon>
@@ -113,18 +114,6 @@
     </Compile>
     <Compile Include="GUI\Textures.Designer.cs">
       <DependentUpon>Textures.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\Windows 7\ColoredTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="GUI\Windows 7\ColoredTextBox.Designer.cs">
-      <DependentUpon>ColoredTextBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\Windows 7\New_Window.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Windows 7\New_Window.Designer.cs">
-      <DependentUpon>New_Window.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\WoM.cs">
       <SubType>Form</SubType>
@@ -584,9 +573,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Textures.resx">
       <DependentUpon>Textures.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Windows 7\New_Window.resx">
-      <DependentUpon>New_Window.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\PropertyWindow.resx">
       <DependentUpon>PropertyWindow.cs</DependentUpon>

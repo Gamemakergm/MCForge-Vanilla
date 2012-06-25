@@ -70,9 +70,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(228, 204);
+            this.button1.Location = new System.Drawing.Point(216, 247);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(116, 23);
+            this.button1.Size = new System.Drawing.Size(104, 23);
             this.button1.TabIndex = 0;
             this.button1.Text = "Save Textures";
             this.button1.UseVisualStyleBackColor = true;
@@ -161,6 +161,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 1;
+            this.comboBox1.Text = "Lava";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // label1
@@ -205,6 +206,11 @@
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(71, 20);
             this.numericUpDown1.TabIndex = 15;
+            this.numericUpDown1.Value = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
             // 
             // cloud
             // 
@@ -212,6 +218,7 @@
             this.cloud.Name = "cloud";
             this.cloud.Size = new System.Drawing.Size(100, 20);
             this.cloud.TabIndex = 14;
+            this.cloud.Text = "6493539";
             this.cloud.TextChanged += new System.EventHandler(this.cloud_TextChanged);
             // 
             // fog
@@ -220,6 +227,7 @@
             this.fog.Name = "fog";
             this.fog.Size = new System.Drawing.Size(100, 20);
             this.fog.TabIndex = 13;
+            this.fog.Text = "16237559";
             this.fog.TextChanged += new System.EventHandler(this.fog_TextChanged);
             // 
             // sky
@@ -228,6 +236,7 @@
             this.sky.Name = "sky";
             this.sky.Size = new System.Drawing.Size(100, 20);
             this.sky.TabIndex = 12;
+            this.sky.Text = "13054663";
             this.sky.TextChanged += new System.EventHandler(this.sky_TextChanged);
             // 
             // label6
@@ -312,6 +321,7 @@
             this.terr.Name = "terr";
             this.terr.Size = new System.Drawing.Size(242, 20);
             this.terr.TabIndex = 2;
+            this.terr.Text = "f3dac271d7bce9954baad46e183a6a910a30d13b";
             this.terr.TextChanged += new System.EventHandler(this.terr_TextChanged);
             // 
             // panel4
@@ -396,6 +406,7 @@
             this.side.Name = "side";
             this.side.Size = new System.Drawing.Size(121, 21);
             this.side.TabIndex = 1;
+            this.side.Text = "Lava";
             this.side.SelectedIndexChanged += new System.EventHandler(this.side_SelectedIndexChanged);
             // 
             // label10
@@ -410,7 +421,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(350, 210);
+            this.checkBox1.Location = new System.Drawing.Point(339, 210);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(65, 17);
             this.checkBox1.TabIndex = 7;
@@ -421,7 +432,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(418, 210);
+            this.checkBox2.Location = new System.Drawing.Point(407, 210);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(120, 17);
             this.checkBox2.TabIndex = 8;
@@ -432,7 +443,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(2, 214);
+            this.label11.Location = new System.Drawing.Point(9, 211);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(114, 13);
             this.label11.TabIndex = 9;
@@ -441,9 +452,9 @@
             // comboBox2
             // 
             this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(122, 211);
+            this.comboBox2.Location = new System.Drawing.Point(129, 208);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(91, 21);
+            this.comboBox2.Size = new System.Drawing.Size(191, 21);
             this.comboBox2.TabIndex = 10;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
@@ -451,7 +462,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(546, 233);
+            this.ClientSize = new System.Drawing.Size(546, 282);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.checkBox2);
