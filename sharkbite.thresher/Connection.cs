@@ -421,9 +421,9 @@ namespace Sharkbite.Irc
 {
 	nick = generator.MakeName();
 }
-	while( !Rfc2812Util.IsValidNick( nick) || nick.Length == 1 ); 
+	while(!Rfc2812Util.IsValidNick(nick) || nick.Length == 1); 
 	//Try to reconnect
-	Sender.Register( nick );
+	Sender.Register(nick);
 }
 }
 	/// <summary>

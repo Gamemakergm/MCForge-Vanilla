@@ -20,6 +20,7 @@ using System.IO;
 using System.Collections.Generic;
 //using System.Timers;
 using System.Text;
+using System.Text.RegularExpressions;
 using Sharkbite.Irc;
 //using System.Threading;
 
@@ -40,6 +41,10 @@ namespace MCForge
         private string server, channel, nick;
         private bool reset = false;
         private byte retries = 0;
+
+        const string caps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
+        const string nocaps = "abcdefghijklmnopqrstuvwxyz ";
+        static readonly List<string> extensions = new List<string>();
         public GlobalChatBot(string nick)
         {
             /*if (!File.Exists("Sharkbite.Thresher.dll"))
@@ -48,7 +53,7 @@ namespace MCForge
                 Server.s.Log("[GlobalChat] The IRC dll was not found!");
                 return;
             }*/
-            server = "irc.geekshed.net"; channel = "#MCForge"; this.nick = nick.Replace(" ", "");
+            server = "irc.geekshed.net"; channel = "#MCArrem"; this.nick = nick.Replace(" ", "");
             connection = new Connection(new ConnectionArgs(nick, server), false, false);
             if (Server.UseGlobalChat)
             {
@@ -64,11 +69,54 @@ namespace MCForge
         }
         public void Say(string message, Player p = null)
         {
-            if (p != null && p.muted)
-            {
+            if (p != null && p.muted) {
                 Player.SendMessage(p, "*Tears* You aren't allowed to talk to the nice people of global chat");
+            }
+            if (!p.canusegc) { p.SendMessage("You can no longer use the GC!"); return; }
+            if (message.Contains("minecraft.net/classic/play/")) { Player.SendMessage(p, "No server links Mr whale!"); p.multi++; Command.all.Find("gcrules").Use(p, ""); return; }
+            if (message.Contains("http://") || message.Contains("https://") || message.Contains("www.")) { p.SendMessage("No links!"); p.multi++; Command.all.Find("gcrules").Use(p, ""); return; }
+            if (Player.MessageHasBadColorCodes(p, message)) { Player.SendMessage(p, "Can't let you do that Mr whale!"); if (p != null) { p.Kick("Kicked for trying to crash all!"); } return; }
+            foreach (string i in extensions) { if (message.ToLower().Contains(i)) { p.SendMessage("No links?!"); p.multi++; return; } }
+            if (message.ToLower().Contains(Server.name.ToLower())) { Player.SendMessage(p, "Let's not advertise Mr whale!"); p.multi++; return; }
+
+            #region Repeating message spam
+            if (p.lastmsg == message.ToLower()) {
+                p.spamcount++;
+                p.multi++;
+                p.SendMessage("Don't send repetitive messages!");
+                if (p.spamcount >= 4) { p.canusegc = false; p.SendMessage("You can no longer use the gc! Reason: repetitive message spam"); return; }
+                if (p.spamcount >= 2) { return; }
                 return;
             }
+            else { p.lastmsg = message.ToLower(); p.spamcount = 0; }
+            #endregion
+
+            #region Caps spam
+            int rage = 0;
+            for (int i = 0; i < message.Length; i++) { if (caps.IndexOf(message[i]) != -1) { rage++; } }
+            if (rage >= 7 && !(message.Length <= 7)) { //maybe more if there are still people who use proper capitalization?
+                p.SendMessage("Woah there Mr whale, lay of the caps!"); 
+                message = message.ToLower();
+                p.capscount++;
+                p.multi++;
+                if (p.capscount >= 5) { p.canusegc = false; p.SendMessage("You can no longer use the gc! Reason: caps spam"); return; }
+                if (rage >= 10) { return; }
+            }
+            #endregion
+
+            #region Flooding
+            TimeSpan t = DateTime.Now - p.lastmsgtime;
+            if (t < new TimeSpan(0, 0, 1)) {
+                p.SendMessage("Stop the flooding buddy!");
+                p.floodcount++;
+                p.multi++;                
+                if (p.floodcount >= 5) { p.canusegc = false; p.SendMessage("You can no longer use the gc! Reason: flooding"); }
+                if (p.floodcount >= 3) { return; }
+            }
+            p.lastmsgtime = DateTime.Now;
+            #endregion
+
+            if (p.multi >= 10) { p.canusegc = false; p.SendMessage("You can no longer use the gc! Reason: multiple offenses!"); return; }
             if (OnNewSayGlobalMessage != null)
                 OnNewSayGlobalMessage(p == null ? "Console" : p.name, message);
             if (Server.UseGlobalChat && IsConnected())
@@ -104,8 +152,7 @@ namespace MCForge
             //string allowedchars = "1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./!@#$%^*()_+QWERTYUIOPASDFGHJKL:\"ZXCVBNM<>? ";
             //string msg = message;
             if (message.Contains("^UGCS"))
-            {
-                
+            {      
                 Server.UpdateGlobalSettings();
                 return;
             }
@@ -145,7 +192,7 @@ namespace MCForge
             {
                 OnNewRecieveGlobalMessage(user.Nick, message);
             }
-            if (Server.devs.Contains(message.Split(':')[0]) && message.StartsWith("[Dev]") == false && message.StartsWith("[Developer]") == false) { message = "[Dev]" + message; }
+            if (Server.devs.Contains(message.Split(':')[0]) && !message.StartsWith("[Dev]") && !message.StartsWith("[Developer]")) { message = "[Dev]" + message; }
             /*try { 
                 if(GUI.GuiEvent != null)
                 GUI.GuiEvents.GlobalChatEvent(this, "> " + user.Nick + ": " + message); }

@@ -13,20 +13,18 @@ or implied. See the Licenses for the specific language governing
 permissions and limitations under the Licenses.
 */
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
-using System.Threading;
+using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Collections.Generic;
-using System.IO.Compression;
-using System.IO;
-using System.Text.RegularExpressions;
 using System.Security.Cryptography;
-using System.Data;
-using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 using MCForge.SQL;
-using System.Timers;
 
 namespace MCForge {
     public sealed partial class Player : IDisposable {
@@ -88,6 +86,14 @@ namespace MCForge {
         public bool hasreadrules = false;
         public bool canusereview = true;
 
+        //Gc checks
+        public string lastmsg = "";
+        public int spamcount = 0, capscount = 0, floodcount = 0, multi = 0;
+        public DateTime lastmsgtime = DateTime.MinValue;
+        /// <summary>
+        /// Console only please
+        /// </summary>
+        public bool canusegc = true;
 
         //Pyramid Code
 
@@ -1738,7 +1744,7 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                     Server.s.Log(name + " is using " + text.Substring(7));
                     UsingWom = true;
                     WoMVersion = text.Substring(7, 15);
-                    Player.GlobalMessageOps(color + name + "%4is using WoM. Version: " + text.Substring(7, 15));
+                    Player.GlobalMessageOps(color + name + " %4is using WoM. Version: " + text.Substring(7, 15));
                     Server.s.Log(name + " is using WoM. Version " + text.Substring(7, 15));
                     return;
                 }
@@ -3070,6 +3076,7 @@ changed |= 4;*/
                         lastendwithcolour = true;
                     }
                 }
+                if (Regex.IsMatch(message, "%[^a-fA-F0-9]")) { from.SendMessage("Can't let you do that Mr whale!"); return true; } //for the gc, sendmessage already checks for this
                 if (s.TrimEnd(Server.ColourCodesNoPercent).EndsWith("%")) {
                     lastendwithcolour = true;
                 }
