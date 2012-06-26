@@ -3079,7 +3079,7 @@ changed |= 4;*/
                         lastendwithcolour = true;
                     }
                 }
-                if (Regex.IsMatch(message, "%[^a-fA-F0-9]")) { if(from != null) from.SendMessage("Can't let you do that Mr whale!") else Server.s.Log("Can't let you do that"); return true; } //for the gc, sendmessage already checks for this
+                if (Regex.IsMatch(message, "%[^a-fA-F0-9]")) { if (from != null) from.SendMessage("Can't let you do that Mr whale!"); else Server.s.Log("Can't let you do that"); return true; } //for the gc, sendmessage already checks for this
                 if (s.TrimEnd(Server.ColourCodesNoPercent).EndsWith("%")) {
                     lastendwithcolour = true;
                 }
