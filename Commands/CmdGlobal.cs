@@ -58,7 +58,7 @@ namespace MCForge.Commands
             Player.SendMessage(p, "9. Do not ask for a server name");
             Player.SendMessage(p, "10. Use common sense.");
             Player.SendMessage(p, "11. Don't say any server name");
-            Player.SendMessage(p, "&1Type /gcaccept to accept these rules");
+            Player.SendMessage(p, "&3Type /gcaccept to accept these rules");
         }
         public override void Help(Player p)
         {

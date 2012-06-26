@@ -2511,6 +2511,9 @@ else goto retry;
                         newLine += '\'';
                     }
 
+                    if (HasBadColorCodes(newLine))
+                        continue;
+
                     StringFormat(newLine, 64).CopyTo(buffer, 1);
                     SendRaw(13, buffer);
                 }
@@ -3076,7 +3079,7 @@ changed |= 4;*/
                         lastendwithcolour = true;
                     }
                 }
-                if (Regex.IsMatch(message, "%[^a-fA-F0-9]")) { from.SendMessage("Can't let you do that Mr whale!"); return true; } //for the gc, sendmessage already checks for this
+                if (Regex.IsMatch(message, "%[^a-fA-F0-9]")) { if(from != null) from.SendMessage("Can't let you do that Mr whale!") else Server.s.Log("Can't let you do that"); return true; } //for the gc, sendmessage already checks for this
                 if (s.TrimEnd(Server.ColourCodesNoPercent).EndsWith("%")) {
                     lastendwithcolour = true;
                 }
@@ -3112,6 +3115,26 @@ changed |= 4;*/
             }
             return false;
         }
+
+        public static bool IsValidColorChar(char color) {
+           return (color >= '0' && color <= '9') || (color >= 'a' && color <= 'f') || (color >= 'A' && color <= 'F');
+        }
+
+        public static bool HasBadColorCodesTwo(string message) {
+            string[] split = message.Split('&');
+            for (int i = 0; i < split.Length; i++) {
+                string section = split[i];
+
+                if (String.IsNullOrEmpty(section.Trim()))
+                    return true;
+
+                if (!IsValidColorChar(section[0]))
+                    return true;
+
+            }
+
+            return false;
+         }
 
         public static bool CommandHasBadColourCodes(Player who, string message) {
             string[] checkmessagesplit = message.Split(' ');

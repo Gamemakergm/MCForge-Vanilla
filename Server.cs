@@ -1241,5 +1241,7 @@ namespace MCForge
         {
             return gcmods.Contains(name) && gcmodprotection.Where(line => line.Contains(name)).Any(line => line.Split('*')[1] == "1");
         }
+
+        public static bool canusegc { get; set; }
     }
 }
