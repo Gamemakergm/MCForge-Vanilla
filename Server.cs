@@ -16,25 +16,20 @@
 	permissions and limitations under the Licenses.
 */
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Net;
 using System.Net.Sockets;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Forms;
-using System.Text;
-using System.ComponentModel;
-using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Data;
-using System.Security.Cryptography;
+using MCForge.SQL;
 //using MySql.Data.MySqlClient;
 //using MySql.Data.Types;
 
 using MonoTorrent.Client;
-using MCForge.SQL;
 
 namespace MCForge
 {
@@ -109,7 +104,7 @@ namespace MCForge
         public static PlayerList muted;
         public static PlayerList ignored;
         // The MCForge Developer List
-        internal static readonly List<string> devs = new List<string>(new string[] { "dmitchell94", "501st_commander", "edh649", "shade2010", "hypereddie10", "erickilla", "fredlllll", "soccer101nic", "headdetect", "merlin33069", "jasonbay13", "cazzar", "snowl", "techjar", "nerketur", "anthonyani", "wouto1997", "lavoaster", "bemacized", "meinigeshandwerk", "hirsty1989" });
+        internal static readonly List<string> devs = new List<string>(new string[] { "EricKilla", "Merlin33069", "Snowl", "hypereddie10", "headdetect", "Gamemakergm", "cazzar", "givo", "jasonbay13", "Alem_Zupa", "7imekeeper", "ninedrafted", "Nerketur", "Serado", "501st_Commander" });
         public static List<string> Devs { get { return new List<string>(devs); } }
 
         public static List<TempBan> tempBans = new List<TempBan>();
