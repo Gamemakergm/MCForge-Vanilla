@@ -48,8 +48,8 @@ namespace MCForge
                             if (who.group.Permission >= p.group.Permission) { Player.SendMessage(p, "Cannot jail someone of equal or greater rank."); return; }
                             else
                             {
-                                if (Server.devs.Contains(who.name.ToLower()) == true) { p.SendMessage("You can't kick a MCForge Developer!"); return; }
-                                if (Server.gcmodhasprotection(who.name.ToLower()) == true) { p.SendMessage("You can't kick a Global Chat Moderator!"); return; }
+                                if (Server.devs.Contains(who.name)) { p.SendMessage("You can't kick a MCForge Developer!"); return; }
+                                if (Server.gcmodhasprotection(who.name)) { p.SendMessage("You can't kick a Global Chat Moderator!"); return; }
                             }
                         Player.GlobalDie(who, false);
                         if (p != null) Player.GlobalSpawn(who, p.level.jailx, p.level.jaily, p.level.jailz, p.level.jailrotx, p.level.jailroty, true);
@@ -57,7 +57,7 @@ namespace MCForge
                         who.jailed = true;
                         if (p == null)
                         {
-                            if (Server.devs.Contains(who.name.ToLower()) || Server.gcmodhasprotection(who.name.ToLower())) return;
+                            if (Server.devs.Contains(who.name) || Server.gcmodhasprotection(who.name)) return;
                             Player.SendMessage(p, who.name + " was jailed.");
                         }
                         Player.GlobalChat(who, who.color + who.name + Server.DefaultColor + " was &8jailed", false);
@@ -66,7 +66,7 @@ namespace MCForge
                     {
                         if (p == null)
                         {
-                            if (Server.devs.Contains(who.name.ToLower()) || Server.gcmodhasprotection(who.name.ToLower())) return;
+                            if (Server.devs.Contains(who.name) || Server.gcmodhasprotection(who.name)) return;
                             Player.SendMessage(p, who.name + " was freed from jail.");
                         }
                         who.jailed = false;

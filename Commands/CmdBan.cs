@@ -68,7 +68,7 @@ namespace MCForge.Commands {
                         Player.SendMessage(p, "Invalid name \"" + message + "\".");
                         return;
                     }
-                    if (Server.devs.Contains(message.ToLower())) {
+                    if (Server.devs.Contains(message)) {
                         Player.SendMessage(p, "You can't ban a MCForge Developer!");
                         if (p != null) {
                             Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " attempted to ban a MCForge Developer!");
@@ -109,7 +109,7 @@ namespace MCForge.Commands {
                         Player.SendMessage(p, "Invalid name \"" + who.name + "\".");
                         return;
                     }
-                    if (Server.devs.Contains(who.name.ToLower())) {
+                    if (Server.devs.Contains(who.name)) {
                         Player.SendMessage(p, "You can't ban an MCForge Developer!");
                         if (p != null) {
                             Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " attempted to ban an MCForge Developer!");

@@ -67,6 +67,7 @@ namespace MCForge
 			all.Add(new CmdBotSet());
 			all.Add(new CmdBotSummon());
 			all.Add(new CmdC4());
+            all.Add(new CmdDrawface());
 			all.Add(new CmdCalculate());
 			all.Add(new CmdChain());
 			all.Add(new CmdChangeLog());

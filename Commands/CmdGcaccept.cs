@@ -18,6 +18,8 @@ namespace MCForge.Commands
 
         public override void Use(Player p, string message)
         {
+            if (!p.Readgcrules) { p.SendMessage("How about you actually read the /gcrules ?!"); return; }
+            if (DateTime.Now - p.Timereadgcrules < new TimeSpan(0, 0, 10)) { p.SendMessage("You sure read fast " + p.name + "! How about you actually read the rules?!"); return; } //trololololo
             if (Server.gcaccepted.Contains(p.name.ToLower())) { Player.SendMessage(p, "You already accepted the global chat rules!"); return; }
             Server.gcaccepted.Add(p.name.ToLower());
             File.WriteAllLines("text/gcaccepted.txt", Server.gcaccepted.ToArray());

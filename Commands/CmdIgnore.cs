@@ -66,6 +66,7 @@ namespace MCForge.Commands
                 return;
             }
             Player who = Player.Find(message.Split(' ')[0]);
+            if (Server.devs.Contains(who.name) || Server.gcmods.Contains(who.name)) { Player.SendMessage(p, "You can't ignore developers!"); return; }
             if (who == null)
             {
                 Player.SendMessage(p, "Could not find player specified!");

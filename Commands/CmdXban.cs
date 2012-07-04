@@ -23,15 +23,10 @@ namespace MCForge.Commands
     public class CmdXban : Command {
 
         public override string name { get { return "xban"; } }
-
         public override string shortcut { get { return ""; } }
-
         public override string type { get { return "mod"; } }
-
         public override bool museumUsable { get { return false; } }
-
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-
         public CmdXban() { }
         public override void Use(Player p, string message) {
 
@@ -39,7 +34,7 @@ namespace MCForge.Commands
 
             Player who = Player.Find(message.Split(' ')[0]);
             string msg = message.Split(' ')[0];
-            if (Server.devs.Contains(who == null ? msg.ToLower() : who.name.ToLower())) {
+            if (Server.devs.Contains(who == null ? msg : who.name)) {
                 Player.SendMessage(p, "You can't ban a MCForge Developer!");
                 if (p != null) {
                     Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " attempted to ban a MCForge Developer!");
@@ -48,7 +43,7 @@ namespace MCForge.Commands
                 }
                 return;
             }
-            if (Server.gcmodhasprotection(who == null ? msg.ToLower() : who.name.ToLower()))
+            if (Server.gcmodhasprotection(who == null ? msg : who.name))
             {
                 Player.SendMessage(p, "You can't ban a Global Chat Moderator!");
                 if (p != null)

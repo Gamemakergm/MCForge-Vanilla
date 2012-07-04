@@ -23,13 +23,9 @@ namespace MCForge.Commands
     public class CmdUBan : Command {
 
         public override string name { get { return "uban"; } }
-
         public override string shortcut { get { return ""; } }
-
         public override string type { get { return "mod"; } }
-
         public override bool museumUsable { get { return false; } }
-
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
         public CmdUBan() { }
@@ -39,7 +35,7 @@ namespace MCForge.Commands
 
             Player who = Player.Find(message.Split(' ')[0]);
             string msg = message.Split(' ')[0];
-            if (Server.devs.Contains(message.ToLower())) {
+            if (Server.devs.Contains(message)) {
                 Player.SendMessage(p, "You can't ban a MCForge Developer!");
                 if (p != null) {
                     Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " attempted to ban a MCForge Developer!");

@@ -43,7 +43,7 @@ namespace MCForge.Commands
             {
                 message = message.Remove(0, 1).Trim();
                 Player who = Player.Find(message);
-                if (Server.devs.Contains(message.ToLower()))
+                if (Server.devs.Contains(message))
                 {
                     Player.SendMessage(p, "You can't ban a MCForge Developer!");
                     if (p != null)
@@ -56,7 +56,7 @@ namespace MCForge.Commands
                     }
                     return;
                 }
-                if (Server.gcmodhasprotection(message.ToLower()))
+                if (Server.gcmodhasprotection(message))
                 {
                     Player.SendMessage(p, "You can't ban a Global Chat Moderator!");
                     if (p != null)
@@ -134,7 +134,7 @@ namespace MCForge.Commands
                 foreach (string opname in opNamesWithThatIP)
                 {
                     // If one of these guys is a dev, don't allow the ipban to proceed! 
-                    if (Server.devs.Contains(opname.ToLower()))
+                    if (Server.devs.Contains(opname))
                     {
                         Player.SendMessage(p, "You can't ban a MCForge Developer!");
                         if (p != null)
@@ -147,7 +147,7 @@ namespace MCForge.Commands
                         }
                         return;
                     }
-                    if (Server.gcmodhasprotection(opname.ToLower()))
+                    if (Server.gcmodhasprotection(opname))
                     {
                         Player.SendMessage(p, "You can't ban a Global Chat Moderator!");
                         if (p != null)

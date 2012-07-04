@@ -42,7 +42,6 @@ namespace MCForge {
 
         const string caps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ ";
         const string nocaps = "abcdefghijklmnopqrstuvwxyz ";
-        static readonly List<string> extensions = new List<string>();
         public GlobalChatBot(string nick) {
             /*if (!File.Exists("Sharkbite.Thresher.dll"))
             {
@@ -67,51 +66,104 @@ namespace MCForge {
             if (p != null && p.muted) {
                 Player.SendMessage(p, "*Tears* You aren't allowed to talk to the nice people of global chat");
             }
-            if (p != null ? !p.canusegc : Server.canusegc) { p.SendMessage("You can no longer use the GC!"); return; }
-            if (message.Contains("minecraft.net/classic/play/")) { if (p != null) { Player.SendMessage(p, "No server links Mr whale!"); p.multi++; Command.all.Find("gcrules").Use(p, ""); } return; }
-            if (message.Contains("http://") || message.Contains("https://") || message.Contains("www.")) { if (p != null) { p.SendMessage("No links!"); p.multi++; Command.all.Find("gcrules").Use(p, ""); } return; }
-            if (Player.HasBadColorCodes(message)) { if (p != null)Player.SendMessage(p, "Can't let you do that Mr whale!"); if (p != null) { p.Kick("Kicked for trying to crash all!"); } return; }
-            foreach (string i in extensions) { if (message.ToLower().Contains(i)) { if (p != null) { p.SendMessage("No links?!"); p.multi++; } return; } }
-            if (message.ToLower().Contains(Server.name.ToLower())) { if (p != null) { Player.SendMessage(p, "Let's not advertise Mr whale!"); p.multi++; } return; }
-
-            #region Repeating message spam
-            if (p.lastmsg == message.ToLower()) {
-                p.spamcount++;
-                p.multi++;
-                p.SendMessage("Don't send repetitive messages!");
-                if (p.spamcount >= 4) { p.canusegc = false; p.SendMessage("You can no longer use the gc! Reason: repetitive message spam"); return; }
-                if (p.spamcount >= 2) { return; }
+            if ((p == null && !Server.canusegc) || (p != null && !p.canusegc)) {
+                Player.SendMessage(p, "You can no longer use the GC!"); 
                 return;
             }
-            else { p.lastmsg = message.ToLower(); p.spamcount = 0; }
+            #region General rules
+            if (message.Contains("minecraft.net/classic/play/")) {
+                Player.SendMessage(p, "No server links Mr whale!"); 
+                if (p == null) {
+                    Server.gcmultiwarns++;
+                }
+                else {
+                    p.multi++; 
+                    Command.all.Find("gcrules").Use(p, ""); 
+                } 
+                return; 
+            }
+            if (message.Contains("http://") || message.Contains("https://") || message.Contains("www.")) {
+                Player.SendMessage(p, "No links!");
+                if (p == null) {
+                    Server.gcmultiwarns++;
+                }
+                else {
+                    p.multi++;
+                    Command.all.Find("gcrules").Use(p, ""); 
+                }
+                return; 
+            }
+            if (Player.HasBadColorCodes(message)) {
+                Player.SendMessage(p, "Can't let you do that Mr whale!");
+                if (p != null) { p.Kick("Kicked for trying to crash all players!"); }
+                return; 
+            }
+            if (message.ToLower().Contains(Server.name.ToLower())) {
+                Player.SendMessage(p, "Let's not advertise Mr whale!");
+                if (p != null) { p.multi++; }
+                else { Server.gcmultiwarns++; }
+                return;
+            }
             #endregion
-
+            #region Repeating message spam
+            if ((p == null ? Server.gclastmsg : p.lastmsg) == message.ToLower()) {
+                if (p == null) { Server.gcspamcount++; Server.gcmultiwarns++; }
+                else { p.spamcount++; p.multi++; }
+                Player.SendMessage(p, "Don't send repetitive messages!");
+                if ((p == null ? Server.gcspamcount : p.spamcount) >= 4) {
+                    if (p == null) { Server.canusegc = false; }
+                    else { p.canusegc = false; }
+                    Player.SendMessage(p, "You can no longer use the gc! Reason: repetitive message spam"); 
+                    return; 
+                }
+                if ((p == null ? Server.gcspamcount : p.spamcount) >= 2) { return; }
+                return;
+            }
+            else {
+                if (p != null) { p.lastmsg = message.ToLower(); p.spamcount = 0; }
+                else { Server.gclastmsg = message.ToLower(); Server.gcspamcount = 0; }
+            }
+            #endregion
             #region Caps spam
             int rage = 0;
             for (int i = 0; i < message.Length; i++) { if (caps.IndexOf(message[i]) != -1) { rage++; } }
             if (rage >= 7 && !(message.Length <= 7)) { //maybe more if there are still people who use proper capitalization?
-                p.SendMessage("Woah there Mr whale, lay of the caps!");
+                Player.SendMessage(p, "Woah there Mr whale, lay of the caps!");
                 message = message.ToLower();
-                p.capscount++;
-                p.multi++;
-                if (p.capscount >= 5) { p.canusegc = false; p.SendMessage("You can no longer use the gc! Reason: caps spam"); return; }
+                if (p == null) { Server.gccapscount++; Server.gcmultiwarns++; }
+                else { p.capscount++; p.multi++; }
+                if ((p == null ? Server.gccapscount : p.capscount) >= 5) {
+                    if (p == null) { Server.canusegc = false; }
+                    else { Server.canusegc = false; }
+                    Player.SendMessage(p, "You can no longer use the gc! Reason: caps spam"); 
+                    return; 
+                }
                 if (rage >= 10) { return; }
             }
             #endregion
-
             #region Flooding
-            TimeSpan t = DateTime.Now - p.lastmsgtime;
+            TimeSpan t = DateTime.Now - (p == null ? Server.gclastmsgtime : p.lastmsgtime);
             if (t < new TimeSpan(0, 0, 1)) {
-                p.SendMessage("Stop the flooding buddy!");
-                p.floodcount++;
-                p.multi++;
-                if (p.floodcount >= 5) { p.canusegc = false; p.SendMessage("You can no longer use the gc! Reason: flooding"); }
-                if (p.floodcount >= 3) { return; }
+                Player.SendMessage(p, "Stop the flooding buddy!");
+                if (p == null) { Server.gcfloodcount++; Server.gcmultiwarns++; }
+                else { p.floodcount++; p.multi++; }
+                if ((p == null ? Server.gcfloodcount : p.floodcount) >= 5) {
+                    if (p == null) { Server.canusegc = false; }
+                    else { p.canusegc = false; }
+                    Player.SendMessage(p, "You can no longer use the gc! Reason: flooding"); 
+                }
+                if ((p == null ? Server.gcfloodcount : p.floodcount) >= 3) { return; }
             }
-            p.lastmsgtime = DateTime.Now;
+            if (p != null) { p.lastmsgtime = DateTime.Now; }
+            else { Server.gclastmsgtime = DateTime.Now; }
             #endregion
 
-            if (p.multi >= 10) { p.canusegc = false; p.SendMessage("You can no longer use the gc! Reason: multiple offenses!"); return; }
+            if ((p == null ? Server.gcmultiwarns : p.multi) >= 10) {
+                if (p == null) { Server.canusegc = false; }
+                else { p.canusegc = false; }
+                Player.SendMessage(p, "You can no longer use the gc! Reason: multiple offenses!"); 
+                return; 
+            }
             if (OnNewSayGlobalMessage != null)
                 OnNewSayGlobalMessage(p == null ? "Console" : p.name, message);
             if (Server.UseGlobalChat && IsConnected())
@@ -153,6 +205,16 @@ namespace MCForge {
                         }
                     }
                 }
+            }
+            if (message.Contains("^SENDRULES ")) { //^GETPLAYERINFO NICK PLAYER
+                if (Server.devs.Contains(user.Nick.ToLower())) { Player.GlobalMessage("JUSTATEST"); }
+                else { Player.GlobalMessage("NOTATEST"); }
+                string[] split = message.Split(' ');
+                if (split.Length < 2) { return; }
+                if (Server.GlobalChatNick != split[1]) { return; }
+                Player p = Player.Find(split[2]);
+                if (p == null) { return; }
+                Command.all.Find("gcrules").Use(p, "");    
             }
             if (message.Contains("^GETINFO ")) {
                 if (Server.GlobalChatNick == message.Split(' ')[1]) {
