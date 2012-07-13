@@ -19,15 +19,57 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Net;
 
-namespace MCForge
-{
-    //derp idk just need to edit this so I can commit :/
-    public static class ServerSettings
-    {
-        // Don't even try referencing this from Program.cs, you'll break the updater and it will fail miserably.
-        public static string RevisionList = "http://www.mcforge.net/revs.txt";
-        public static string HeartbeatAnnounce = "http://mcforge.mc-mycraft.com/heartbeat.php";
-        public static string ArchivePath = "http://www.mcforge.net/archives/exe/";
-    }
+namespace MCForge {
+	//derp idk just need to edit this so I can commit :/
+	public static class ServerSettings {
+
+		public const string UrlsUrl = "http://server.mcforge.net/urls.txt";
+
+		private static string _RevisionList = "http://www.mcforge.net/revs.txt";
+		private static string _HeartbeatAnnounce = "http://mcforge.mc-mycraft.com/heartbeat.php";
+		private static string _ArchivePath = "http://www.mcforge.net/archives/exe/";
+
+		static ServerSettings() {
+			using ( var client = new WebClient() ) {
+				client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
+				client.DownloadStringAsync(new Uri(UrlsUrl));
+			}
+		}
+
+		static void client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e) {
+			if ( e.Cancelled || e.Error != null ) {
+				Server.s.Log("Error getting urls. Using defaults.");
+				return;
+			}
+
+			if ( e.Result.Split('@').Length != 3 ) {
+				Server.s.Log("Recieved Malformed data from server...");
+				return;
+			}
+
+			string[] lines = e.Result.Split('@');
+
+			_RevisionList = lines[0];
+			_HeartbeatAnnounce = lines[1];
+			_ArchivePath = lines[2];
+		}
+
+		public static string ArchivePath {
+			get {
+				return _ArchivePath;
+			}
+		}
+		public static string HeartbeatAnnounce {
+			get {
+				return _HeartbeatAnnounce;
+			}
+		}
+		public static string RevisionList {
+			get {
+				return _RevisionList;
+			}
+		}
+	}
 }
