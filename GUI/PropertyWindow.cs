@@ -28,22 +28,17 @@ using System.CodeDom.Compiler;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Threading;
+using MCForge.Gui.Popups;
 
 namespace MCForge.Gui {
     public partial class PropertyWindow : Form {
         Form lavaMapBrowser;
         System.Timers.Timer lavaUpdateTimer;
         string lsLoadedMap = "";
-        private BackgroundWorker mWorkerChecker;
 
         public PropertyWindow() {
             InitializeComponent();
 
-            ChkPortResult.Text = "Port Check Not Started";
-            mWorkerChecker = new BackgroundWorker();
-            mWorkerChecker.WorkerSupportsCancellation = true;
-            mWorkerChecker.DoWork += new DoWorkEventHandler(OnDoWork);
-            mWorkerChecker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(OnWorkCompleted);
 
         }
 
@@ -51,14 +46,14 @@ namespace MCForge.Gui {
             lavaMapBrowser = new LavaMapBrowser();
 
             Object[] colors = new Object[16];
-            colors[0] = ("black"); colors[1] = ("navy");
-            colors[2] = ("green"); colors[3] = ("teal");
-            colors[4] = ("maroon"); colors[5] = ("purple");
-            colors[6] = ("gold"); colors[7] = ("silver");
-            colors[8] = ("gray"); colors[9] = ("blue");
-            colors[10] = ("lime"); colors[11] = ("aqua");
-            colors[12] = ("red"); colors[13] = ("pink");
-            colors[14] = ("yellow"); colors[15] = ("white");
+            colors[0] = ( "black" ); colors[1] = ( "navy" );
+            colors[2] = ( "green" ); colors[3] = ( "teal" );
+            colors[4] = ( "maroon" ); colors[5] = ( "purple" );
+            colors[6] = ( "gold" ); colors[7] = ( "silver" );
+            colors[8] = ( "gray" ); colors[9] = ( "blue" );
+            colors[10] = ( "lime" ); colors[11] = ( "aqua" );
+            colors[12] = ( "red" ); colors[13] = ( "pink" );
+            colors[14] = ( "yellow" ); colors[15] = ( "white" );
             cmbDefaultColour.Items.AddRange(colors);
             cmbIRCColour.Items.AddRange(colors);
             cmbColor.Items.AddRange(colors);
@@ -79,7 +74,7 @@ namespace MCForge.Gui {
             string clearqueuerank = String.Empty;
             string gotonextrank = String.Empty;
 
-            foreach (Group grp in Group.GroupList) {
+            foreach ( Group grp in Group.GroupList ) {
                 cmbDefaultRank.Items.Add(grp.name);
                 cmbOpChat.Items.Add(grp.name);
                 cmbAdminChat.Items.Add(grp.name);
@@ -94,49 +89,49 @@ namespace MCForge.Gui {
                 cmbClearQueue.Items.Add(grp.name);
                 cmbGotoNext.Items.Add(grp.name);
 
-                if (grp.Permission == Server.opchatperm)
+                if ( grp.Permission == Server.opchatperm )
                     opchatperm = grp.name;
-                if (grp.Permission == Server.adminchatperm)
+                if ( grp.Permission == Server.adminchatperm )
                     adminchatperm = grp.name;
-                if (grp.Permission == Server.verifyadminsrank)
+                if ( grp.Permission == Server.verifyadminsrank )
                     verifyadminsperm = grp.name;
-                if (grp.Permission == Server.grieferStoneRank)
+                if ( grp.Permission == Server.grieferStoneRank )
                     grieferstonerank = grp.name;
-                if (grp.Permission == Server.afkkickperm)
+                if ( grp.Permission == Server.afkkickperm )
                     afkkickrank = grp.name;
-                if (grp.Permission == Server.reviewenter)
+                if ( grp.Permission == Server.reviewenter )
                     enterqueuerank = grp.name;
-                if (grp.Permission == Server.reviewleave)
+                if ( grp.Permission == Server.reviewleave )
                     leavequeuerank = grp.name;
-                if (grp.Permission == Server.reviewview)
+                if ( grp.Permission == Server.reviewview )
                     viewqueuerank = grp.name;
-                if (grp.Permission == Server.reviewclear)
+                if ( grp.Permission == Server.reviewclear )
                     clearqueuerank = grp.name;
-                if (grp.Permission == Server.reviewnext)
+                if ( grp.Permission == Server.reviewnext )
                     gotonextrank = grp.name;
             }
             listPasswords.Items.Clear();
-            if (Directory.Exists("extra/passwords")) {
+            if ( Directory.Exists("extra/passwords") ) {
                 DirectoryInfo di = new DirectoryInfo("extra/passwords/");
                 FileInfo[] fi = di.GetFiles("*.xml");
                 Thread.Sleep(10);
-                foreach (FileInfo file in fi) {
+                foreach ( FileInfo file in fi ) {
                     listPasswords.Items.Add(file.Name.Replace(".xml", ""));
                 }
             }
             cmbDefaultRank.SelectedIndex = 1;
-            cmbOpChat.SelectedIndex = (opchatperm != String.Empty ? cmbOpChat.Items.IndexOf(opchatperm) : 1);
-            cmbAdminChat.SelectedIndex = (adminchatperm != String.Empty ? cmbAdminChat.Items.IndexOf(adminchatperm) : 1);
-            cmbVerificationRank.SelectedIndex = (verifyadminsperm != String.Empty ? cmbVerificationRank.Items.IndexOf(verifyadminsperm) : 1);
-            cmbGrieferStoneRank.SelectedIndex = (grieferstonerank != String.Empty ? cmbGrieferStoneRank.Items.IndexOf(grieferstonerank) : 1);
-            cmbAFKKickPerm.SelectedIndex = (afkkickrank != String.Empty ? cmbAFKKickPerm.Items.IndexOf(afkkickrank) : 1);
-            cmbEnterQueue.SelectedIndex = (enterqueuerank != String.Empty ? cmbEnterQueue.Items.IndexOf(enterqueuerank) : 1);
-            cmbLeaveQueue.SelectedIndex = (leavequeuerank != String.Empty ? cmbLeaveQueue.Items.IndexOf(leavequeuerank) : 1);
-            cmbViewQueue.SelectedIndex = (viewqueuerank != String.Empty ? cmbViewQueue.Items.IndexOf(viewqueuerank) : 1);
-            cmbClearQueue.SelectedIndex = (clearqueuerank != String.Empty ? cmbClearQueue.Items.IndexOf(clearqueuerank) : 1);
-            cmbGotoNext.SelectedIndex = (gotonextrank != String.Empty ? cmbGotoNext.Items.IndexOf(gotonextrank) : 1);
+            cmbOpChat.SelectedIndex = ( opchatperm != String.Empty ? cmbOpChat.Items.IndexOf(opchatperm) : 1 );
+            cmbAdminChat.SelectedIndex = ( adminchatperm != String.Empty ? cmbAdminChat.Items.IndexOf(adminchatperm) : 1 );
+            cmbVerificationRank.SelectedIndex = ( verifyadminsperm != String.Empty ? cmbVerificationRank.Items.IndexOf(verifyadminsperm) : 1 );
+            cmbGrieferStoneRank.SelectedIndex = ( grieferstonerank != String.Empty ? cmbGrieferStoneRank.Items.IndexOf(grieferstonerank) : 1 );
+            cmbAFKKickPerm.SelectedIndex = ( afkkickrank != String.Empty ? cmbAFKKickPerm.Items.IndexOf(afkkickrank) : 1 );
+            cmbEnterQueue.SelectedIndex = ( enterqueuerank != String.Empty ? cmbEnterQueue.Items.IndexOf(enterqueuerank) : 1 );
+            cmbLeaveQueue.SelectedIndex = ( leavequeuerank != String.Empty ? cmbLeaveQueue.Items.IndexOf(leavequeuerank) : 1 );
+            cmbViewQueue.SelectedIndex = ( viewqueuerank != String.Empty ? cmbViewQueue.Items.IndexOf(viewqueuerank) : 1 );
+            cmbClearQueue.SelectedIndex = ( clearqueuerank != String.Empty ? cmbClearQueue.Items.IndexOf(clearqueuerank) : 1 );
+            cmbGotoNext.SelectedIndex = ( gotonextrank != String.Empty ? cmbGotoNext.Items.IndexOf(gotonextrank) : 1 );
 
-            for (byte b = 1; b < 50; b++)
+            for ( byte b = 1; b < 50; b++ )
                 cmbGrieferStoneType.Items.Add(Block.Name(b));
 
             //Load server stuff
@@ -175,7 +170,7 @@ namespace MCForge.Gui {
             try { nudCooldownTime.Value = Server.reviewcooldown; }
             catch { }
             try { reviewlist_update(); }
-            catch (Exception ex) { Server.ErrorLog(ex); }
+            catch ( Exception ex ) { Server.ErrorLog(ex); }
         }
 
         public static bool EditTextOpen = false;
@@ -197,7 +192,7 @@ namespace MCForge.Gui {
             listRanks.Items.Clear();
             storedRanks.Clear();
             storedRanks.AddRange(Group.GroupList);
-            foreach (Group grp in storedRanks) {
+            foreach ( Group grp in storedRanks ) {
                 txtCmdRanks.Text += "\t" + grp.name + " (" + (int)grp.Permission + ")\r\n";
                 txtcmdranks2.Text += "\t" + grp.name + " (" + (int)grp.Permission + ")\r\n";
                 listRanks.Items.Add(grp.trueName + " = " + (int)grp.Permission);
@@ -214,11 +209,11 @@ namespace MCForge.Gui {
         public void LoadCommands() {
             listCommands.Items.Clear();
             storedCommands.Clear();
-            foreach (GrpCommands.rankAllowance aV in GrpCommands.allowedCommands) {
+            foreach ( GrpCommands.rankAllowance aV in GrpCommands.allowedCommands ) {
                 storedCommands.Add(aV);
                 listCommands.Items.Add(aV.commandName);
             }
-            if (listCommands.SelectedIndex == -1)
+            if ( listCommands.SelectedIndex == -1 )
                 listCommands.SelectedIndex = 0;
         }
         public void SaveCommands() {
@@ -231,11 +226,11 @@ namespace MCForge.Gui {
             listBlocks.Items.Clear();
             storedBlocks.Clear();
             storedBlocks.AddRange(Block.BlockList);
-            foreach (Block.Blocks bs in storedBlocks) {
-                if (Block.Name(bs.type) != "unknown")
+            foreach ( Block.Blocks bs in storedBlocks ) {
+                if ( Block.Name(bs.type) != "unknown" )
                     listBlocks.Items.Add(Block.Name(bs.type));
             }
-            if (listBlocks.SelectedIndex == -1)
+            if ( listBlocks.SelectedIndex == -1 )
                 listBlocks.SelectedIndex = 0;
         }
         public static bool prevLoaded = false;
@@ -251,25 +246,25 @@ namespace MCForge.Gui {
 
         public void LoadProp(string givenPath) {
             //int count = 0;
-            if (!File.Exists(givenPath)) return;
+            if ( !File.Exists(givenPath) ) return;
             string[] lines = File.ReadAllLines(givenPath);
 
-            foreach (string line in lines) {
-                if (line != "" && line[0] != '#') {
+            foreach ( string line in lines ) {
+                if ( line != "" && line[0] != '#' ) {
                     //int index = line.IndexOf('=') + 1; // not needed if we use Split('=')
                     string key = line.Split('=')[0].Trim();
                     string value = "";
-                    if (line.IndexOf('=') >= 0)
+                    if ( line.IndexOf('=') >= 0 )
                         value = line.Substring(line.IndexOf('=') + 1).Trim(); // allowing = in the values
                     string color = "";
 
-                    switch (key.ToLower()) {
+                    switch ( key.ToLower() ) {
                         case "server-name":
-                            if (ValidString(value, "![]:.,{}~-+()?_/\\' ")) txtName.Text = value;
+                            if ( ValidString(value, "![]:.,{}~-+()?_/\\' ") ) txtName.Text = value;
                             else txtName.Text = "[MCForge] Minecraft server";
                             break;
                         case "motd":
-                            if (ValidString(value, "=![]&:.,{}~-+()?_/\\' ")) txtMOTD.Text = value; // allow = in the motd
+                            if ( ValidString(value, "=![]&:.,{}~-+()?_/\\' ") ) txtMOTD.Text = value; // allow = in the motd
                             else txtMOTD.Text = "Welcome to my server!";
                             break;
                         case "port":
@@ -277,20 +272,20 @@ namespace MCForge.Gui {
                             catch { txtPort.Text = "25565"; }
                             break;
                         case "verify-names":
-                            chkVerify.Checked = (value.ToLower() == "true");
+                            chkVerify.Checked = ( value.ToLower() == "true" );
                             break;
                         case "public":
-                            chkPublic.Checked = (value.ToLower() == "true");
+                            chkPublic.Checked = ( value.ToLower() == "true" );
                             break;
                         case "world-chat":
-                            chkWorld.Checked = (value.ToLower() == "true");
+                            chkWorld.Checked = ( value.ToLower() == "true" );
                             break;
                         case "max-players":
                             try {
-                                if (Convert.ToByte(value) > 128) {
+                                if ( Convert.ToByte(value) > 128 ) {
                                     value = "128";
                                 }
-                                else if (Convert.ToByte(value) < 1) {
+                                else if ( Convert.ToByte(value) < 1 ) {
                                     value = "1";
                                 }
                                 numPlayers.Value = Convert.ToInt16(value);
@@ -303,10 +298,10 @@ namespace MCForge.Gui {
                             break;
                         case "max-guests":
                             try {
-                                if (Convert.ToByte(value) > numPlayers.Value) {
+                                if ( Convert.ToByte(value) > numPlayers.Value ) {
                                     value = numPlayers.Value.ToString();
                                 }
-                                else if (Convert.ToByte(value) < 0) {
+                                else if ( Convert.ToByte(value) < 0 ) {
                                     value = "0";
                                 }
                                 numGuests.Minimum = 0;
@@ -320,10 +315,10 @@ namespace MCForge.Gui {
                             break;
                         case "max-maps":
                             try {
-                                if (Convert.ToByte(value) > 100) {
+                                if ( Convert.ToByte(value) > 100 ) {
                                     value = "100";
                                 }
-                                else if (Convert.ToByte(value) < 1) {
+                                else if ( Convert.ToByte(value) < 1 ) {
                                     value = "1";
                                 }
                                 txtMaps.Text = value;
@@ -334,7 +329,7 @@ namespace MCForge.Gui {
                             }
                             break;
                         case "irc":
-                            chkIRC.Checked = (value.ToLower() == "true");
+                            chkIRC.Checked = ( value.ToLower() == "true" );
                             break;
                         case "irc-server":
                             txtIRCServer.Text = value;
@@ -352,13 +347,13 @@ namespace MCForge.Gui {
                             txtOpChannel.Text = value;
                             break;
                         case "irc-identify":
-                            chkIrcId.Checked = (value.ToLower() == "true");
+                            chkIrcId.Checked = ( value.ToLower() == "true" );
                             break;
                         case "irc-password":
                             txtIrcId.Text = value;
                             break;
                         case "anti-tunnels":
-                            ChkTunnels.Checked = (value.ToLower() == "true");
+                            ChkTunnels.Checked = ( value.ToLower() == "true" );
                             break;
                         case "max-depth":
                             txtDepth.Text = value;
@@ -374,19 +369,19 @@ namespace MCForge.Gui {
                             break;
 
                         case "log-heartbeat":
-                            chkLogBeat.Checked = (value.ToLower() == "true");
+                            chkLogBeat.Checked = ( value.ToLower() == "true" );
                             break;
 
                         case "force-cuboid":
-                            chkForceCuboid.Checked = (value.ToLower() == "true");
+                            chkForceCuboid.Checked = ( value.ToLower() == "true" );
                             break;
 
                         case "profanity-filter":
-                            chkProfanityFilter.Checked = (value.ToLower() == "true");
+                            chkProfanityFilter.Checked = ( value.ToLower() == "true" );
                             break;
 
                         case "notify-on-join-leave":
-                            chkNotifyOnJoinLeave.Checked = (value.ToLower() == "true");
+                            chkNotifyOnJoinLeave.Checked = ( value.ToLower() == "true" );
                             break;
 
                         case "backup-time":
@@ -394,52 +389,52 @@ namespace MCForge.Gui {
                             break;
 
                         case "backup-location":
-                            if (!value.Contains("System.Windows.Forms.TextBox, Text:"))
+                            if ( !value.Contains("System.Windows.Forms.TextBox, Text:") )
                                 txtBackupLocation.Text = value;
                             break;
 
                         case "physicsrestart":
-                            chkPhysicsRest.Checked = (value.ToLower() == "true");
+                            chkPhysicsRest.Checked = ( value.ToLower() == "true" );
                             break;
                         case "deathcount":
-                            chkDeath.Checked = (value.ToLower() == "true");
+                            chkDeath.Checked = ( value.ToLower() == "true" );
                             break;
 
                         case "defaultcolor":
                             color = c.Parse(value);
 
-                            if (color == "") {
-                                color = c.Name(value); if (color != "") color = value; else { Server.s.Log("Could not find " + value); return; }
+                            if ( color == "" ) {
+                                color = c.Name(value); if ( color != "" ) color = value; else { Server.s.Log("Could not find " + value); return; }
                             }
                             cmbDefaultColour.SelectedIndex = cmbDefaultColour.Items.IndexOf(c.Name(color)); break;
 
                         case "irc-color":
                             color = c.Parse(value);
-                            if (color == "") {
-                                color = c.Name(value); if (color != "") color = value; else { Server.s.Log("Could not find " + value); return; }
+                            if ( color == "" ) {
+                                color = c.Name(value); if ( color != "" ) color = value; else { Server.s.Log("Could not find " + value); return; }
                             }
                             cmbIRCColour.SelectedIndex = cmbIRCColour.Items.IndexOf(c.Name(color)); break;
                         case "default-rank":
                             try {
-                                if (cmbDefaultRank.Items.IndexOf(value.ToLower()) != -1)
+                                if ( cmbDefaultRank.Items.IndexOf(value.ToLower()) != -1 )
                                     cmbDefaultRank.SelectedIndex = cmbDefaultRank.Items.IndexOf(value.ToLower());
                             }
                             catch { cmbDefaultRank.SelectedIndex = 1; }
                             break;
 
                         case "cheapmessage":
-                            chkCheap.Checked = (value.ToLower() == "true");
+                            chkCheap.Checked = ( value.ToLower() == "true" );
                             break;
                         case "cheap-message-given":
                             txtCheap.Text = value;
                             break;
 
                         case "rank-super":
-                            chkrankSuper.Checked = (value.ToLower() == "true");
+                            chkrankSuper.Checked = ( value.ToLower() == "true" );
                             break;
 
                         case "custom-ban":
-                            chkBanMessage.Checked = (value.ToLower() == "true");
+                            chkBanMessage.Checked = ( value.ToLower() == "true" );
                             break;
 
                         case "custom-ban-message":
@@ -447,7 +442,7 @@ namespace MCForge.Gui {
                             break;
 
                         case "custom-shutdown":
-                            chkShutdown.Checked = (value.ToLower() == "true");
+                            chkShutdown.Checked = ( value.ToLower() == "true" );
                             break;
 
                         case "custom-shutdown-message":
@@ -455,7 +450,7 @@ namespace MCForge.Gui {
                             break;
 
                         case "custom-griefer-stone":
-                            chkGrieferStone.Checked = (value.ToLower() == "true");
+                            chkGrieferStone.Checked = ( value.ToLower() == "true" );
                             break;
 
                         case "custom-griefer-stone-message":
@@ -463,7 +458,7 @@ namespace MCForge.Gui {
                             break;
 
                         case "auto-restart":
-                            chkRestartTime.Checked = (value.ToLower() == "true");
+                            chkRestartTime.Checked = ( value.ToLower() == "true" );
                             break;
                         case "restarttime":
                             txtRestartTime.Text = value;
@@ -477,38 +472,38 @@ namespace MCForge.Gui {
                             catch { txtAFKKick.Text = "45"; }
                             break;
                         case "check-updates":
-                            chkUpdates.Checked = (value.ToLower() == "true");
+                            chkUpdates.Checked = ( value.ToLower() == "true" );
                             break;
                         case "auto-update":
-                            autoUpdate.Checked = (value.ToLower() == "true");
+                            autoUpdate.Checked = ( value.ToLower() == "true" );
                             break;
                         case "in-game-update-notify":
-                            notifyInGameUpdate.Checked = (value.ToLower() == "true");
+                            notifyInGameUpdate.Checked = ( value.ToLower() == "true" );
                             break;
                         case "update-countdown":
                             try { updateTimeNumeric.Value = Convert.ToDecimal(value); }
                             catch { updateTimeNumeric.Value = 10; }
                             break;
                         case "autoload":
-                            chkAutoload.Checked = (value.ToLower() == "true");
+                            chkAutoload.Checked = ( value.ToLower() == "true" );
                             break;
                         case "parse-emotes":
-                            chkSmile.Checked = (value.ToLower() == "true") ? true : false;
+                            chkSmile.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "allow-tp-to-higher-ranks":
-                            chkTpToHigherRanks.Checked = (value.ToLower() == "true") ? true : false;
+                            chkTpToHigherRanks.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "agree-to-rules-on-entry":
-                            chkAgreeToRules.Checked = (value.ToLower() == "true") ? true : false;
+                            chkAgreeToRules.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "admins-join-silent":
-                            chkAdminsJoinSilent.Checked = (value.ToLower() == "true") ? true : false;
+                            chkAdminsJoinSilent.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "main-name":
                             txtMain.Text = value;
                             break;
                         case "dollar-before-dollar":
-                            chk17Dollar.Checked = (value.ToLower() == "true") ? true : false;
+                            chk17Dollar.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "money-name":
                             txtMoneys.Text = value;
@@ -517,16 +512,16 @@ namespace MCForge.Gui {
                             chkMono.Checked = (value.ToLower() == "true") ? true : false;
                             break;*/
                         case "restart-on-error":
-                            chkRestart.Checked = (value.ToLower() == "true") ? true : false;
+                            chkRestart.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "repeat-messages":
-                            chkRepeatMessages.Checked = (value.ToLower() == "true") ? true : false;
+                            chkRepeatMessages.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "host-state":
-                            if (value != "") txtHost.Text = value;
+                            if ( value != "" ) txtHost.Text = value;
                             break;
                         case "kick-on-hackrank":
-                            hackrank_kick.Checked = (value.ToLower() == "true") ? true : false;
+                            hackrank_kick.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "hackrank-kick-time":
                             hackrank_kick_time.Text = value;
@@ -535,58 +530,58 @@ namespace MCForge.Gui {
                             txtServerOwner.Text = value;
                             break;
                         case "zombie-on-server-start":
-                            chkZombieOnServerStart.Checked = (value.ToLower() == "true") ? true : false;
+                            chkZombieOnServerStart.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "no-respawning-during-zombie":
-                            chkNoRespawnDuringZombie.Checked = (value.ToLower() == "true") ? true : false;
+                            chkNoRespawnDuringZombie.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "no-level-saving-during-zombie":
-                            chkNoLevelSavingDuringZombie.Checked = (value.ToLower() == "true") ? true : false;
+                            chkNoLevelSavingDuringZombie.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "no-pillaring-during-zombie":
-                            chkNoPillaringDuringZombie.Checked = (value.ToLower() == "true") ? true : false;
+                            chkNoPillaringDuringZombie.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "zombie-name-while-infected":
                             ZombieName.Text = value;
                             break;
                         case "enable-changing-levels":
-                            chkEnableChangingLevels.Checked = (value.ToLower() == "true") ? true : false;
+                            chkEnableChangingLevels.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "zombie-survival-only-server":
-                            chkZombieOnlyServer.Checked = (value.ToLower() == "true") ? true : false;
+                            chkZombieOnlyServer.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "use-level-list":
-                            chkUseLevelList.Checked = (value.ToLower() == "true") ? true : false;
+                            chkUseLevelList.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "zombie-level-list":
-                            if (value != "") {
+                            if ( value != "" ) {
                                 string input = value.Replace(" ", "").ToString();
                                 int itndex = input.IndexOf("#");
-                                if (itndex > 0)
+                                if ( itndex > 0 )
                                     input = input.Substring(0, itndex);
                                 levelList.Text = input;
                             }
                             break;
                         case "guest-limit-notify":
-                            chkGuestLimitNotify.Checked = (value.ToLower() == "true");
+                            chkGuestLimitNotify.Checked = ( value.ToLower() == "true" );
                             break;
                         case "ignore-ops":
-                            chkIgnoreGlobal.Checked = (value.ToLower() == "true") ? true : false;
+                            chkIgnoreGlobal.Checked = ( value.ToLower() == "true" );
                             break;
                         case "admin-verification":
-                            chkEnableVerification.Checked = (value.ToLower() == "true") ? true : false;
+                            chkEnableVerification.Checked = ( value.ToLower() == "true" );
                             break;
                         case "usemysql":
-                            chkUseSQL.Checked = (value.ToLower() == "true") ? true : false;
+                            chkUseSQL.Checked = ( value.ToLower() == "true" );
                             break;
                         case "username":
-                            if (value != "") txtSQLUsername.Text = value;
+                            if ( value != "" ) txtSQLUsername.Text = value;
                             break;
                         case "password":
-                            if (value != "") txtSQLPassword.Text = value;
+                            if ( value != "" ) txtSQLPassword.Text = value;
                             break;
                         case "databasename":
-                            if (value != "") txtSQLDatabase.Text = value;
+                            if ( value != "" ) txtSQLDatabase.Text = value;
                             break;
                         case "host":
                             try {
@@ -607,7 +602,7 @@ namespace MCForge.Gui {
                             }
                             break;
                         case "mute-on-spam":
-                            chkSpamControl.Checked = (value.ToLower() == "true") ? true : false;
+                            chkSpamControl.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "spam-messages":
                             try {
@@ -626,26 +621,26 @@ namespace MCForge.Gui {
                             }
                             break;
                         case "show-empty-ranks":
-                            chkShowEmptyRanks.Checked = (value.ToLower() == "true") ? true : false;
+                            chkShowEmptyRanks.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
 
                         case "global-chat-enabled":
-                            chkGlobalChat.Checked = (value.ToLower() == "true") ? true : false;
+                            chkGlobalChat.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
 
                         case "global-chat-nick":
-                            if (value != "") txtGlobalChatNick.Text = value;
+                            if ( value != "" ) txtGlobalChatNick.Text = value;
                             break;
 
                         case "global-chat-color":
                             color = c.Parse(value);
-                            if (color == "") {
-                                color = c.Name(value); if (color != "") color = value; else { Server.s.Log("Could not find " + value); return; }
+                            if ( color == "" ) {
+                                color = c.Name(value); if ( color != "" ) color = value; else { Server.s.Log("Could not find " + value); return; }
                             }
                             cmbGlobalChatColor.SelectedIndex = cmbGlobalChatColor.Items.IndexOf(c.Name(color)); break;
 
                         case "griefer-stone-tempban":
-                            chkGrieferStoneBan.Checked = (value.ToLower() == "true") ? true : false;
+                            chkGrieferStoneBan.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
 
                         case "griefer-stone-type":
@@ -656,10 +651,10 @@ namespace MCForge.Gui {
                             }
                             break;
                         case "wom-direct":
-                            chkWomDirect.Checked = (value.ToLower() == "true") ? true : false;
+                            chkWomDirect.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "premium-only":
-                            chkPrmOnly.Checked = (value.ToLower() == "true") ? true : false;
+                            chkPrmOnly.Checked = ( value.ToLower() == "true" ) ? true : false;
                             break;
                         case "view":
                             Server.reviewview = Level.PermissionFromName(value.ToLower());
@@ -685,6 +680,9 @@ namespace MCForge.Gui {
                         case "next":
                             Server.reviewnext = Level.PermissionFromName(value.ToLower());
                             break;
+                        case "ignoreomnibans":
+                            chkIgnoreOmnibans.Checked = value.ToLower() == "true";
+                            break;
                     }
                 }
             }
@@ -693,8 +691,8 @@ namespace MCForge.Gui {
         }
         public bool ValidString(string str, string allowed) {
             string allowedchars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890" + allowed;
-            foreach (char ch in str) {
-                if (allowedchars.IndexOf(ch) == -1) {
+            foreach ( char ch in str ) {
+                if ( allowedchars.IndexOf(ch) == -1 ) {
                     return false;
                 }
             } return true;
@@ -702,14 +700,14 @@ namespace MCForge.Gui {
 
         public void Save(string givenPath) {
             try {
-                using (StreamWriter w = new StreamWriter(File.Create(givenPath))) {
-                    if (givenPath.IndexOf("server") != -1) {
+                using ( StreamWriter w = new StreamWriter(File.Create(givenPath)) ) {
+                    if ( givenPath.IndexOf("server") != -1 ) {
                         saveAll(); // saves everything to the server variables
                         SrvProperties.SaveProps(w); // When we have this, why define it again?
                     }
                 }
             }
-            catch (Exception) {
+            catch ( Exception ) {
                 Server.s.Log("SAVE FAILED! " + givenPath);
             }
         }
@@ -731,7 +729,7 @@ namespace MCForge.Gui {
             try { Server.restarttime = DateTime.Parse(txtRestartTime.Text); }
             catch { } // ignore bad values
             Server.restartOnError = chkRestart.Checked;
-            Server.level = (Player.ValidName(txtMain.Text) ? txtMain.Text : "main");
+            Server.level = ( Player.ValidName(txtMain.Text) ? txtMain.Text : "main" );
             Server.irc = chkIRC.Checked;
             Server.ircNick = txtNick.Text;
             Server.ircServer = txtIRCServer.Text;
@@ -774,7 +772,7 @@ namespace MCForge.Gui {
 
             string input = levelList.Text.Replace(" ", "").ToString();
             int itndex = input.IndexOf("#");
-            if (itndex > 0)
+            if ( itndex > 0 )
                 input = input.Substring(0, itndex);
 
             Server.LevelList = input.Split(',').ToList<string>();
@@ -856,6 +854,8 @@ namespace MCForge.Gui {
             Server.reviewclear = Group.GroupList.Find(grp => grp.name == cmbClearQueue.SelectedItem.ToString()).Permission;
             Server.reviewnext = Group.GroupList.Find(grp => grp.name == cmbGotoNext.SelectedItem.ToString()).Permission;
             Server.reviewcooldown = (int)nudCooldownTime.Value;
+
+            Server.IgnoreOmnibans = chkIgnoreOmnibans.Checked;
         }
 
         private void cmbDefaultColour_SelectedIndexChanged(object sender, EventArgs e) {
@@ -884,11 +884,11 @@ namespace MCForge.Gui {
         private void btnApply_Click(object sender, EventArgs e) { saveStuff(); }
 
         void saveStuff() {
-            foreach (Control tP in tabControl.Controls)
-                if (tP is TabPage && tP != tabPage3 && tP != tabPage5)
-                    foreach (Control ctrl in tP.Controls)
-                        if (ctrl is TextBox && ctrl.Name.ToLower() != "txtgrpmotd")
-                            if (ctrl.Text == "") {
+            foreach ( Control tP in tabControl.Controls )
+                if ( tP is TabPage && tP != tabPage3 && tP != tabPage5 )
+                    foreach ( Control ctrl in tP.Controls )
+                        if ( ctrl is TextBox && ctrl.Name.ToLower() != "txtgrpmotd" )
+                            if ( ctrl.Text == "" ) {
                                 MessageBox.Show("A textbox has been left empty. It must be filled.\n" + ctrl.Name);
                                 return;
                             }
@@ -932,7 +932,7 @@ namespace MCForge.Gui {
         }
 
         private void chkIRC_CheckedChanged(object sender, EventArgs e) {
-            if (!chkIRC.Checked) {
+            if ( !chkIRC.Checked ) {
                 grpIRC.BackColor = Color.LightGray;
             }
             else {
@@ -957,12 +957,12 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
         bool skip = false;
         private void listRanks_SelectedIndexChanged(object sender, EventArgs e) {
-            if (skip) return;
+            if ( skip ) return;
             Group foundRank = storedRanks.Find(grp => grp.trueName == listRanks.Items[listRanks.SelectedIndex].ToString().Split('=')[0].Trim());
-            if (foundRank.Permission == LevelPermission.Nobody) { listRanks.SelectedIndex = 0; return; }
+            if ( foundRank.Permission == LevelPermission.Nobody ) { listRanks.SelectedIndex = 0; return; }
 
             txtRankName.Text = foundRank.trueName;
-            txtPermission.Text = ((int)foundRank.Permission).ToString();
+            txtPermission.Text = ( (int)foundRank.Permission ).ToString();
             txtLimit.Text = foundRank.maxBlocks.ToString();
             txtMaxUndo.Text = foundRank.maxUndo.ToString();
             cmbColor.SelectedIndex = cmbColor.Items.IndexOf(c.Name(foundRank.color));
@@ -971,7 +971,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void txtRankName_TextChanged(object sender, EventArgs e) {
-            if (txtRankName.Text != "" && txtRankName.Text.ToLower() != "nobody") {
+            if ( txtRankName.Text != "" && txtRankName.Text.ToLower() != "nobody" ) {
                 storedRanks[listRanks.SelectedIndex].trueName = txtRankName.Text;
                 skip = true;
                 listRanks.Items[listRanks.SelectedIndex] = txtRankName.Text + " = " + (int)storedRanks[listRanks.SelectedIndex].Permission;
@@ -980,19 +980,19 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void txtPermission_TextChanged(object sender, EventArgs e) {
-            if (txtPermission.Text != "") {
+            if ( txtPermission.Text != "" ) {
                 int foundPerm;
                 try {
                     foundPerm = int.Parse(txtPermission.Text);
                 }
                 catch {
-                    if (txtPermission.Text != "-")
+                    if ( txtPermission.Text != "-" )
                         txtPermission.Text = txtPermission.Text.Remove(txtPermission.Text.Length - 1);
                     return;
                 }
 
-                if (foundPerm < -50) { txtPermission.Text = "-50"; return; }
-                else if (foundPerm > 119) { txtPermission.Text = "119"; return; }
+                if ( foundPerm < -50 ) { txtPermission.Text = "-50"; return; }
+                else if ( foundPerm > 119 ) { txtPermission.Text = "119"; return; }
 
                 storedRanks[listRanks.SelectedIndex].Permission = (LevelPermission)foundPerm;
                 skip = true;
@@ -1002,7 +1002,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void txtLimit_TextChanged(object sender, EventArgs e) {
-            if (txtLimit.Text != "") {
+            if ( txtLimit.Text != "" ) {
                 int foundLimit;
                 try {
                     foundLimit = int.Parse(txtLimit.Text);
@@ -1012,14 +1012,14 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                     return;
                 }
 
-                if (foundLimit < 1) { txtLimit.Text = "1"; return; }
+                if ( foundLimit < 1 ) { txtLimit.Text = "1"; return; }
 
                 storedRanks[listRanks.SelectedIndex].maxBlocks = foundLimit;
             }
         }
 
         private void txtMaxUndo_TextChanged(object sender, EventArgs e) {
-            if (txtMaxUndo.Text != "") {
+            if ( txtMaxUndo.Text != "" ) {
                 long foundMax;
                 try {
                     foundMax = long.Parse(txtMaxUndo.Text);
@@ -1029,7 +1029,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                     return;
                 }
 
-                if (foundMax < -1) { txtMaxUndo.Text = "0"; return; }
+                if ( foundMax < -1 ) { txtMaxUndo.Text = "0"; return; }
 
                 storedRanks[listRanks.SelectedIndex].maxUndo = foundMax;
             }
@@ -1037,7 +1037,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void txtFileName_TextChanged(object sender, EventArgs e) {
-            if (txtFileName.Text != "") {
+            if ( txtFileName.Text != "" ) {
                 storedRanks[listRanks.SelectedIndex].fileName = txtFileName.Text;
             }
         }
@@ -1049,7 +1049,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void button1_Click(object sender, EventArgs e) {
-            if (listRanks.Items.Count > 1) {
+            if ( listRanks.Items.Count > 1 ) {
                 storedRanks.RemoveAt(listRanks.SelectedIndex);
                 skip = true;
                 listRanks.Items.RemoveAt(listRanks.SelectedIndex);
@@ -1065,24 +1065,24 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
             Command cmd = Command.all.Find(listCommands.SelectedItem.ToString());
             GrpCommands.rankAllowance allowVar = storedCommands.Find(aV => aV.commandName == cmd.name);
 
-            if (Group.findPerm(allowVar.lowestRank) == null) allowVar.lowestRank = cmd.defaultRank;
+            if ( Group.findPerm(allowVar.lowestRank) == null ) allowVar.lowestRank = cmd.defaultRank;
             txtCmdLowest.Text = (int)allowVar.lowestRank + "";
 
             bool foundOne = false;
             txtCmdDisallow.Text = "";
-            foreach (LevelPermission perm in allowVar.disallow) {
+            foreach ( LevelPermission perm in allowVar.disallow ) {
                 foundOne = true;
                 txtCmdDisallow.Text += "," + (int)perm;
             }
-            if (foundOne) txtCmdDisallow.Text = txtCmdDisallow.Text.Remove(0, 1);
+            if ( foundOne ) txtCmdDisallow.Text = txtCmdDisallow.Text.Remove(0, 1);
 
             foundOne = false;
             txtCmdAllow.Text = "";
-            foreach (LevelPermission perm in allowVar.allow) {
+            foreach ( LevelPermission perm in allowVar.allow ) {
                 foundOne = true;
                 txtCmdAllow.Text += "," + (int)perm;
             }
-            if (foundOne) txtCmdAllow.Text = txtCmdAllow.Text.Remove(0, 1);
+            if ( foundOne ) txtCmdAllow.Text = txtCmdAllow.Text.Remove(0, 1);
         }
         private void txtCmdLowest_TextChanged(object sender, EventArgs e) {
             fillLowest(ref txtCmdLowest, ref storedCommands[listCommands.SelectedIndex].lowestRank);
@@ -1104,19 +1104,19 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
             bool foundOne = false;
             txtBlDisallow.Text = "";
-            foreach (LevelPermission perm in bs.disallow) {
+            foreach ( LevelPermission perm in bs.disallow ) {
                 foundOne = true;
                 txtBlDisallow.Text += "," + (int)perm;
             }
-            if (foundOne) txtBlDisallow.Text = txtBlDisallow.Text.Remove(0, 1);
+            if ( foundOne ) txtBlDisallow.Text = txtBlDisallow.Text.Remove(0, 1);
 
             foundOne = false;
             txtBlAllow.Text = "";
-            foreach (LevelPermission perm in bs.allow) {
+            foreach ( LevelPermission perm in bs.allow ) {
                 foundOne = true;
                 txtBlAllow.Text += "," + (int)perm;
             }
-            if (foundOne) txtBlAllow.Text = txtBlAllow.Text.Remove(0, 1);
+            if ( foundOne ) txtBlAllow.Text = txtBlAllow.Text.Remove(0, 1);
         }
         private void txtBlLowest_TextChanged(object sender, EventArgs e) {
             fillLowest(ref txtBlLowest, ref storedBlocks[Block.Byte(listBlocks.SelectedItem.ToString())].lowestRank);
@@ -1130,9 +1130,9 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         #endregion
         private void fillAllowance(ref TextBox txtBox, ref List<LevelPermission> addTo) {
             addTo.Clear();
-            if (txtBox.Text != "") {
+            if ( txtBox.Text != "" ) {
                 string[] perms = txtBox.Text.Split(',');
-                for (int i = 0; i < perms.Length; i++) {
+                for ( int i = 0; i < perms.Length; i++ ) {
                     perms[i] = perms[i].Trim().ToLower();
                     int foundPerm;
                     try {
@@ -1140,21 +1140,21 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                     }
                     catch {
                         Group foundGroup = Group.Find(perms[i]);
-                        if (foundGroup != null) foundPerm = (int)foundGroup.Permission;
+                        if ( foundGroup != null ) foundPerm = (int)foundGroup.Permission;
                         else { Server.s.Log("Could not find " + perms[i]); continue; }
                     }
                     addTo.Add((LevelPermission)foundPerm);
                 }
 
                 txtBox.Text = "";
-                foreach (LevelPermission p in addTo) {
+                foreach ( LevelPermission p in addTo ) {
                     txtBox.Text += "," + (int)p;
                 }
-                if (txtBox.Text != "") txtBox.Text = txtBox.Text.Remove(0, 1);
+                if ( txtBox.Text != "" ) txtBox.Text = txtBox.Text.Remove(0, 1);
             }
         }
         private void fillLowest(ref TextBox txtBox, ref LevelPermission toChange) {
-            if (txtBox.Text != "") {
+            if ( txtBox.Text != "" ) {
                 txtBox.Text = txtBox.Text.Trim().ToLower();
                 int foundPerm = -100;
                 try {
@@ -1162,12 +1162,12 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 }
                 catch {
                     Group foundGroup = Group.Find(txtBox.Text);
-                    if (foundGroup != null) foundPerm = (int)foundGroup.Permission;
+                    if ( foundGroup != null ) foundPerm = (int)foundGroup.Permission;
                     else { Server.s.Log("Could not find " + txtBox.Text); }
                 }
 
                 txtBox.Text = "";
-                if (foundPerm < -99) txtBox.Text = (int)toChange + "";
+                if ( foundPerm < -99 ) txtBox.Text = (int)toChange + "";
                 else txtBox.Text = foundPerm + "";
 
                 toChange = (LevelPermission)Convert.ToInt16(txtBox.Text);
@@ -1192,76 +1192,16 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
 
         private void ChkPort_Click(object sender, EventArgs e) {
-            int port = 25565;
-            if (String.IsNullOrEmpty(txtPort.Text.Trim()))
-                txtPort.Text = "25565";
-
-            try {
-                port = int.Parse(txtPort.Text);
-            }
-            catch {
-                txtPort.Text = "25565";
-            }
-
-            ChkPort.Enabled = false;
-            txtPort.Enabled = false;
-            ChkPortResult.Text = "Checking...";
-            mWorkerChecker.RunWorkerAsync(port);
-        }
-
-        void OnDoWork(object sender, DoWorkEventArgs e) {
-            try {
-                using (var webClient = new WebClient()) {
-                    string response = webClient.DownloadString("http://www.mcforge.net/ports.php?port=" + e.Argument);
-                    switch (response.ToLower()) {
-                        case "open":
-                            e.Result = 1;
-                            return;
-                        case "closed":
-                            e.Result = 2;
-                            return;
-                        default:
-                            e.Result = 3;
-                            return;
-                    }
-                }
-            }
-            catch {
-                e.Result = 0;
-                return;
+            using ( var form = new PortTools() ) {
+                form.ShowDialog();
             }
         }
-        void OnWorkCompleted(object sender, RunWorkerCompletedEventArgs e) {
-            if (e.Cancelled)
-                return;
 
-            ChkPort.Enabled = true;
-            txtPort.Enabled = true;
 
-            int result = (int)e.Result;
-            switch (result) {
-                case 0:
-                    ChkPortResult.Text = "Problems Occurred";
-                    ChkPortResult.BackColor = Color.Red;
-                    return;
-                case 1:
-                    ChkPortResult.Text = "Open";
-                    ChkPortResult.BackColor = Color.Green;
-                    return;
-                case 2:
-                    ChkPortResult.Text = "Closed";
-                    ChkPortResult.BackColor = Color.Red;
-                    return;
-                case 3:
-                    ChkPortResult.Text = "Web site error";
-                    ChkPortResult.BackColor = Color.Yellow;
-                    return;
-            }
-        }
 
         private void CrtCustCmd_Click(object sender, EventArgs e) {
-            if (CustCmdtxtBox.Text != null) {
-                if (File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs")) {
+            if ( CustCmdtxtBox.Text != null ) {
+                if ( File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") ) {
                     MessageBox.Show("Sorry, That command already exists!!");
                 }
                 else {
@@ -1275,8 +1215,8 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void CompileCustCmd_Click(object sender, EventArgs e) {
-            if (CustCmdtxtBox.Text != null) {
-                if (File.Exists("extra/commands/dll/Cmd" + CustCmdtxtBox.Text + ".dll")) {
+            if ( CustCmdtxtBox.Text != null ) {
+                if ( File.Exists("extra/commands/dll/Cmd" + CustCmdtxtBox.Text + ".dll") ) {
                     MessageBox.Show("Sorry, That command already exists!!");
                 }
                 else {
@@ -1294,8 +1234,8 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void LoadIntoTxtBox_Click(object sender, EventArgs e) {
-            if (CustCmdtxtBox.Text != null) {
-                if (!File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs")) {
+            if ( CustCmdtxtBox.Text != null ) {
+                if ( !File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") ) {
                     MessageBox.Show("Sorry, That command doesn't exist yet - click Create Custom Command Above to create it.");
                 }
                 else {
@@ -1309,7 +1249,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void SaveCustCmd_Click(object sender, EventArgs e) {
-            if (CustCmdtxtBox.Text != null) {
+            if ( CustCmdtxtBox.Text != null ) {
                 File.WriteAllText("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs", null);
                 File.WriteAllText("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs", CustCmdTxtBox2.Text);
                 CustCmdTxtBox2.Text = null;
@@ -1331,14 +1271,14 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
         private void numPlayers_ValueChanged(object sender, EventArgs e) {
             // Ensure that number of guests is never more than number of players
-            if (numGuests.Value > numPlayers.Value) {
+            if ( numGuests.Value > numPlayers.Value ) {
                 numGuests.Value = numPlayers.Value;
             }
             numGuests.Maximum = numPlayers.Value;
         }
 
         private void editTxtsBt_Click_1(object sender, EventArgs e) {
-            if (EditTextOpen == true) {
+            if ( EditTextOpen == true ) {
                 return;
             }
             PropertyForm = new EditText();
@@ -1346,8 +1286,8 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void btnCreate_Click(object sender, EventArgs e) {
-            if (radioButton1.Checked) {
-                if (File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb") || File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs")) {
+            if ( radioButton1.Checked ) {
+                if ( File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb") || File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") ) {
                     MessageBox.Show("Command already exists", "", MessageBoxButtons.OK);
                 }
                 else {
@@ -1359,7 +1299,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
 
 
-                if (File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") || File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb")) {
+                if ( File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") || File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb") ) {
                     MessageBox.Show("Command already exists", "", MessageBoxButtons.OK);
                 }
                 else {
@@ -1370,18 +1310,18 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void btnCompile_Click(object sender, EventArgs e) {
-            if (CustCmdtxtBox.Text == "" || CustCmdtxtBox.Text.IndexOf(' ') != -1) { MessageBox.Show("Please Put a Command in Textbox", "no text"); }
+            if ( CustCmdtxtBox.Text == "" || CustCmdtxtBox.Text.IndexOf(' ') != -1 ) { MessageBox.Show("Please Put a Command in Textbox", "no text"); }
             bool success = false;
-            if (radioButton1.Checked) {
+            if ( radioButton1.Checked ) {
                 try {
                     success = ScriptingVB.Compile(CustCmdtxtBox.Text);
                 }
-                catch (Exception y) {
+                catch ( Exception y ) {
                     Server.ErrorLog(y);
                     MessageBox.Show("An exception was thrown during compilation.", "");
                     return;
                 }
-                if (success) {
+                if ( success ) {
                     MessageBox.Show("Compiled successfully.", "");
                 }
                 else {
@@ -1392,12 +1332,12 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 try {
                     success = Scripting.Compile(CustCmdtxtBox.Text);
                 }
-                catch (Exception y) {
+                catch ( Exception y ) {
                     Server.ErrorLog(y);
                     MessageBox.Show("An exception was thrown during compilation.", "");
                     return;
                 }
-                if (success) {
+                if ( success ) {
                     MessageBox.Show("Compiled successfully.", "");
                 }
                 else {
@@ -1411,31 +1351,31 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
             try {
                 string filepath;
 
-                if (CustCmdtxtBox.Text == null) {
+                if ( CustCmdtxtBox.Text == null ) {
                     filepath = null;
                     MessageBox.Show("No Command entered");
                 }
                 else {
-                    if (!radioButton1.Checked) {
+                    if ( !radioButton1.Checked ) {
 
                         filepath = "extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs";
                         StreamReader reader = new StreamReader(filepath);
-                        if (File.Exists(filepath)) {
+                        if ( File.Exists(filepath) ) {
                             try {
                                 CustCmdTxtBox2.Text = "";
 
                                 string line;
-                                while ((line = reader.ReadLine()) != null) {
+                                while ( ( line = reader.ReadLine() ) != null ) {
                                     CustCmdTxtBox2.Text = CustCmdTxtBox2.Text + line + Environment.NewLine;
                                 }
 
                             }
 
-                            catch (Exception y) {
+                            catch ( Exception y ) {
                                 MessageBox.Show(y.Message);
                             }
                             finally {
-                                if (reader != null)
+                                if ( reader != null )
                                     reader.Close();
                             }
                         }
@@ -1447,22 +1387,22 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
                         filepath = "extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb";
                         StreamReader reader = new StreamReader(filepath);
-                        if (File.Exists(filepath)) {
+                        if ( File.Exists(filepath) ) {
                             try {
                                 CustCmdTxtBox2.Text = "";
 
                                 string line;
-                                while ((line = reader.ReadLine()) != null) {
+                                while ( ( line = reader.ReadLine() ) != null ) {
                                     CustCmdTxtBox2.Text = CustCmdTxtBox2.Text + line + Environment.NewLine;
                                 }
 
                             }
 
-                            catch (Exception y) {
+                            catch ( Exception y ) {
                                 MessageBox.Show(y.Message);
                             }
                             finally {
-                                if (reader != null)
+                                if ( reader != null )
                                     reader.Close();
                             }
                         }
@@ -1474,24 +1414,24 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 }
             }
 
-            catch (Exception y) {
+            catch ( Exception y ) {
                 MessageBox.Show(y.Message);
             }
 
         }
 
         private void btnLoad_Click(object sender, EventArgs e) {
-            if (CustCmdtxtBox.Text == "") { MessageBox.Show("Please Put a Command in Textbox", "no text"); }
-            if (Command.all.Contains(CustCmdtxtBox.Text)) {
+            if ( CustCmdtxtBox.Text == "" ) { MessageBox.Show("Please Put a Command in Textbox", "no text"); }
+            if ( Command.all.Contains(CustCmdtxtBox.Text) ) {
                 MessageBox.Show("Command is already loaded", "");
                 return;
             }
-            if (radioButton1.Checked) {
+            if ( radioButton1.Checked ) {
                 string message;
 
                 message = "Cmd" + CustCmdtxtBox.Text;
                 string error = ScriptingVB.Load(message);
-                if (error != null) {
+                if ( error != null ) {
                     MessageBox.Show(error, "error");
                     return;
                 }
@@ -1503,7 +1443,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
                 message = "Cmd" + CustCmdtxtBox.Text; ;
                 string error = Scripting.Load(message);
-                if (error != null) {
+                if ( error != null ) {
                     MessageBox.Show(error, "error");
                     return;
                 }
@@ -1513,13 +1453,13 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void btnUnload_Click(object sender, EventArgs e) {
-            if (CustCmdtxtBox.Text == "") { MessageBox.Show("Please Put a Command in Textbox", "no text"); }
-            if (Command.core.Contains(CustCmdtxtBox.Text)) {
+            if ( CustCmdtxtBox.Text == "" ) { MessageBox.Show("Please Put a Command in Textbox", "no text"); }
+            if ( Command.core.Contains(CustCmdtxtBox.Text) ) {
                 MessageBox.Show(CustCmdtxtBox.Text + " is a core command, you cannot unload it!", "Error");
                 return;
             }
             Command foundCmd = Command.all.Find(CustCmdtxtBox.Text);
-            if (foundCmd == null) {
+            if ( foundCmd == null ) {
                 MessageBox.Show(CustCmdtxtBox.Text + " is not a valid or loaded command.", "");
                 return;
             }
@@ -1529,8 +1469,8 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void btnSavecmd_Click(object sender, EventArgs e) {
-            if (CustCmdTxtBox2.Text != null) {
-                if (radioButton1.Checked) {
+            if ( CustCmdTxtBox2.Text != null ) {
+                if ( radioButton1.Checked ) {
                     try {
 
                         File.WriteAllText("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb", null);
@@ -1539,7 +1479,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                         CustCmdTxtBox2.Text = null;
                         MessageBox.Show("Saved Successfully, as a VB file");
                     }
-                    catch (Exception y) {
+                    catch ( Exception y ) {
                         MessageBox.Show(y.Message);
 
                     }
@@ -1552,7 +1492,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                         CustCmdTxtBox2.Text = null;
                         MessageBox.Show("Saved Successfully, as a C# File");
                     }
-                    catch (Exception y) {
+                    catch ( Exception y ) {
                         MessageBox.Show(y.Message);
                     }
                 }
@@ -1563,17 +1503,17 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void btnDiscardcmd_Click(object sender, EventArgs e) {
-            switch (MessageBox.Show("Are you sure you want to discard this whole file?", "Discard?", MessageBoxButtons.YesNo, MessageBoxIcon.Question)) {
+            switch ( MessageBox.Show("Are you sure you want to discard this whole file?", "Discard?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) ) {
                 case DialogResult.Yes:
-                    if (radioButton1.Checked) {
+                    if ( radioButton1.Checked ) {
 
-                        if (File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb")) {
+                        if ( File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb") ) {
                             File.Delete("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".vb");
                         }
                         else { MessageBox.Show("File: " + CustCmdtxtBox.Text + ".vb Doesnt Exist."); }
                     }
                     else {
-                        if (File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs")) {
+                        if ( File.Exists("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs") ) {
                             File.Delete("extra/commands/source/Cmd" + CustCmdtxtBox.Text + ".cs");
                         }
                         else { MessageBox.Show("File: " + CustCmdtxtBox.Text + ".cs Doesnt Exist."); }
@@ -1584,7 +1524,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void btnReset_Click(object sender, EventArgs e) {
-            if (listPasswords.Text == "") {
+            if ( listPasswords.Text == "" ) {
                 MessageBox.Show("You have not selected a user's password to reset!");
                 return;
             }
@@ -1594,7 +1534,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 DirectoryInfo di = new DirectoryInfo("extra/passwords/");
                 FileInfo[] fi = di.GetFiles("*.xml");
                 Thread.Sleep(10);
-                foreach (FileInfo file in fi) {
+                foreach ( FileInfo file in fi ) {
                     listPasswords.Items.Add(file.Name.Replace(".xml", ""));
                 }
             }
@@ -1614,10 +1554,10 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void chkUseSQL_CheckedChanged(object sender, EventArgs e) {
-            if (chkUseSQL.Checked.ToString().ToLower() == "false") {
+            if ( chkUseSQL.Checked.ToString().ToLower() == "false" ) {
                 grpSQL.BackColor = Color.LightGray;
             }
-            if (chkUseSQL.Checked.ToString().ToLower() == "true") {
+            if ( chkUseSQL.Checked.ToString().ToLower() == "true" ) {
                 grpSQL.BackColor = Color.White;
             }
         }
@@ -1653,10 +1593,10 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
         private void pictureBox1_Click(object sender, EventArgs e) {
             try {
-                if (!Directory.Exists("extra/images"))
+                if ( !Directory.Exists("extra/images") )
                     Directory.CreateDirectory("extra/images");
-                if (!File.Exists("extra/images/mcpony.png"))
-                    using (WebClient WEB = new WebClient())
+                if ( !File.Exists("extra/images/mcpony.png") )
+                    using ( WebClient WEB = new WebClient() )
                         WEB.DownloadFile("http://mcforge.net/uploads/images/mcpony.png", "extra/images/mcpony.png");
 
                 Image img = Image.FromFile("extra/images/mcpony.png");
@@ -1678,8 +1618,8 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void LoadLavaSettings() {
-            lsCmbSetupRank.SelectedIndex = (Group.findPerm(Server.lava.setupRank) == null) ? 0 : lsCmbSetupRank.Items.IndexOf(Group.findPerm(Server.lava.setupRank).name);
-            lsCmbControlRank.SelectedIndex = (Group.findPerm(Server.lava.controlRank) == null) ? 0 : lsCmbControlRank.Items.IndexOf(Group.findPerm(Server.lava.controlRank).name);
+            lsCmbSetupRank.SelectedIndex = ( Group.findPerm(Server.lava.setupRank) == null ) ? 0 : lsCmbSetupRank.Items.IndexOf(Group.findPerm(Server.lava.setupRank).name);
+            lsCmbControlRank.SelectedIndex = ( Group.findPerm(Server.lava.controlRank) == null ) ? 0 : lsCmbControlRank.Items.IndexOf(Group.findPerm(Server.lava.controlRank).name);
             lsChkStartOnStartup.Checked = Server.lava.startOnStartup;
             lsChkSendAFKMain.Checked = Server.lava.sendAfkMain;
             lsNudVoteCount.Value = Server.lava.voteCount;
@@ -1709,54 +1649,54 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void lsBtnStartGame_Click(object sender, EventArgs e) {
-            if (!Server.lava.active) Server.lava.Start();
+            if ( !Server.lava.active ) Server.lava.Start();
             UpdateLavaControls();
         }
 
         private void lsBtnStopGame_Click(object sender, EventArgs e) {
-            if (Server.lava.active) Server.lava.Stop();
+            if ( Server.lava.active ) Server.lava.Stop();
             UpdateLavaControls();
         }
 
         private void lsBtnEndRound_Click(object sender, EventArgs e) {
-            if (Server.lava.roundActive) Server.lava.EndRound();
+            if ( Server.lava.roundActive ) Server.lava.EndRound();
             UpdateLavaControls();
         }
 
         private void UpdateLavaMapList(bool useList = true, bool noUseList = true) {
-            if (!useList && !noUseList) return;
+            if ( !useList && !noUseList ) return;
             try {
-                if (this.InvokeRequired) {
+                if ( this.InvokeRequired ) {
                     this.Invoke(new MethodInvoker(delegate { try { UpdateLavaMapList(useList, noUseList); } catch { } }));
                     return;
                 }
 
                 int useIndex = lsMapUse.SelectedIndex, noUseIndex = lsMapNoUse.SelectedIndex;
-                if (useList) lsMapUse.Items.Clear();
-                if (noUseList) lsMapNoUse.Items.Clear();
+                if ( useList ) lsMapUse.Items.Clear();
+                if ( noUseList ) lsMapNoUse.Items.Clear();
 
-                if (useList) {
+                if ( useList ) {
                     lsMapUse.Items.AddRange(Server.lava.Maps.ToArray());
-                    try { if (useIndex > -1) lsMapUse.SelectedIndex = useIndex; }
+                    try { if ( useIndex > -1 ) lsMapUse.SelectedIndex = useIndex; }
                     catch { }
                 }
-                if (noUseList) {
+                if ( noUseList ) {
                     string name;
                     FileInfo[] fi = new DirectoryInfo("levels/").GetFiles("*.lvl");
-                    foreach (FileInfo file in fi) {
+                    foreach ( FileInfo file in fi ) {
                         try {
                             name = file.Name.Replace(".lvl", "");
-                            if (name.ToLower() != Server.mainLevel.name && !Server.lava.HasMap(name))
+                            if ( name.ToLower() != Server.mainLevel.name && !Server.lava.HasMap(name) )
                                 lsMapNoUse.Items.Add(name);
                         }
-                        catch (NullReferenceException) { }
+                        catch ( NullReferenceException ) { }
                     }
-                    try { if (noUseIndex > -1) lsMapNoUse.SelectedIndex = noUseIndex; }
+                    try { if ( noUseIndex > -1 ) lsMapNoUse.SelectedIndex = noUseIndex; }
                     catch { }
                 }
             }
-            catch (ObjectDisposedException) { }  //Y U BE ANNOYING 
-            catch (Exception ex) { Server.ErrorLog(ex); }
+            catch ( ObjectDisposedException ) { }  //Y U BE ANNOYING 
+            catch ( Exception ex ) { Server.ErrorLog(ex); }
         }
 
         private void lsAddMap_Click(object sender, EventArgs e) {
@@ -1768,18 +1708,18 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 try { name = lsMapNoUse.Items[lsMapNoUse.SelectedIndex].ToString(); }
                 catch { return; }
 
-                if (Level.Find(name) == null)
+                if ( Level.Find(name) == null )
                     Command.all.Find("load").Use(null, name);
                 Level level = Level.Find(name);
-                if (level == null) return;
+                if ( level == null ) return;
 
                 Server.lava.AddMap(name);
 
                 LavaSurvival.MapSettings settings = Server.lava.LoadMapSettings(level.name);
-                settings.blockFlood = new LavaSurvival.Pos((ushort)(level.width / 2), (ushort)(level.depth - 1), (ushort)(level.height / 2));
-                settings.blockLayer = new LavaSurvival.Pos(0, (ushort)(level.depth / 2), 0);
-                ushort x = (ushort)(level.width / 2), y = (ushort)(level.depth / 2), z = (ushort)(level.height / 2);
-                settings.safeZone = new LavaSurvival.Pos[] { new LavaSurvival.Pos((ushort)(x - 3), y, (ushort)(z - 3)), new LavaSurvival.Pos((ushort)(x + 3), (ushort)(y + 4), (ushort)(z + 3)) };
+                settings.blockFlood = new LavaSurvival.Pos((ushort)( level.width / 2 ), (ushort)( level.depth - 1 ), (ushort)( level.height / 2 ));
+                settings.blockLayer = new LavaSurvival.Pos(0, (ushort)( level.depth / 2 ), 0);
+                ushort x = (ushort)( level.width / 2 ), y = (ushort)( level.depth / 2 ), z = (ushort)( level.height / 2 );
+                settings.safeZone = new LavaSurvival.Pos[] { new LavaSurvival.Pos((ushort)( x - 3 ), y, (ushort)( z - 3 )), new LavaSurvival.Pos((ushort)( x + 3 ), (ushort)( y + 4 ), (ushort)( z + 3 )) };
                 Server.lava.SaveMapSettings(settings);
 
                 level.motd = "Lava Survival: " + level.name.Capitalize();
@@ -1791,7 +1731,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
                 UpdateLavaMapList();
             }
-            catch (Exception ex) { Server.ErrorLog(ex); }
+            catch ( Exception ex ) { Server.ErrorLog(ex); }
         }
 
         private void lsRemoveMap_Click(object sender, EventArgs e) {
@@ -1803,10 +1743,10 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 try { name = lsMapUse.Items[lsMapUse.SelectedIndex].ToString(); }
                 catch { return; }
 
-                if (Level.Find(name) == null)
+                if ( Level.Find(name) == null )
                     Command.all.Find("load").Use(null, name);
                 Level level = Level.Find(name);
-                if (level == null) return;
+                if ( level == null ) return;
 
                 Server.lava.RemoveMap(name);
                 level.motd = "ignore";
@@ -1818,7 +1758,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
                 UpdateLavaMapList();
             }
-            catch (Exception ex) { Server.ErrorLog(ex); }
+            catch ( Exception ex ) { Server.ErrorLog(ex); }
         }
 
         private void lsMapUse_SelectedIndexChanged(object sender, EventArgs e) {
@@ -1840,16 +1780,16 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 lsNudRoundTime.Value = (decimal)MathHelper.Clamp(settings.roundTime, 1, 1000);
                 lsNudFloodTime.Value = (decimal)MathHelper.Clamp(settings.floodTime, 1, 1000);
             }
-            catch (Exception ex) { Server.ErrorLog(ex); }
+            catch ( Exception ex ) { Server.ErrorLog(ex); }
         }
 
         private void lsBtnEndVote_Click(object sender, EventArgs e) {
-            if (Server.lava.voteActive) Server.lava.EndVote();
+            if ( Server.lava.voteActive ) Server.lava.EndVote();
             UpdateLavaControls();
         }
 
         private void lsBtnSaveSettings_Click(object sender, EventArgs e) {
-            if (String.IsNullOrEmpty(lsLoadedMap)) return;
+            if ( String.IsNullOrEmpty(lsLoadedMap) ) return;
 
             try {
                 LavaSurvival.MapSettings settings = Server.lava.LoadMapSettings(lsLoadedMap);
@@ -1865,7 +1805,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 settings.floodTime = (double)lsNudFloodTime.Value;
                 Server.lava.SaveMapSettings(settings);
             }
-            catch (Exception ex) { Server.ErrorLog(ex); }
+            catch ( Exception ex ) { Server.ErrorLog(ex); }
         }
 
         private void numCountReset_ValueChanged(object sender, EventArgs e) {
@@ -1877,12 +1817,12 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 lavaMapBrowser.Show();
                 lavaMapBrowser.Focus();
             }
-            catch (ObjectDisposedException) {
+            catch ( ObjectDisposedException ) {
                 lavaMapBrowser = new LavaMapBrowser();
                 lavaMapBrowser.Show();
                 lavaMapBrowser.Focus();
             }
-            catch (Exception ex) { Server.ErrorLog(ex); }
+            catch ( Exception ex ) { Server.ErrorLog(ex); }
         }
         private void button3_Click(object sender, EventArgs e) {
             new GUI.WoM().Show();
@@ -1894,7 +1834,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
 
         private void forceUpdateBtn_Click(object sender, EventArgs e) {
             forceUpdateBtn.Enabled = false;
-            if (MessageBox.Show("Would you like to force update MCForge now?", "Force Update", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK) {
+            if ( MessageBox.Show("Would you like to force update MCForge now?", "Force Update", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK ) {
                 saveStuff();
                 MCForge_.Gui.Program.PerformUpdate();
                 Dispose();
@@ -1911,7 +1851,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
             Command cmd = Command.all.Find(listCommandsExtraCmdPerms.SelectedItem.ToString());
             oldcmd = cmd;
             extracmdpermnumber.Maximum = CommandOtherPerms.GetMaxNumber(cmd);
-            if (extracmdpermnumber.Maximum == 1) { extracmdpermnumber.ReadOnly = true; }
+            if ( extracmdpermnumber.Maximum == 1 ) { extracmdpermnumber.ReadOnly = true; }
             else { extracmdpermnumber.ReadOnly = false; }
             extracmdpermnumber.Value = 1;
             extracmdpermdesc.Text = CommandOtherPerms.Find(cmd, 1).Description;
@@ -1920,7 +1860,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void SaveOldExtraCustomCmdChanges() {
-            if (oldcmd != null) {
+            if ( oldcmd != null ) {
                 CommandOtherPerms.Edit(CommandOtherPerms.Find(oldcmd, oldnumber), int.Parse(extracmdpermperm.Text));
                 CommandOtherPerms.Save();
             }
@@ -1934,8 +1874,8 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
         private void LoadExtraCmdCmds() {
             listCommandsExtraCmdPerms.Items.Clear();
-            foreach (Command cmd in Command.all.commands) {
-                if (CommandOtherPerms.Find(cmd) != null) {
+            foreach ( Command cmd in Command.all.commands ) {
+                if ( CommandOtherPerms.Find(cmd) != null ) {
                     listCommandsExtraCmdPerms.Items.Add(cmd.name);
                 }
             }
@@ -1949,7 +1889,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
             listBox1.Items.Clear();
             listBox1.Items.Add("Players in queue:");
             listBox1.Items.Add("----------");
-            foreach (string playerinqueue in Server.reviewlist) {
+            foreach ( string playerinqueue in Server.reviewlist ) {
 
                 listBox1.Items.Add(people.ToString() + ". " + playerinqueue);
                 people++;
@@ -1965,15 +1905,15 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 MessageBox.Show("Review queue has been cleared!");
                 reviewlist_update();
             }
-            catch (Exception ex) { Server.ErrorLog(ex); }
+            catch ( Exception ex ) { Server.ErrorLog(ex); }
         }
 
         private void txtGrpMOTD_TextChanged(object sender, EventArgs e) {
-            if (txtGrpMOTD.Text != null) storedRanks[listRanks.SelectedIndex].MOTD = txtGrpMOTD.Text;
+            if ( txtGrpMOTD.Text != null ) storedRanks[listRanks.SelectedIndex].MOTD = txtGrpMOTD.Text;
         }
 
         public void LoadTNTWarsTab(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) {
+            if ( TntWarsGame.GuiLoaded == null ) {
                 //Clear all
                 //Top
                 SlctdTntWrsLvl.Text = "";
@@ -2017,31 +1957,31 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 TntWrsStreaksChck.Checked = true;
                 TntWrsStreaksChck.Enabled = false;
                 //New game
-                if (TntWrsMpsList.SelectedIndex < 0) TntWrsCrtNwTntWrsBt.Enabled = false;
+                if ( TntWrsMpsList.SelectedIndex < 0 ) TntWrsCrtNwTntWrsBt.Enabled = false;
                 //Load lists
                 TntWrsMpsList.Items.Clear();
                 TntWarsGamesList.Items.Clear();
                 TntWrsDiffCombo.Items.Clear();
-                foreach (Level lvl in Server.levels) {
-                    if (TntWarsGame.Find(lvl) == null) {
+                foreach ( Level lvl in Server.levels ) {
+                    if ( TntWarsGame.Find(lvl) == null ) {
                         TntWrsMpsList.Items.Add(lvl.name);
                     }
                     else {
                         TntWarsGame T = TntWarsGame.Find(lvl);
                         string msg = lvl.name + " - ";
-                        if (T.GameMode == TntWarsGame.TntWarsGameMode.FFA) msg += "FFA";
-                        if (T.GameMode == TntWarsGame.TntWarsGameMode.TDM) msg += "TDM";
+                        if ( T.GameMode == TntWarsGame.TntWarsGameMode.FFA ) msg += "FFA";
+                        if ( T.GameMode == TntWarsGame.TntWarsGameMode.TDM ) msg += "TDM";
                         msg += " - ";
-                        if (T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Easy) msg += "(Easy)";
-                        if (T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Normal) msg += "(Normal)";
-                        if (T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Hard) msg += "(Hard)";
-                        if (T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Extreme) msg += "(Extreme)";
+                        if ( T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Easy ) msg += "(Easy)";
+                        if ( T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Normal ) msg += "(Normal)";
+                        if ( T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Hard ) msg += "(Hard)";
+                        if ( T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Extreme ) msg += "(Extreme)";
                         msg += " - ";
-                        if (T.GameStatus == TntWarsGame.TntWarsGameStatus.WaitingForPlayers) msg += "(Waiting For Players)";
-                        if (T.GameStatus == TntWarsGame.TntWarsGameStatus.AboutToStart) msg += "(Starting)";
-                        if (T.GameStatus == TntWarsGame.TntWarsGameStatus.GracePeriod) msg += "(Started)";
-                        if (T.GameStatus == TntWarsGame.TntWarsGameStatus.InProgress) msg += "(In Progress)";
-                        if (T.GameStatus == TntWarsGame.TntWarsGameStatus.Finished) msg += "(Finished)";
+                        if ( T.GameStatus == TntWarsGame.TntWarsGameStatus.WaitingForPlayers ) msg += "(Waiting For Players)";
+                        if ( T.GameStatus == TntWarsGame.TntWarsGameStatus.AboutToStart ) msg += "(Starting)";
+                        if ( T.GameStatus == TntWarsGame.TntWarsGameStatus.GracePeriod ) msg += "(Started)";
+                        if ( T.GameStatus == TntWarsGame.TntWarsGameStatus.InProgress ) msg += "(In Progress)";
+                        if ( T.GameStatus == TntWarsGame.TntWarsGameStatus.Finished ) msg += "(Finished)";
                         TntWarsGamesList.Items.Add(msg);
                     }
                 }
@@ -2054,14 +1994,14 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 //Load settings
                 //Top
                 SlctdTntWrsLvl.Text = TntWarsGame.GuiLoaded.lvl.name;
-                if (TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.WaitingForPlayers) SlctdTntWrdStatus.Text = "Waiting For Players";
-                if (TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.AboutToStart) SlctdTntWrdStatus.Text = "Starting";
-                if (TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.GracePeriod) SlctdTntWrdStatus.Text = "Started";
-                if (TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.InProgress) SlctdTntWrdStatus.Text = "In Progress";
-                if (TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.Finished) SlctdTntWrdStatus.Text = "Finished";
+                if ( TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.WaitingForPlayers ) SlctdTntWrdStatus.Text = "Waiting For Players";
+                if ( TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.AboutToStart ) SlctdTntWrdStatus.Text = "Starting";
+                if ( TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.GracePeriod ) SlctdTntWrdStatus.Text = "Started";
+                if ( TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.InProgress ) SlctdTntWrdStatus.Text = "In Progress";
+                if ( TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.Finished ) SlctdTntWrdStatus.Text = "Finished";
                 SlctdTntWrsPlyrs.Text = TntWarsGame.GuiLoaded.PlayingPlayers().ToString(CultureInfo.InvariantCulture);
                 //Difficulty
-                if (TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.WaitingForPlayers) {
+                if ( TntWarsGame.GuiLoaded.GameStatus == TntWarsGame.TntWarsGameStatus.WaitingForPlayers ) {
                     TntWrsDiffCombo.Enabled = true;
                     TntWrsDiffSlctBt.Enabled = true;
                 }
@@ -2075,7 +2015,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 TntWrsScrLmtUpDwn.Enabled = true;
                 TntWrsScrPrKlUpDwn.Value = TntWarsGame.GuiLoaded.ScorePerKill;
                 TntWrsScrPrKlUpDwn.Enabled = true;
-                if (TntWarsGame.GuiLoaded.ScorePerAssist == 0) {
+                if ( TntWarsGame.GuiLoaded.ScorePerAssist == 0 ) {
                     TntWrsAsstChck.Checked = false;
                     TntWrsAsstChck.Enabled = true;
                     TntWrsAstsScrUpDwn.Enabled = false;
@@ -2086,7 +2026,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                     TntWrsAsstChck.Checked = true;
                     TntWrsAsstChck.Enabled = true;
                 }
-                if (TntWarsGame.GuiLoaded.MultiKillBonus == 0) {
+                if ( TntWarsGame.GuiLoaded.MultiKillBonus == 0 ) {
                     TntWrsMltiKlChck.Checked = false;
                     TntWrsMltiKlChck.Enabled = true;
                     TntWrsMltiKlScPrUpDown.Enabled = false;
@@ -2103,16 +2043,16 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 TntWrsGraceTimeChck.Value = TntWarsGame.GuiLoaded.GracePeriodSecs;
                 TntWrsGraceTimeChck.Enabled = TntWarsGame.GuiLoaded.GracePeriod;
                 //Teams
-                TntWrsTmsChck.Checked = (TntWarsGame.GuiLoaded.GameMode == TntWarsGame.TntWarsGameMode.TDM ? true : false);
+                TntWrsTmsChck.Checked = ( TntWarsGame.GuiLoaded.GameMode == TntWarsGame.TntWarsGameMode.TDM ? true : false );
                 TntWrsTmsChck.Enabled = true;
                 TntWrsBlnceTeamsChck.Checked = TntWarsGame.GuiLoaded.BalanceTeams;
                 TntWrsBlnceTeamsChck.Enabled = true;
                 TntWrsTKchck.Checked = TntWarsGame.GuiLoaded.TeamKills;
                 TntWrsTKchck.Enabled = true;
                 //Status
-                switch (TntWarsGame.GuiLoaded.GameStatus) {
+                switch ( TntWarsGame.GuiLoaded.GameStatus ) {
                     case TntWarsGame.TntWarsGameStatus.WaitingForPlayers:
-                        if (TntWarsGame.GuiLoaded.CheckAllSetUp(null, false, false)) TntWrsStrtGame.Enabled = true;
+                        if ( TntWarsGame.GuiLoaded.CheckAllSetUp(null, false, false) ) TntWrsStrtGame.Enabled = true;
                         TntWrsEndGame.Enabled = false;
                         TntWrsRstGame.Enabled = false;
                         TntWrsDltGame.Enabled = true;
@@ -2139,33 +2079,33 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 TntWrsStreaksChck.Checked = TntWarsGame.GuiLoaded.Streaks;
                 TntWrsStreaksChck.Enabled = true;
                 //New game
-                if (TntWrsMpsList.SelectedIndex < 0) TntWrsCrtNwTntWrsBt.Enabled = false;
+                if ( TntWrsMpsList.SelectedIndex < 0 ) TntWrsCrtNwTntWrsBt.Enabled = false;
                 //Load lists
                 TntWrsMpsList.Items.Clear();
                 TntWarsGamesList.Items.Clear();
                 TntWrsDiffCombo.Items.Clear();
-                foreach (Level lvl in Server.levels) {
-                    if (TntWarsGame.Find(lvl) == null) {
+                foreach ( Level lvl in Server.levels ) {
+                    if ( TntWarsGame.Find(lvl) == null ) {
                         TntWrsMpsList.Items.Add(lvl.name);
                     }
                     else {
                         TntWarsGame T = TntWarsGame.Find(lvl);
                         string msg = "";
-                        if (T == TntWarsGame.GuiLoaded) { msg += "-->  "; }
+                        if ( T == TntWarsGame.GuiLoaded ) { msg += "-->  "; }
                         msg += lvl.name + " - ";
-                        if (T.GameMode == TntWarsGame.TntWarsGameMode.FFA) msg += "FFA";
-                        if (T.GameMode == TntWarsGame.TntWarsGameMode.TDM) msg += "TDM";
+                        if ( T.GameMode == TntWarsGame.TntWarsGameMode.FFA ) msg += "FFA";
+                        if ( T.GameMode == TntWarsGame.TntWarsGameMode.TDM ) msg += "TDM";
                         msg += " - ";
-                        if (T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Easy) msg += "(Easy)";
-                        if (T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Normal) msg += "(Normal)";
-                        if (T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Hard) msg += "(Hard)";
-                        if (T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Extreme) msg += "(Extreme)";
+                        if ( T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Easy ) msg += "(Easy)";
+                        if ( T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Normal ) msg += "(Normal)";
+                        if ( T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Hard ) msg += "(Hard)";
+                        if ( T.GameDifficulty == TntWarsGame.TntWarsDifficulty.Extreme ) msg += "(Extreme)";
                         msg += " - ";
-                        if (T.GameStatus == TntWarsGame.TntWarsGameStatus.WaitingForPlayers) msg += "(Waiting For Players)";
-                        if (T.GameStatus == TntWarsGame.TntWarsGameStatus.AboutToStart) msg += "(Starting)";
-                        if (T.GameStatus == TntWarsGame.TntWarsGameStatus.GracePeriod) msg += "(Started)";
-                        if (T.GameStatus == TntWarsGame.TntWarsGameStatus.InProgress) msg += "(In Progress)";
-                        if (T.GameStatus == TntWarsGame.TntWarsGameStatus.Finished) msg += "(Finished)";
+                        if ( T.GameStatus == TntWarsGame.TntWarsGameStatus.WaitingForPlayers ) msg += "(Waiting For Players)";
+                        if ( T.GameStatus == TntWarsGame.TntWarsGameStatus.AboutToStart ) msg += "(Starting)";
+                        if ( T.GameStatus == TntWarsGame.TntWarsGameStatus.GracePeriod ) msg += "(Started)";
+                        if ( T.GameStatus == TntWarsGame.TntWarsGameStatus.InProgress ) msg += "(In Progress)";
+                        if ( T.GameStatus == TntWarsGame.TntWarsGameStatus.Finished ) msg += "(Finished)";
                         TntWarsGamesList.Items.Add(msg);
                     }
                 }
@@ -2175,7 +2115,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 TntWrsDiffCombo.Items.Add("Extreme");
 
                 //Disable things because game is in progress
-                if (!TntWarsEditable(sender, e)) {
+                if ( !TntWarsEditable(sender, e) ) {
                     //Difficulty
                     TntWrsDiffCombo.Enabled = false;
                     TntWrsDiffSlctBt.Enabled = false;
@@ -2210,7 +2150,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         private void EditTntWarsGameBT_Click(object sender, EventArgs e) {
             try {
                 string slctd = TntWarsGamesList.Items[TntWarsGamesList.SelectedIndex].ToString();
-                if (slctd.StartsWith("-->")) {
+                if ( slctd.StartsWith("-->") ) {
                     LoadTNTWarsTab(sender, e);
                     return;
                 }
@@ -2231,19 +2171,19 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 it = new TntWarsGame(Level.Find(TntWrsMpsList.Items[TntWrsMpsList.SelectedIndex].ToString()));
             }
             catch { }
-            if (it == null) return;
+            if ( it == null ) return;
             TntWarsGame.GameList.Add(it);
             TntWarsGame.GuiLoaded = it;
             LoadTNTWarsTab(sender, e);
         }
 
         private void TntWrsDiffSlctBt_Click(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
-            switch (TntWrsDiffCombo.Items[TntWrsDiffCombo.SelectedIndex].ToString()) {
+            if ( TntWarsGame.GuiLoaded == null ) return;
+            switch ( TntWrsDiffCombo.Items[TntWrsDiffCombo.SelectedIndex].ToString() ) {
                 case "Easy":
                     TntWarsGame.GuiLoaded.GameDifficulty = TntWarsGame.TntWarsDifficulty.Easy;
                     TntWarsGame.GuiLoaded.SendAllPlayersMessage("TNT Wars: Changed difficulty to easy!");
-                    if (TntWarsGame.GuiLoaded.TeamKills == true) {
+                    if ( TntWarsGame.GuiLoaded.TeamKills == true ) {
                         TntWarsGame.GuiLoaded.TeamKills = false;
                     }
                     break;
@@ -2251,7 +2191,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 case "Normal":
                     TntWarsGame.GuiLoaded.GameDifficulty = TntWarsGame.TntWarsDifficulty.Normal;
                     TntWarsGame.GuiLoaded.SendAllPlayersMessage("TNT Wars: Changed difficulty to normal!");
-                    if (TntWarsGame.GuiLoaded.TeamKills == true) {
+                    if ( TntWarsGame.GuiLoaded.TeamKills == true ) {
                         TntWarsGame.GuiLoaded.TeamKills = false;
                     }
                     break;
@@ -2259,7 +2199,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 case "Hard":
                     TntWarsGame.GuiLoaded.GameDifficulty = TntWarsGame.TntWarsDifficulty.Hard;
                     TntWarsGame.GuiLoaded.SendAllPlayersMessage("TNT Wars: Changed difficulty to hard!");
-                    if (TntWarsGame.GuiLoaded.TeamKills == false) {
+                    if ( TntWarsGame.GuiLoaded.TeamKills == false ) {
                         TntWarsGame.GuiLoaded.TeamKills = true;
                     }
                     break;
@@ -2267,7 +2207,7 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                 case "Extreme":
                     TntWarsGame.GuiLoaded.GameDifficulty = TntWarsGame.TntWarsDifficulty.Extreme;
                     TntWarsGame.GuiLoaded.SendAllPlayersMessage("TNT Wars: Changed difficulty to extreme!");
-                    if (TntWarsGame.GuiLoaded.TeamKills == false) {
+                    if ( TntWarsGame.GuiLoaded.TeamKills == false ) {
                         TntWarsGame.GuiLoaded.TeamKills = true;
                     }
                     break;
@@ -2276,20 +2216,20 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void TntWrsScrLmtUpDwn_ValueChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
+            if ( TntWarsGame.GuiLoaded == null ) return;
             TntWarsGame.GuiLoaded.ScoreLimit = (int)TntWrsScrLmtUpDwn.Value;
             LoadTNTWarsTab(sender, e);
         }
 
         private void TntWrsScrPrKlUpDwn_ValueChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
+            if ( TntWarsGame.GuiLoaded == null ) return;
             TntWarsGame.GuiLoaded.ScorePerKill = (int)TntWrsScrPrKlUpDwn.Value;
             LoadTNTWarsTab(sender, e);
         }
 
         private void TntWrsAsstChck_CheckedChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
-            if (TntWrsAsstChck.Checked == false) {
+            if ( TntWarsGame.GuiLoaded == null ) return;
+            if ( TntWrsAsstChck.Checked == false ) {
                 TntWarsGame.GuiLoaded.ScorePerAssist = 0;
                 TntWrsAstsScrUpDwn.Enabled = false;
             }
@@ -2301,14 +2241,14 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void TntWrsAstsScrUpDwn_ValueChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
+            if ( TntWarsGame.GuiLoaded == null ) return;
             TntWarsGame.GuiLoaded.ScorePerAssist = (int)TntWrsAstsScrUpDwn.Value;
             LoadTNTWarsTab(sender, e);
         }
 
         private void TntWrsMltiKlChck_CheckedChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
-            if (TntWrsMltiKlChck.Checked == false) {
+            if ( TntWarsGame.GuiLoaded == null ) return;
+            if ( TntWrsMltiKlChck.Checked == false ) {
                 TntWarsGame.GuiLoaded.MultiKillBonus = 0;
                 TntWrsMltiKlScPrUpDown.Enabled = false;
             }
@@ -2320,43 +2260,43 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void TntWrsMltiKlScPrUpDown_ValueChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
+            if ( TntWarsGame.GuiLoaded == null ) return;
             TntWarsGame.GuiLoaded.MultiKillBonus = (int)TntWrsMltiKlScPrUpDown.Value;
             LoadTNTWarsTab(sender, e);
         }
 
         private void TntWrsGracePrdChck_CheckedChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
+            if ( TntWarsGame.GuiLoaded == null ) return;
             TntWarsGame.GuiLoaded.GracePeriod = TntWrsGracePrdChck.Checked;
             LoadTNTWarsTab(sender, e);
         }
 
         private void TntWrsGraceTimeChck_ValueChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
+            if ( TntWarsGame.GuiLoaded == null ) return;
             TntWarsGame.GuiLoaded.GracePeriodSecs = (int)TntWrsGraceTimeChck.Value;
             LoadTNTWarsTab(sender, e);
         }
 
         private void TntWrsTmsChck_CheckedChanged(object sender, EventArgs e) {
-            switch (TntWrsTmsChck.Checked) {
+            switch ( TntWrsTmsChck.Checked ) {
                 case true:
-                    if (TntWarsGame.GuiLoaded.GameMode == TntWarsGame.TntWarsGameMode.FFA) {
+                    if ( TntWarsGame.GuiLoaded.GameMode == TntWarsGame.TntWarsGameMode.FFA ) {
                         TntWarsGame.GuiLoaded.GameMode = TntWarsGame.TntWarsGameMode.TDM;
-                        foreach (TntWarsGame.player pl in TntWarsGame.GuiLoaded.Players) {
+                        foreach ( TntWarsGame.player pl in TntWarsGame.GuiLoaded.Players ) {
                             {
                                 Player.SendMessage(pl.p, "TNT Wars: Changed gamemode to Team Deathmatch");
                                 pl.Red = false;
                                 pl.Blue = false;
-                                if (TntWarsGame.GuiLoaded.BlueTeam() > TntWarsGame.GuiLoaded.RedTeam()) {
+                                if ( TntWarsGame.GuiLoaded.BlueTeam() > TntWarsGame.GuiLoaded.RedTeam() ) {
                                     pl.Red = true;
                                 }
-                                else if (TntWarsGame.GuiLoaded.RedTeam() > TntWarsGame.GuiLoaded.BlueTeam()) {
+                                else if ( TntWarsGame.GuiLoaded.RedTeam() > TntWarsGame.GuiLoaded.BlueTeam() ) {
                                     pl.Blue = true;
                                 }
-                                else if (TntWarsGame.GuiLoaded.RedScore > TntWarsGame.GuiLoaded.BlueScore) {
+                                else if ( TntWarsGame.GuiLoaded.RedScore > TntWarsGame.GuiLoaded.BlueScore ) {
                                     pl.Blue = true;
                                 }
-                                else if (TntWarsGame.GuiLoaded.BlueScore > TntWarsGame.GuiLoaded.RedScore) {
+                                else if ( TntWarsGame.GuiLoaded.BlueScore > TntWarsGame.GuiLoaded.RedScore ) {
                                     pl.Red = true;
                                 }
                                 else {
@@ -2365,32 +2305,32 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
                             }
                             {
                                 string mesg = pl.p.color + pl.p.name + Server.DefaultColor + " " + "is now";
-                                if (pl.Red) {
+                                if ( pl.Red ) {
                                     mesg += " on the " + c.red + "red team";
                                 }
-                                if (pl.Blue) {
+                                if ( pl.Blue ) {
                                     mesg += " on the " + c.blue + "blue team";
                                 }
-                                if (pl.spec) {
+                                if ( pl.spec ) {
                                     mesg += Server.DefaultColor + " (as a spectator)";
                                 }
                                 Player.GlobalMessage(mesg);
                             }
                         }
-                        if (TntWarsGame.GuiLoaded.ScoreLimit == TntWarsGame.Properties.DefaultFFAmaxScore) {
+                        if ( TntWarsGame.GuiLoaded.ScoreLimit == TntWarsGame.Properties.DefaultFFAmaxScore ) {
                             TntWarsGame.GuiLoaded.ScoreLimit = TntWarsGame.Properties.DefaultTDMmaxScore;
                         }
                     }
                     break;
 
                 case false:
-                    if (TntWarsGame.GuiLoaded.GameMode == TntWarsGame.TntWarsGameMode.TDM) {
+                    if ( TntWarsGame.GuiLoaded.GameMode == TntWarsGame.TntWarsGameMode.TDM ) {
                         TntWarsGame.GuiLoaded.GameMode = TntWarsGame.TntWarsGameMode.FFA;
                         TntWarsGame.GuiLoaded.SendAllPlayersMessage("TNT Wars: Changed gamemode to Free For All");
-                        if (TntWarsGame.GuiLoaded.ScoreLimit == TntWarsGame.Properties.DefaultTDMmaxScore) {
+                        if ( TntWarsGame.GuiLoaded.ScoreLimit == TntWarsGame.Properties.DefaultTDMmaxScore ) {
                             TntWarsGame.GuiLoaded.ScoreLimit = TntWarsGame.Properties.DefaultFFAmaxScore;
                         }
-                        foreach (TntWarsGame.player pl in TntWarsGame.GuiLoaded.Players) {
+                        foreach ( TntWarsGame.player pl in TntWarsGame.GuiLoaded.Players ) {
                             pl.p.color = pl.OldColor;
                             pl.p.SetPrefix();
                         }
@@ -2400,26 +2340,26 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void TntWrsBlnceTeamsChck_CheckedChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
+            if ( TntWarsGame.GuiLoaded == null ) return;
             TntWarsGame.GuiLoaded.BalanceTeams = TntWrsBlnceTeamsChck.Checked;
             LoadTNTWarsTab(sender, e);
         }
 
         private void TntWrsTKchck_CheckedChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
+            if ( TntWarsGame.GuiLoaded == null ) return;
             TntWarsGame.GuiLoaded.TeamKills = TntWrsTKchck.Checked;
             LoadTNTWarsTab(sender, e);
         }
 
         private void TntWrsStreaksChck_CheckedChanged(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
+            if ( TntWarsGame.GuiLoaded == null ) return;
             TntWarsGame.GuiLoaded.Streaks = TntWrsStreaksChck.Checked;
             LoadTNTWarsTab(sender, e);
         }
 
         private void TntWrsStrtGame_Click(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
-            if (TntWarsGame.GuiLoaded.PlayingPlayers() >= 2) {
+            if ( TntWarsGame.GuiLoaded == null ) return;
+            if ( TntWarsGame.GuiLoaded.PlayingPlayers() >= 2 ) {
                 new Thread(TntWarsGame.GuiLoaded.Start).Start();
             }
             else {
@@ -2429,8 +2369,8 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void TntWrsEndGame_Click(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
-            foreach (TntWarsGame.player pl in TntWarsGame.GuiLoaded.Players) {
+            if ( TntWarsGame.GuiLoaded == null ) return;
+            foreach ( TntWarsGame.player pl in TntWarsGame.GuiLoaded.Players ) {
                 pl.p.canBuild = true;
                 pl.p.PlayingTntWars = false;
                 pl.p.CurrentAmountOfTnt = 0;
@@ -2441,12 +2381,12 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void TntWrsRstGame_Click(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
+            if ( TntWarsGame.GuiLoaded == null ) return;
             TntWarsGame.GuiLoaded.GameStatus = TntWarsGame.TntWarsGameStatus.WaitingForPlayers;
             Command.all.Find("restore").Use(null, TntWarsGame.GuiLoaded.BackupNumber + TntWarsGame.GuiLoaded.lvl.name);
             TntWarsGame.GuiLoaded.RedScore = 0;
             TntWarsGame.GuiLoaded.BlueScore = 0;
-            foreach (TntWarsGame.player pl in TntWarsGame.GuiLoaded.Players) {
+            foreach ( TntWarsGame.player pl in TntWarsGame.GuiLoaded.Players ) {
                 pl.Score = 0;
                 pl.spec = false;
                 pl.p.TntWarsKillStreak = 0;
@@ -2464,8 +2404,8 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
         }
 
         private void TntWrsDltGame_Click(object sender, EventArgs e) {
-            if (TntWarsGame.GuiLoaded == null) return;
-            foreach (TntWarsGame.player pl in TntWarsGame.GuiLoaded.Players) {
+            if ( TntWarsGame.GuiLoaded == null ) return;
+            foreach ( TntWarsGame.player pl in TntWarsGame.GuiLoaded.Players ) {
                 pl.p.CurrentTntGameNumber = -1;
                 Player.SendMessage(pl.p, "TNT Wars: The TNT Wars game you are currently playing has been deleted!");
                 pl.p.PlayingTntWars = false;
@@ -2493,8 +2433,5 @@ txtBackupLocation.Text = folderDialog.SelectedPath;
             Server.UseTextures = txechx.Checked;
         }
 
-        private void PropertyWindow_FormClosing(object sender, FormClosingEventArgs e) {
-            mWorkerChecker.CancelAsync();
-        }
     }
 }

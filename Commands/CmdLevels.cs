@@ -22,34 +22,34 @@ using System.Collections.Generic;
 
 namespace MCForge.Commands
 {
-    public class CmdLevels : Command
-    {
-        public override string name { get { return "levels"; } }
-        public override string shortcut { get { return ""; } }
-        public override string type { get { return "information"; } }
-        public override bool museumUsable { get { return true; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Guest; } }
-        public CmdLevels() { }
+	public class CmdLevels : Command
+	{
+		public override string name { get { return "levels"; } }
+		public override string shortcut { get { return ""; } }
+		public override string type { get { return "information"; } }
+		public override bool museumUsable { get { return true; } }
+		public override LevelPermission defaultRank { get { return LevelPermission.Guest; } }
+		public CmdLevels() { }
 
-        public override void Use(Player p, string message)
-        { // TODO
-            try
-            {
-                if (message != "") { Help(p); return; }
-                foreach(Level l in Server.levels)
-                {
-                    Player.SendMessage(p, l.name + " - " + l.physics);
-                }
-                Player.SendMessage(p, "Use &4/unloaded for unloaded levels.");
-            }
-            catch (Exception e)
-            {
-                Server.ErrorLog(e);
-            }
-        }
-        public override void Help(Player p)
-        {
-            Player.SendMessage(p, "/levels - Lists all loaded levels and their physics levels.");
-        }
-    }
+		public override void Use(Player p, string message)
+		{ // TODO
+			try
+			{
+				if (message != "") { Help(p); return; }
+				foreach(Level l in Server.levels)
+				{
+					Player.SendMessage(p, l.name + " - " + l.physics);
+				}
+				Player.SendMessage(p, "Use &4/unloaded for unloaded levels.");
+			}
+			catch (Exception e)
+			{
+				Server.ErrorLog(e);
+			}
+		}
+		public override void Help(Player p)
+		{
+			Player.SendMessage(p, "/levels - Lists all loaded levels and their physics levels.");
+		}
+	}
 }

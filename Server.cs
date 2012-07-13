@@ -68,6 +68,7 @@ namespace MCForge
         public static Thread locationChecker;
         public static bool UseTextures = false;
         public static Thread blockThread;
+        public static bool IgnoreOmnibans = false;
         //public static List<MySql.Data.MySqlClient.MySqlCommand> mySQLCommands = new List<MySql.Data.MySqlClient.MySqlCommand>();
 
         public static int speedPhysics = 250;

@@ -127,10 +127,8 @@ namespace MCForge.Gui
             this.killphysics_button = new System.Windows.Forms.Button();
             this.button_saveall = new System.Windows.Forms.Button();
             this.gBCommands = new System.Windows.Forms.GroupBox();
-            this.txtCommandsUsed = new MCForge.Gui.AutoScrollTextBox();
             this.dgvMaps = new System.Windows.Forms.DataGridView();
             this.gBChat = new System.Windows.Forms.GroupBox();
-            this.txtLog = new MCForge.Gui.AutoScrollTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtCommands = new System.Windows.Forms.TextBox();
             this.txtInput = new System.Windows.Forms.TextBox();
@@ -197,7 +195,6 @@ namespace MCForge.Gui
             this.CreateNewMap = new System.Windows.Forms.Button();
             this.dgvMapsTab = new System.Windows.Forms.DataGridView();
             this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.PlayersTextBox = new MCForge.Gui.AutoScrollTextBox();
             this.PlyersListBox = new System.Windows.Forms.ListBox();
             this.StatusTxt = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
@@ -255,15 +252,27 @@ namespace MCForge.Gui
             this.Chat = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label40 = new System.Windows.Forms.Label();
-            this.txtGlobalLog = new MCForge.Gui.AutoScrollTextBox();
             this.txtGlobalInput = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label32 = new System.Windows.Forms.Label();
-            this.txtAdminLog = new MCForge.Gui.AutoScrollTextBox();
             this.txtAdminInput = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label33 = new System.Windows.Forms.Label();
             this.txtOpInput = new System.Windows.Forms.TextBox();
+            this.txtLogMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.nightModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dateStampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.copySelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtCommandsUsed = new MCForge.Gui.AutoScrollTextBox();
+            this.txtLog = new MCForge.Gui.Components.ColoredTextBox();
+            this.PlayersTextBox = new MCForge.Gui.AutoScrollTextBox();
+            this.txtGlobalLog = new MCForge.Gui.AutoScrollTextBox();
+            this.txtAdminLog = new MCForge.Gui.AutoScrollTextBox();
             this.txtOpLog = new MCForge.Gui.AutoScrollTextBox();
             this.mapsStrip.SuspendLayout();
             this.playerStrip.SuspendLayout();
@@ -292,6 +301,7 @@ namespace MCForge.Gui
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.txtLogMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // mapsStrip
@@ -659,7 +669,7 @@ namespace MCForge.Gui
             // 
             this.btnProperties.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnProperties.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProperties.Location = new System.Drawing.Point(441, 5);
+            this.btnProperties.Location = new System.Drawing.Point(501, 5);
             this.btnProperties.Name = "btnProperties";
             this.btnProperties.Size = new System.Drawing.Size(80, 23);
             this.btnProperties.TabIndex = 34;
@@ -671,7 +681,7 @@ namespace MCForge.Gui
             // 
             this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnClose.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(615, 5);
+            this.btnClose.Location = new System.Drawing.Point(675, 5);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(88, 23);
             this.btnClose.TabIndex = 35;
@@ -683,7 +693,7 @@ namespace MCForge.Gui
             // 
             this.Restart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Restart.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Restart.Location = new System.Drawing.Point(524, 5);
+            this.Restart.Location = new System.Drawing.Point(584, 5);
             this.Restart.Name = "Restart";
             this.Restart.Size = new System.Drawing.Size(88, 23);
             this.Restart.TabIndex = 36;
@@ -700,7 +710,7 @@ namespace MCForge.Gui
             this.tabPage5.Location = new System.Drawing.Point(4, 22);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(698, 488);
+            this.tabPage5.Size = new System.Drawing.Size(767, 488);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Logs";
             // 
@@ -728,7 +738,7 @@ namespace MCForge.Gui
             this.LogsTxtBox.Location = new System.Drawing.Point(3, 32);
             this.LogsTxtBox.Name = "LogsTxtBox";
             this.LogsTxtBox.ReadOnly = true;
-            this.LogsTxtBox.Size = new System.Drawing.Size(687, 453);
+            this.LogsTxtBox.Size = new System.Drawing.Size(755, 453);
             this.LogsTxtBox.TabIndex = 0;
             this.LogsTxtBox.Text = "";
             // 
@@ -739,7 +749,7 @@ namespace MCForge.Gui
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(698, 488);
+            this.tabPage3.Size = new System.Drawing.Size(767, 488);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Errors";
             // 
@@ -752,7 +762,7 @@ namespace MCForge.Gui
             this.txtErrors.Name = "txtErrors";
             this.txtErrors.ReadOnly = true;
             this.txtErrors.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtErrors.Size = new System.Drawing.Size(683, 471);
+            this.txtErrors.Size = new System.Drawing.Size(754, 471);
             this.txtErrors.TabIndex = 1;
             // 
             // tabPage2
@@ -762,7 +772,7 @@ namespace MCForge.Gui
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(698, 488);
+            this.tabPage2.Size = new System.Drawing.Size(767, 488);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Changelog";
             // 
@@ -775,7 +785,7 @@ namespace MCForge.Gui
             this.txtChangelog.Name = "txtChangelog";
             this.txtChangelog.ReadOnly = true;
             this.txtChangelog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtChangelog.Size = new System.Drawing.Size(683, 471);
+            this.txtChangelog.Size = new System.Drawing.Size(751, 471);
             this.txtChangelog.TabIndex = 0;
             // 
             // tabPage4
@@ -785,7 +795,7 @@ namespace MCForge.Gui
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(698, 488);
+            this.tabPage4.Size = new System.Drawing.Size(767, 488);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "System";
             // 
@@ -798,7 +808,7 @@ namespace MCForge.Gui
             this.txtSystem.Name = "txtSystem";
             this.txtSystem.ReadOnly = true;
             this.txtSystem.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtSystem.Size = new System.Drawing.Size(683, 471);
+            this.txtSystem.Size = new System.Drawing.Size(754, 471);
             this.txtSystem.TabIndex = 1;
             // 
             // tabPage1
@@ -819,7 +829,7 @@ namespace MCForge.Gui
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(698, 488);
+            this.tabPage1.Size = new System.Drawing.Size(767, 488);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             // 
@@ -827,7 +837,7 @@ namespace MCForge.Gui
             // 
             this.Unloadempty_button.Cursor = System.Windows.Forms.Cursors.Hand;
             this.Unloadempty_button.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Unloadempty_button.Location = new System.Drawing.Point(611, 263);
+            this.Unloadempty_button.Location = new System.Drawing.Point(676, 263);
             this.Unloadempty_button.Name = "Unloadempty_button";
             this.Unloadempty_button.Size = new System.Drawing.Size(81, 23);
             this.Unloadempty_button.TabIndex = 41;
@@ -839,7 +849,7 @@ namespace MCForge.Gui
             // 
             this.killphysics_button.Cursor = System.Windows.Forms.Cursors.Hand;
             this.killphysics_button.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.killphysics_button.Location = new System.Drawing.Point(517, 263);
+            this.killphysics_button.Location = new System.Drawing.Point(582, 263);
             this.killphysics_button.Name = "killphysics_button";
             this.killphysics_button.Size = new System.Drawing.Size(88, 23);
             this.killphysics_button.TabIndex = 40;
@@ -851,7 +861,7 @@ namespace MCForge.Gui
             // 
             this.button_saveall.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button_saveall.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_saveall.Location = new System.Drawing.Point(448, 263);
+            this.button_saveall.Location = new System.Drawing.Point(513, 263);
             this.button_saveall.Name = "button_saveall";
             this.button_saveall.Size = new System.Drawing.Size(63, 23);
             this.button_saveall.TabIndex = 39;
@@ -865,23 +875,10 @@ namespace MCForge.Gui
             this.gBCommands.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gBCommands.Location = new System.Drawing.Point(13, 326);
             this.gBCommands.Name = "gBCommands";
-            this.gBCommands.Size = new System.Drawing.Size(428, 123);
+            this.gBCommands.Size = new System.Drawing.Size(493, 123);
             this.gBCommands.TabIndex = 34;
             this.gBCommands.TabStop = false;
             this.gBCommands.Text = "Commands";
-            // 
-            // txtCommandsUsed
-            // 
-            this.txtCommandsUsed.BackColor = System.Drawing.Color.White;
-            this.txtCommandsUsed.Cursor = System.Windows.Forms.Cursors.Default;
-            this.txtCommandsUsed.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCommandsUsed.Location = new System.Drawing.Point(9, 16);
-            this.txtCommandsUsed.Multiline = true;
-            this.txtCommandsUsed.Name = "txtCommandsUsed";
-            this.txtCommandsUsed.ReadOnly = true;
-            this.txtCommandsUsed.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtCommandsUsed.Size = new System.Drawing.Size(413, 100);
-            this.txtCommandsUsed.TabIndex = 0;
             // 
             // dgvMaps
             // 
@@ -891,7 +888,7 @@ namespace MCForge.Gui
             this.dgvMaps.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvMaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvMaps.ContextMenuStrip = this.mapsStrip;
-            this.dgvMaps.Location = new System.Drawing.Point(447, 292);
+            this.dgvMaps.Location = new System.Drawing.Point(512, 292);
             this.dgvMaps.MultiSelect = false;
             this.dgvMaps.Name = "dgvMaps";
             this.dgvMaps.ReadOnly = true;
@@ -907,29 +904,16 @@ namespace MCForge.Gui
             this.gBChat.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gBChat.Location = new System.Drawing.Point(13, 33);
             this.gBChat.Name = "gBChat";
-            this.gBChat.Size = new System.Drawing.Size(428, 287);
+            this.gBChat.Size = new System.Drawing.Size(493, 287);
             this.gBChat.TabIndex = 32;
             this.gBChat.TabStop = false;
             this.gBChat.Text = "Chat";
-            // 
-            // txtLog
-            // 
-            this.txtLog.BackColor = System.Drawing.SystemColors.Window;
-            this.txtLog.Cursor = System.Windows.Forms.Cursors.Default;
-            this.txtLog.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtLog.Location = new System.Drawing.Point(6, 19);
-            this.txtLog.Multiline = true;
-            this.txtLog.Name = "txtLog";
-            this.txtLog.ReadOnly = true;
-            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtLog.Size = new System.Drawing.Size(413, 262);
-            this.txtLog.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(444, 462);
+            this.label2.Location = new System.Drawing.Point(512, 462);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 29;
@@ -938,11 +922,10 @@ namespace MCForge.Gui
             // txtCommands
             // 
             this.txtCommands.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCommands.Location = new System.Drawing.Point(507, 459);
+            this.txtCommands.Location = new System.Drawing.Point(575, 459);
             this.txtCommands.Name = "txtCommands";
             this.txtCommands.Size = new System.Drawing.Size(183, 21);
             this.txtCommands.TabIndex = 28;
-            //this.txtCommands.TextChanged += new System.EventHandler(this.txtCommands_TextChanged);
             this.txtCommands.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCommands_KeyDown);
             // 
             // txtInput
@@ -950,7 +933,7 @@ namespace MCForge.Gui
             this.txtInput.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtInput.Location = new System.Drawing.Point(57, 459);
             this.txtInput.Name = "txtInput";
-            this.txtInput.Size = new System.Drawing.Size(375, 21);
+            this.txtInput.Size = new System.Drawing.Size(449, 21);
             this.txtInput.TabIndex = 27;
             this.txtInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtInput_KeyDown);
             // 
@@ -961,7 +944,7 @@ namespace MCForge.Gui
             this.txtUrl.Location = new System.Drawing.Point(13, 7);
             this.txtUrl.Name = "txtUrl";
             this.txtUrl.ReadOnly = true;
-            this.txtUrl.Size = new System.Drawing.Size(428, 21);
+            this.txtUrl.Size = new System.Drawing.Size(493, 21);
             this.txtUrl.TabIndex = 25;
             this.txtUrl.DoubleClick += new System.EventHandler(this.txtUrl_DoubleClick);
             // 
@@ -973,7 +956,7 @@ namespace MCForge.Gui
             this.dgvPlayers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvPlayers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPlayers.ContextMenuStrip = this.playerStrip;
-            this.dgvPlayers.Location = new System.Drawing.Point(447, 7);
+            this.dgvPlayers.Location = new System.Drawing.Point(512, 7);
             this.dgvPlayers.MultiSelect = false;
             this.dgvPlayers.Name = "dgvPlayers";
             this.dgvPlayers.ReadOnly = true;
@@ -981,7 +964,6 @@ namespace MCForge.Gui
             this.dgvPlayers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvPlayers.Size = new System.Drawing.Size(246, 250);
             this.dgvPlayers.TabIndex = 37;
-            //this.dgvPlayers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPlayers_CellContentClick);
             this.dgvPlayers.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgvPlayers_RowPrePaint);
             // 
             // label1
@@ -1009,7 +991,7 @@ namespace MCForge.Gui
             this.tabControl1.Location = new System.Drawing.Point(1, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(706, 514);
+            this.tabControl1.Size = new System.Drawing.Size(775, 514);
             this.tabControl1.TabIndex = 2;
             this.tabControl1.Click += new System.EventHandler(this.tabControl1_Click);
             // 
@@ -1022,7 +1004,7 @@ namespace MCForge.Gui
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(698, 488);
+            this.tabPage6.Size = new System.Drawing.Size(767, 488);
             this.tabPage6.TabIndex = 6;
             this.tabPage6.Text = "Maps";
             // 
@@ -1033,7 +1015,7 @@ namespace MCForge.Gui
             this.panel3.Controls.Add(this.ldmapbt);
             this.panel3.Location = new System.Drawing.Point(7, 7);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(164, 207);
+            this.panel3.Size = new System.Drawing.Size(236, 207);
             this.panel3.TabIndex = 49;
             // 
             // UnloadedList
@@ -1041,15 +1023,14 @@ namespace MCForge.Gui
             this.UnloadedList.FormattingEnabled = true;
             this.UnloadedList.Location = new System.Drawing.Point(4, 4);
             this.UnloadedList.Name = "UnloadedList";
-            this.UnloadedList.Size = new System.Drawing.Size(155, 160);
+            this.UnloadedList.Size = new System.Drawing.Size(227, 160);
             this.UnloadedList.TabIndex = 1;
-            //this.UnloadedList.SelectedIndexChanged += new System.EventHandler(this.UnloadedList_SelectedIndexChanged);
             // 
             // ldmapbt
             // 
             this.ldmapbt.Location = new System.Drawing.Point(4, 168);
             this.ldmapbt.Name = "ldmapbt";
-            this.ldmapbt.Size = new System.Drawing.Size(155, 35);
+            this.ldmapbt.Size = new System.Drawing.Size(227, 35);
             this.ldmapbt.TabIndex = 0;
             this.ldmapbt.Text = "Load Map";
             this.ldmapbt.UseVisualStyleBackColor = true;
@@ -1096,11 +1077,10 @@ namespace MCForge.Gui
             this.panel2.Controls.Add(this.label13);
             this.panel2.Controls.Add(this.label11);
             this.panel2.Controls.Add(this.SaveMap);
-            this.panel2.Location = new System.Drawing.Point(318, 7);
+            this.panel2.Location = new System.Drawing.Point(390, 7);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(372, 207);
             this.panel2.TabIndex = 48;
-            //this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // WoM
             // 
@@ -1462,7 +1442,7 @@ namespace MCForge.Gui
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.maptypecombo);
             this.panel1.Controls.Add(this.CreateNewMap);
-            this.panel1.Location = new System.Drawing.Point(177, 7);
+            this.panel1.Location = new System.Drawing.Point(249, 7);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(135, 207);
             this.panel1.TabIndex = 45;
@@ -1625,7 +1605,7 @@ namespace MCForge.Gui
             this.dgvMapsTab.ReadOnly = true;
             this.dgvMapsTab.RowHeadersVisible = false;
             this.dgvMapsTab.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvMapsTab.Size = new System.Drawing.Size(683, 262);
+            this.dgvMapsTab.Size = new System.Drawing.Size(754, 262);
             this.dgvMapsTab.TabIndex = 39;
             this.dgvMapsTab.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMapsTab_CellClick);
             this.dgvMapsTab.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvMapsTab_CellClick);
@@ -1658,22 +1638,9 @@ namespace MCForge.Gui
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(698, 488);
+            this.tabPage7.Size = new System.Drawing.Size(767, 488);
             this.tabPage7.TabIndex = 7;
             this.tabPage7.Text = "Players";
-            // 
-            // PlayersTextBox
-            // 
-            this.PlayersTextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.PlayersTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.PlayersTextBox.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.PlayersTextBox.Location = new System.Drawing.Point(306, 304);
-            this.PlayersTextBox.Multiline = true;
-            this.PlayersTextBox.Name = "PlayersTextBox";
-            this.PlayersTextBox.ReadOnly = true;
-            this.PlayersTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.PlayersTextBox.Size = new System.Drawing.Size(386, 173);
-            this.PlayersTextBox.TabIndex = 63;
             // 
             // PlyersListBox
             // 
@@ -1689,7 +1656,7 @@ namespace MCForge.Gui
             this.StatusTxt.Location = new System.Drawing.Point(612, 4);
             this.StatusTxt.Name = "StatusTxt";
             this.StatusTxt.ReadOnly = true;
-            this.StatusTxt.Size = new System.Drawing.Size(80, 21);
+            this.StatusTxt.Size = new System.Drawing.Size(145, 21);
             this.StatusTxt.TabIndex = 61;
             // 
             // label25
@@ -1723,7 +1690,7 @@ namespace MCForge.Gui
             this.Kickstxt.Location = new System.Drawing.Point(658, 31);
             this.Kickstxt.Name = "Kickstxt";
             this.Kickstxt.ReadOnly = true;
-            this.Kickstxt.Size = new System.Drawing.Size(34, 21);
+            this.Kickstxt.Size = new System.Drawing.Size(99, 21);
             this.Kickstxt.TabIndex = 57;
             // 
             // label30
@@ -1840,12 +1807,12 @@ namespace MCForge.Gui
             this.panel4.Controls.Add(this.MuteBt);
             this.panel4.Location = new System.Drawing.Point(8, 59);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(684, 235);
+            this.panel4.Size = new System.Drawing.Size(753, 235);
             this.panel4.TabIndex = 47;
             // 
             // SpawnBt
             // 
-            this.SpawnBt.Location = new System.Drawing.Point(553, 148);
+            this.SpawnBt.Location = new System.Drawing.Point(627, 149);
             this.SpawnBt.Name = "SpawnBt";
             this.SpawnBt.Size = new System.Drawing.Size(122, 23);
             this.SpawnBt.TabIndex = 43;
@@ -1857,7 +1824,7 @@ namespace MCForge.Gui
             // 
             this.UndoTxt.Location = new System.Drawing.Point(131, 148);
             this.UndoTxt.Name = "UndoTxt";
-            this.UndoTxt.Size = new System.Drawing.Size(159, 21);
+            this.UndoTxt.Size = new System.Drawing.Size(234, 21);
             this.UndoTxt.TabIndex = 42;
             this.UndoTxt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.UndoTxt_KeyDown);
             // 
@@ -1873,7 +1840,7 @@ namespace MCForge.Gui
             // 
             // SlapBt
             // 
-            this.SlapBt.Location = new System.Drawing.Point(297, 148);
+            this.SlapBt.Location = new System.Drawing.Point(371, 146);
             this.SlapBt.Name = "SlapBt";
             this.SlapBt.Size = new System.Drawing.Size(122, 23);
             this.SlapBt.TabIndex = 40;
@@ -1883,7 +1850,7 @@ namespace MCForge.Gui
             // 
             // SendRulesTxt
             // 
-            this.SendRulesTxt.Location = new System.Drawing.Point(553, 119);
+            this.SendRulesTxt.Location = new System.Drawing.Point(627, 120);
             this.SendRulesTxt.Name = "SendRulesTxt";
             this.SendRulesTxt.Size = new System.Drawing.Size(122, 23);
             this.SendRulesTxt.TabIndex = 39;
@@ -1895,7 +1862,7 @@ namespace MCForge.Gui
             // 
             this.ImpersonateORSendCmdTxt.Location = new System.Drawing.Point(132, 207);
             this.ImpersonateORSendCmdTxt.Name = "ImpersonateORSendCmdTxt";
-            this.ImpersonateORSendCmdTxt.Size = new System.Drawing.Size(543, 21);
+            this.ImpersonateORSendCmdTxt.Size = new System.Drawing.Size(616, 21);
             this.ImpersonateORSendCmdTxt.TabIndex = 38;
             this.ImpersonateORSendCmdTxt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ImpersonateORSendCmdTxt_KeyDown);
             // 
@@ -1911,7 +1878,7 @@ namespace MCForge.Gui
             // 
             // KillBt
             // 
-            this.KillBt.Location = new System.Drawing.Point(425, 119);
+            this.KillBt.Location = new System.Drawing.Point(499, 120);
             this.KillBt.Name = "KillBt";
             this.KillBt.Size = new System.Drawing.Size(122, 23);
             this.KillBt.TabIndex = 36;
@@ -1921,7 +1888,7 @@ namespace MCForge.Gui
             // 
             // JailBt
             // 
-            this.JailBt.Location = new System.Drawing.Point(425, 148);
+            this.JailBt.Location = new System.Drawing.Point(499, 149);
             this.JailBt.Name = "JailBt";
             this.JailBt.Size = new System.Drawing.Size(122, 23);
             this.JailBt.TabIndex = 34;
@@ -1931,7 +1898,7 @@ namespace MCForge.Gui
             // 
             // DemoteBt
             // 
-            this.DemoteBt.Location = new System.Drawing.Point(297, 89);
+            this.DemoteBt.Location = new System.Drawing.Point(371, 87);
             this.DemoteBt.Name = "DemoteBt";
             this.DemoteBt.Size = new System.Drawing.Size(122, 23);
             this.DemoteBt.TabIndex = 33;
@@ -1941,7 +1908,7 @@ namespace MCForge.Gui
             // 
             // PromoteBt
             // 
-            this.PromoteBt.Location = new System.Drawing.Point(297, 60);
+            this.PromoteBt.Location = new System.Drawing.Point(371, 58);
             this.PromoteBt.Name = "PromoteBt";
             this.PromoteBt.Size = new System.Drawing.Size(122, 23);
             this.PromoteBt.TabIndex = 32;
@@ -1953,7 +1920,7 @@ namespace MCForge.Gui
             // 
             this.LoginTxt.Location = new System.Drawing.Point(131, 3);
             this.LoginTxt.Name = "LoginTxt";
-            this.LoginTxt.Size = new System.Drawing.Size(288, 21);
+            this.LoginTxt.Size = new System.Drawing.Size(362, 21);
             this.LoginTxt.TabIndex = 31;
             this.LoginTxt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginTxt_KeyDown);
             // 
@@ -1961,7 +1928,7 @@ namespace MCForge.Gui
             // 
             this.LogoutTxt.Location = new System.Drawing.Point(131, 31);
             this.LogoutTxt.Name = "LogoutTxt";
-            this.LogoutTxt.Size = new System.Drawing.Size(288, 21);
+            this.LogoutTxt.Size = new System.Drawing.Size(362, 21);
             this.LogoutTxt.TabIndex = 30;
             this.LogoutTxt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LogoutTxt_KeyDown);
             // 
@@ -1969,7 +1936,7 @@ namespace MCForge.Gui
             // 
             this.TitleTxt.Location = new System.Drawing.Point(131, 60);
             this.TitleTxt.Name = "TitleTxt";
-            this.TitleTxt.Size = new System.Drawing.Size(159, 21);
+            this.TitleTxt.Size = new System.Drawing.Size(234, 21);
             this.TitleTxt.TabIndex = 29;
             this.TitleTxt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TitleTxt_KeyDown);
             // 
@@ -1996,7 +1963,7 @@ namespace MCForge.Gui
             "White"});
             this.ColorCombo.Location = new System.Drawing.Point(131, 89);
             this.ColorCombo.Name = "ColorCombo";
-            this.ColorCombo.Size = new System.Drawing.Size(159, 21);
+            this.ColorCombo.Size = new System.Drawing.Size(234, 21);
             this.ColorCombo.TabIndex = 28;
             this.ColorCombo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ColorCombo_KeyDown);
             // 
@@ -2042,7 +2009,7 @@ namespace MCForge.Gui
             // 
             // FreezeBt
             // 
-            this.FreezeBt.Location = new System.Drawing.Point(425, 31);
+            this.FreezeBt.Location = new System.Drawing.Point(499, 32);
             this.FreezeBt.Name = "FreezeBt";
             this.FreezeBt.Size = new System.Drawing.Size(122, 23);
             this.FreezeBt.TabIndex = 14;
@@ -2052,7 +2019,7 @@ namespace MCForge.Gui
             // 
             // VoiceBt
             // 
-            this.VoiceBt.Location = new System.Drawing.Point(425, 89);
+            this.VoiceBt.Location = new System.Drawing.Point(499, 90);
             this.VoiceBt.Name = "VoiceBt";
             this.VoiceBt.Size = new System.Drawing.Size(122, 23);
             this.VoiceBt.TabIndex = 12;
@@ -2062,7 +2029,7 @@ namespace MCForge.Gui
             // 
             // JokerBt
             // 
-            this.JokerBt.Location = new System.Drawing.Point(425, 2);
+            this.JokerBt.Location = new System.Drawing.Point(499, 3);
             this.JokerBt.Name = "JokerBt";
             this.JokerBt.Size = new System.Drawing.Size(122, 23);
             this.JokerBt.TabIndex = 11;
@@ -2072,7 +2039,7 @@ namespace MCForge.Gui
             // 
             // WarnBt
             // 
-            this.WarnBt.Location = new System.Drawing.Point(553, 2);
+            this.WarnBt.Location = new System.Drawing.Point(627, 3);
             this.WarnBt.Name = "WarnBt";
             this.WarnBt.Size = new System.Drawing.Size(122, 23);
             this.WarnBt.TabIndex = 10;
@@ -2094,13 +2061,13 @@ namespace MCForge.Gui
             // 
             this.PLayersMessageTxt.Location = new System.Drawing.Point(131, 179);
             this.PLayersMessageTxt.Name = "PLayersMessageTxt";
-            this.PLayersMessageTxt.Size = new System.Drawing.Size(544, 21);
+            this.PLayersMessageTxt.Size = new System.Drawing.Size(617, 21);
             this.PLayersMessageTxt.TabIndex = 8;
             this.PLayersMessageTxt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PLayersMessageTxt_KeyDown);
             // 
             // HideBt
             // 
-            this.HideBt.Location = new System.Drawing.Point(297, 119);
+            this.HideBt.Location = new System.Drawing.Point(371, 117);
             this.HideBt.Name = "HideBt";
             this.HideBt.Size = new System.Drawing.Size(122, 23);
             this.HideBt.TabIndex = 7;
@@ -2110,7 +2077,7 @@ namespace MCForge.Gui
             // 
             // IPBanBt
             // 
-            this.IPBanBt.Location = new System.Drawing.Point(553, 89);
+            this.IPBanBt.Location = new System.Drawing.Point(627, 90);
             this.IPBanBt.Name = "IPBanBt";
             this.IPBanBt.Size = new System.Drawing.Size(122, 23);
             this.IPBanBt.TabIndex = 6;
@@ -2120,7 +2087,7 @@ namespace MCForge.Gui
             // 
             // BanBt
             // 
-            this.BanBt.Location = new System.Drawing.Point(553, 60);
+            this.BanBt.Location = new System.Drawing.Point(627, 61);
             this.BanBt.Name = "BanBt";
             this.BanBt.Size = new System.Drawing.Size(122, 23);
             this.BanBt.TabIndex = 5;
@@ -2130,7 +2097,7 @@ namespace MCForge.Gui
             // 
             // KickBt
             // 
-            this.KickBt.Location = new System.Drawing.Point(553, 31);
+            this.KickBt.Location = new System.Drawing.Point(627, 32);
             this.KickBt.Name = "KickBt";
             this.KickBt.Size = new System.Drawing.Size(122, 23);
             this.KickBt.TabIndex = 4;
@@ -2143,7 +2110,7 @@ namespace MCForge.Gui
             this.MapCombo.FormattingEnabled = true;
             this.MapCombo.Location = new System.Drawing.Point(131, 119);
             this.MapCombo.Name = "MapCombo";
-            this.MapCombo.Size = new System.Drawing.Size(159, 21);
+            this.MapCombo.Size = new System.Drawing.Size(234, 21);
             this.MapCombo.TabIndex = 3;
             this.MapCombo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MapCombo_KeyDown);
             // 
@@ -2159,7 +2126,7 @@ namespace MCForge.Gui
             // 
             // MuteBt
             // 
-            this.MuteBt.Location = new System.Drawing.Point(425, 60);
+            this.MuteBt.Location = new System.Drawing.Point(499, 61);
             this.MuteBt.Name = "MuteBt";
             this.MuteBt.Size = new System.Drawing.Size(122, 23);
             this.MuteBt.TabIndex = 13;
@@ -2226,7 +2193,7 @@ namespace MCForge.Gui
             this.Chat.Location = new System.Drawing.Point(4, 22);
             this.Chat.Name = "Chat";
             this.Chat.Padding = new System.Windows.Forms.Padding(3);
-            this.Chat.Size = new System.Drawing.Size(698, 488);
+            this.Chat.Size = new System.Drawing.Size(767, 488);
             this.Chat.TabIndex = 8;
             this.Chat.Text = "Chat";
             this.Chat.UseVisualStyleBackColor = true;
@@ -2239,7 +2206,7 @@ namespace MCForge.Gui
             this.groupBox3.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(8, 327);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(683, 155);
+            this.groupBox3.Size = new System.Drawing.Size(753, 155);
             this.groupBox3.TabIndex = 37;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Global Chat";
@@ -2253,25 +2220,12 @@ namespace MCForge.Gui
             this.label40.TabIndex = 32;
             this.label40.Text = "GlobalChat:";
             // 
-            // txtGlobalLog
-            // 
-            this.txtGlobalLog.BackColor = System.Drawing.SystemColors.Window;
-            this.txtGlobalLog.Cursor = System.Windows.Forms.Cursors.Default;
-            this.txtGlobalLog.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtGlobalLog.Location = new System.Drawing.Point(6, 20);
-            this.txtGlobalLog.Multiline = true;
-            this.txtGlobalLog.Name = "txtGlobalLog";
-            this.txtGlobalLog.ReadOnly = true;
-            this.txtGlobalLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtGlobalLog.Size = new System.Drawing.Size(671, 102);
-            this.txtGlobalLog.TabIndex = 2;
-            // 
             // txtGlobalInput
             // 
             this.txtGlobalInput.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtGlobalInput.Location = new System.Drawing.Point(74, 128);
             this.txtGlobalInput.Name = "txtGlobalInput";
-            this.txtGlobalInput.Size = new System.Drawing.Size(585, 21);
+            this.txtGlobalInput.Size = new System.Drawing.Size(673, 21);
             this.txtGlobalInput.TabIndex = 28;
             this.txtGlobalInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtGlobalInput_KeyDown);
             // 
@@ -2283,7 +2237,7 @@ namespace MCForge.Gui
             this.groupBox2.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(8, 166);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(683, 155);
+            this.groupBox2.Size = new System.Drawing.Size(753, 155);
             this.groupBox2.TabIndex = 36;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = " Admin Chat";
@@ -2297,25 +2251,12 @@ namespace MCForge.Gui
             this.label32.TabIndex = 32;
             this.label32.Text = "AdminChat:";
             // 
-            // txtAdminLog
-            // 
-            this.txtAdminLog.BackColor = System.Drawing.SystemColors.Window;
-            this.txtAdminLog.Cursor = System.Windows.Forms.Cursors.Default;
-            this.txtAdminLog.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAdminLog.Location = new System.Drawing.Point(6, 20);
-            this.txtAdminLog.Multiline = true;
-            this.txtAdminLog.Name = "txtAdminLog";
-            this.txtAdminLog.ReadOnly = true;
-            this.txtAdminLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtAdminLog.Size = new System.Drawing.Size(671, 102);
-            this.txtAdminLog.TabIndex = 2;
-            // 
             // txtAdminInput
             // 
             this.txtAdminInput.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtAdminInput.Location = new System.Drawing.Point(75, 128);
             this.txtAdminInput.Name = "txtAdminInput";
-            this.txtAdminInput.Size = new System.Drawing.Size(584, 21);
+            this.txtAdminInput.Size = new System.Drawing.Size(672, 21);
             this.txtAdminInput.TabIndex = 28;
             this.txtAdminInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtAdminInput_KeyDown);
             // 
@@ -2327,7 +2268,7 @@ namespace MCForge.Gui
             this.groupBox1.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.Location = new System.Drawing.Point(8, 5);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(683, 155);
+            this.groupBox1.Size = new System.Drawing.Size(753, 155);
             this.groupBox1.TabIndex = 35;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Op Chat";
@@ -2346,9 +2287,144 @@ namespace MCForge.Gui
             this.txtOpInput.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOpInput.Location = new System.Drawing.Point(57, 128);
             this.txtOpInput.Name = "txtOpInput";
-            this.txtOpInput.Size = new System.Drawing.Size(602, 21);
+            this.txtOpInput.Size = new System.Drawing.Size(690, 21);
             this.txtOpInput.TabIndex = 30;
             this.txtOpInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtOpInput_KeyDown);
+            // 
+            // txtLogMenuStrip
+            // 
+            this.txtLogMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nightModeToolStripMenuItem,
+            this.colorsToolStripMenuItem,
+            this.dateStampToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.copySelectedToolStripMenuItem,
+            this.copyAllToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.clearToolStripMenuItem});
+            this.txtLogMenuStrip.Name = "txtLogMenuStrip";
+            this.txtLogMenuStrip.Size = new System.Drawing.Size(150, 148);
+            // 
+            // nightModeToolStripMenuItem
+            // 
+            this.nightModeToolStripMenuItem.Name = "nightModeToolStripMenuItem";
+            this.nightModeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.nightModeToolStripMenuItem.Text = "Night Theme";
+            this.nightModeToolStripMenuItem.Click += new System.EventHandler(this.nightModeToolStripMenuItem_Click_1);
+            // 
+            // colorsToolStripMenuItem
+            // 
+            this.colorsToolStripMenuItem.Checked = true;
+            this.colorsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
+            this.colorsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.colorsToolStripMenuItem.Text = "Colors";
+            this.colorsToolStripMenuItem.Click += new System.EventHandler(this.colorsToolStripMenuItem_Click_1);
+            // 
+            // dateStampToolStripMenuItem
+            // 
+            this.dateStampToolStripMenuItem.Checked = true;
+            this.dateStampToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dateStampToolStripMenuItem.Name = "dateStampToolStripMenuItem";
+            this.dateStampToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.dateStampToolStripMenuItem.Text = "Date Stamp";
+            this.dateStampToolStripMenuItem.Click += new System.EventHandler(this.dateStampToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(146, 6);
+            // 
+            // copySelectedToolStripMenuItem
+            // 
+            this.copySelectedToolStripMenuItem.Name = "copySelectedToolStripMenuItem";
+            this.copySelectedToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.copySelectedToolStripMenuItem.Text = "Copy Selected";
+            this.copySelectedToolStripMenuItem.Click += new System.EventHandler(this.copySelectedToolStripMenuItem_Click);
+            // 
+            // copyAllToolStripMenuItem
+            // 
+            this.copyAllToolStripMenuItem.Name = "copyAllToolStripMenuItem";
+            this.copyAllToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.copyAllToolStripMenuItem.Text = "Copy All";
+            this.copyAllToolStripMenuItem.Click += new System.EventHandler(this.copyAllToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(146, 6);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
+            // 
+            // txtCommandsUsed
+            // 
+            this.txtCommandsUsed.BackColor = System.Drawing.Color.White;
+            this.txtCommandsUsed.Cursor = System.Windows.Forms.Cursors.Default;
+            this.txtCommandsUsed.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCommandsUsed.Location = new System.Drawing.Point(9, 16);
+            this.txtCommandsUsed.Multiline = true;
+            this.txtCommandsUsed.Name = "txtCommandsUsed";
+            this.txtCommandsUsed.ReadOnly = true;
+            this.txtCommandsUsed.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtCommandsUsed.Size = new System.Drawing.Size(478, 100);
+            this.txtCommandsUsed.TabIndex = 0;
+            // 
+            // txtLog
+            // 
+            this.txtLog.BackColor = System.Drawing.SystemColors.Window;
+            this.txtLog.ContextMenuStrip = this.txtLogMenuStrip;
+            this.txtLog.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtLog.Location = new System.Drawing.Point(7, 20);
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ReadOnly = true;
+            this.txtLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Horizontal;
+            this.txtLog.Size = new System.Drawing.Size(480, 261);
+            this.txtLog.TabIndex = 0;
+            this.txtLog.Text = "";
+            // 
+            // PlayersTextBox
+            // 
+            this.PlayersTextBox.BackColor = System.Drawing.SystemColors.Window;
+            this.PlayersTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.PlayersTextBox.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PlayersTextBox.Location = new System.Drawing.Point(306, 304);
+            this.PlayersTextBox.Multiline = true;
+            this.PlayersTextBox.Name = "PlayersTextBox";
+            this.PlayersTextBox.ReadOnly = true;
+            this.PlayersTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.PlayersTextBox.Size = new System.Drawing.Size(452, 173);
+            this.PlayersTextBox.TabIndex = 63;
+            // 
+            // txtGlobalLog
+            // 
+            this.txtGlobalLog.BackColor = System.Drawing.SystemColors.Window;
+            this.txtGlobalLog.Cursor = System.Windows.Forms.Cursors.Default;
+            this.txtGlobalLog.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtGlobalLog.Location = new System.Drawing.Point(6, 20);
+            this.txtGlobalLog.Multiline = true;
+            this.txtGlobalLog.Name = "txtGlobalLog";
+            this.txtGlobalLog.ReadOnly = true;
+            this.txtGlobalLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtGlobalLog.Size = new System.Drawing.Size(741, 102);
+            this.txtGlobalLog.TabIndex = 2;
+            // 
+            // txtAdminLog
+            // 
+            this.txtAdminLog.BackColor = System.Drawing.SystemColors.Window;
+            this.txtAdminLog.Cursor = System.Windows.Forms.Cursors.Default;
+            this.txtAdminLog.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAdminLog.Location = new System.Drawing.Point(6, 20);
+            this.txtAdminLog.Multiline = true;
+            this.txtAdminLog.Name = "txtAdminLog";
+            this.txtAdminLog.ReadOnly = true;
+            this.txtAdminLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtAdminLog.Size = new System.Drawing.Size(741, 102);
+            this.txtAdminLog.TabIndex = 2;
             // 
             // txtOpLog
             // 
@@ -2360,17 +2436,17 @@ namespace MCForge.Gui
             this.txtOpLog.Name = "txtOpLog";
             this.txtOpLog.ReadOnly = true;
             this.txtOpLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtOpLog.Size = new System.Drawing.Size(664, 96);
+            this.txtOpLog.Size = new System.Drawing.Size(741, 96);
             this.txtOpLog.TabIndex = 29;
             // 
             // Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(707, 523);
-            this.Controls.Add(this.Restart);
+            this.ClientSize = new System.Drawing.Size(775, 523);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnProperties);
+            this.Controls.Add(this.Restart);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -2396,7 +2472,6 @@ namespace MCForge.Gui
             this.gBCommands.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaps)).EndInit();
             this.gBChat.ResumeLayout(false);
-            this.gBChat.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPlayers)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
@@ -2420,6 +2495,7 @@ namespace MCForge.Gui
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.txtLogMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2461,7 +2537,6 @@ namespace MCForge.Gui
         private AutoScrollTextBox txtCommandsUsed;
         private DataGridView dgvMaps;
         private GroupBox gBChat;
-        private AutoScrollTextBox txtLog;
         private Label label2;
         private TextBox txtCommands;
         private TextBox txtInput;
@@ -2628,5 +2703,15 @@ namespace MCForge.Gui
         private AutoScrollTextBox txtGlobalLog;
         private TextBox txtGlobalInput;
         private Button WoM;
+        private Components.ColoredTextBox txtLog;
+        private ContextMenuStrip txtLogMenuStrip;
+        private ToolStripMenuItem nightModeToolStripMenuItem;
+        private ToolStripMenuItem colorsToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripMenuItem copySelectedToolStripMenuItem;
+        private ToolStripMenuItem copyAllToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripMenuItem clearToolStripMenuItem;
+        private ToolStripMenuItem dateStampToolStripMenuItem;
     }
 }

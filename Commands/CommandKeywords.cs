@@ -140,7 +140,6 @@ namespace MCForge.Commands
             new CommandKeywords((new CmdJail()), "prison punish");
             new CommandKeywords((new CmdJoker()), "joke troll fun");
             new CommandKeywords((new CmdKick()), "moderate ban player");
-            new CommandKeywords((new CmdKickAll()), "kick all player");
             new CommandKeywords((new CmdKickban()), "kick ban moderate");
             new CommandKeywords((new CmdKill()), "die player murder");
             new CommandKeywords((new CmdKillPhysics()), "kill physics level");
@@ -305,7 +304,6 @@ namespace MCForge.Commands
             new CommandKeywords((new CmdXmute()), "mute extra");
             new CommandKeywords((new CmdXspawn()), "extra spawn");
             new CommandKeywords((new CmdXundo()), "undo extra");
-            new CommandKeywords((new CmdZTime()), "zombie time");
             new CommandKeywords((new CmdZombieGame()), "zombie game");
             new CommandKeywords((new CmdZone()), "area");
             new CommandKeywords((new CmdZz()), "static cuboid");

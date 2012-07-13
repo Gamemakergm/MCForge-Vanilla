@@ -288,7 +288,6 @@ namespace MCForge.Gui
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.ChkPort = new System.Windows.Forms.Button();
-            this.ChkPortResult = new System.Windows.Forms.TextBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -411,6 +410,7 @@ namespace MCForge.Gui
             this.groupBox25 = new System.Windows.Forms.GroupBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.chkIgnoreOmnibans = new System.Windows.Forms.CheckBox();
             this.tabPage3.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -1194,7 +1194,7 @@ namespace MCForge.Gui
             // 
             this.txtPort.Location = new System.Drawing.Point(57, 85);
             this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(46, 21);
+            this.txtPort.Size = new System.Drawing.Size(63, 21);
             this.txtPort.TabIndex = 2;
             this.toolTip.SetToolTip(this.txtPort, "The port that the server will output on.\nDefault = 25565\n\nChanging will reset you" +
         "r ExternalURL.");
@@ -1984,6 +1984,7 @@ namespace MCForge.Gui
             // 
             // groupBox18
             // 
+            this.groupBox18.Controls.Add(this.chkIgnoreOmnibans);
             this.groupBox18.Controls.Add(this.chkPrmOnly);
             this.groupBox18.Location = new System.Drawing.Point(369, 394);
             this.groupBox18.Name = "groupBox18";
@@ -3118,7 +3119,6 @@ namespace MCForge.Gui
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.txtPort);
             this.groupBox1.Controls.Add(this.ChkPort);
-            this.groupBox1.Controls.Add(this.ChkPortResult);
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(410, 124);
@@ -3155,24 +3155,13 @@ namespace MCForge.Gui
             // 
             // ChkPort
             // 
-            this.ChkPort.Location = new System.Drawing.Point(120, 83);
+            this.ChkPort.Location = new System.Drawing.Point(242, 83);
             this.ChkPort.Name = "ChkPort";
-            this.ChkPort.Size = new System.Drawing.Size(69, 23);
+            this.ChkPort.Size = new System.Drawing.Size(149, 23);
             this.ChkPort.TabIndex = 25;
-            this.ChkPort.Text = "Check Port";
+            this.ChkPort.Text = "Server Port Utilities";
             this.ChkPort.UseVisualStyleBackColor = true;
             this.ChkPort.Click += new System.EventHandler(this.ChkPort_Click);
-            // 
-            // ChkPortResult
-            // 
-            this.ChkPortResult.BackColor = System.Drawing.SystemColors.Control;
-            this.ChkPortResult.Location = new System.Drawing.Point(205, 84);
-            this.ChkPortResult.Name = "ChkPortResult";
-            this.ChkPortResult.ReadOnly = true;
-            this.ChkPortResult.Size = new System.Drawing.Size(149, 21);
-            this.ChkPortResult.TabIndex = 26;
-            this.ChkPortResult.Text = "Port Check Not Started!";
-            this.ChkPortResult.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // tabControl
             // 
@@ -4578,6 +4567,18 @@ namespace MCForge.Gui
             this.listBox1.Size = new System.Drawing.Size(129, 472);
             this.listBox1.TabIndex = 0;
             // 
+            // chkIgnoreOmnibans
+            // 
+            this.chkIgnoreOmnibans.Appearance = System.Windows.Forms.Appearance.Button;
+            this.chkIgnoreOmnibans.Location = new System.Drawing.Point(6, 58);
+            this.chkIgnoreOmnibans.Name = "chkIgnoreOmnibans";
+            this.chkIgnoreOmnibans.Size = new System.Drawing.Size(104, 48);
+            this.chkIgnoreOmnibans.TabIndex = 48;
+            this.chkIgnoreOmnibans.Text = "Ignore Omnibans (not recommended)";
+            this.chkIgnoreOmnibans.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.toolTip.SetToolTip(this.chkIgnoreOmnibans, "Not Recommended, it allows a very specific list of hackers to join your server.");
+            this.chkIgnoreOmnibans.UseVisualStyleBackColor = true;
+            // 
             // PropertyWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4593,7 +4594,6 @@ namespace MCForge.Gui
             this.MaximizeBox = false;
             this.Name = "PropertyWindow";
             this.Text = "Properties";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PropertyWindow_FormClosing);
             this.Load += new System.EventHandler(this.PropertyWindow_Load);
             this.Disposed += new System.EventHandler(this.PropertyWindow_Unload);
             this.tabPage3.ResumeLayout(false);
@@ -4817,7 +4817,6 @@ namespace MCForge.Gui
         private System.Windows.Forms.NumericUpDown numPlayers;
         private System.Windows.Forms.NumericUpDown numGuests;
         private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.TextBox ChkPortResult;
         private System.Windows.Forms.TextBox txtDepth;
         private System.Windows.Forms.TextBox txtMain;
         private System.Windows.Forms.TextBox txtMaps;
@@ -5087,5 +5086,6 @@ namespace MCForge.Gui
         private System.Windows.Forms.Button TntWrsDiffSlctBt;
         private System.Windows.Forms.CheckBox TntWrsStreaksChck;
         private System.Windows.Forms.CheckBox txechx;
+        private System.Windows.Forms.CheckBox chkIgnoreOmnibans;
     }
 }

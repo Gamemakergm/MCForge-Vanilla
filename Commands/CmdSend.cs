@@ -23,10 +23,8 @@ using MCForge.SQL;
 //using MySql.Data.Types;
 
 
-namespace MCForge.Commands
-{
-    public class CmdSend : Command
-    {
+namespace MCForge.Commands {
+    public class CmdSend : Command {
         public override string name { get { return "send"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
@@ -34,33 +32,36 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Builder; } }
         public CmdSend() { }
 
-        public override void Use(Player p, string message)
-        {
-            if (message == "" || message.IndexOf(' ') == -1) { Help(p); return; }
+        public override void Use(Player p, string message) {
+            if ( message == "" || message.IndexOf(' ') == -1 ) { Help(p); return; }
 
             Player who = Player.Find(message.Split(' ')[0]);
 
             string whoTo, fromname;
-            if (who != null) whoTo = who.name;
+            if ( who != null ) whoTo = who.name;
             else whoTo = message.Split(' ')[0];
-            if (p != null) fromname = p.name;
+            if ( p != null ) fromname = p.name;
             else fromname = "Console";
 
             message = message.Substring(message.IndexOf(' ') + 1);
 
+            if ( !System.Text.RegularExpressions.Regex.IsMatch(message.ToLower(), @"^[a-z0-9]*?$") ) {
+                Player.SendMessage(p, "That is not allowed");
+                return;
+            }
+
             //DB
-            if (message.Length > 255 && Server.useMySQL) { Player.SendMessage(p, "Message was too long. The text below has been trimmed."); Player.SendMessage(p, message.Substring(256)); message = message.Remove(256); }
-                Database.executeQuery("CREATE TABLE if not exists `Inbox" + whoTo + "` (PlayerFrom CHAR(20), TimeSent DATETIME, Contents VARCHAR(255));");
-                if (!Server.useMySQL)
-                    Server.s.Log(message.Replace("'", "\\'"));
-                Database.executeQuery("INSERT INTO `Inbox" + whoTo + "` (PlayerFrom, TimeSent, Contents) VALUES ('" + fromname + "', '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + message.Replace("'", (Server.useMySQL ? "\\'" : "''")) + "')");
+            if ( message.Length > 255 && Server.useMySQL ) { Player.SendMessage(p, "Message was too long. The text below has been trimmed."); Player.SendMessage(p, message.Substring(256)); message = message.Remove(256); }
+            Database.executeQuery("CREATE TABLE if not exists `Inbox" + whoTo + "` (PlayerFrom CHAR(20), TimeSent DATETIME, Contents VARCHAR(255));");
+            if ( !Server.useMySQL )
+                Server.s.Log(message.Replace("'", "\\'"));
+            Database.executeQuery("INSERT INTO `Inbox" + whoTo + "` (PlayerFrom, TimeSent, Contents) VALUES ('" + fromname + "', '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + message.Replace("'", ( Server.useMySQL ? "\\'" : "''" )) + "')");
             //DB
 
             Player.SendMessage(p, "Message sent to &5" + whoTo + ".");
-            if (who != null) who.SendMessage("Message recieved from &5" + fromname + Server.DefaultColor + ".");
+            if ( who != null ) who.SendMessage("Message recieved from &5" + fromname + Server.DefaultColor + ".");
         }
-        public override void Help(Player p)
-        {
+        public override void Help(Player p) {
             Player.SendMessage(p, "/send [name] <message> - Sends <message> to [name].");
         }
     }

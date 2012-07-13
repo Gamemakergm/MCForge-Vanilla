@@ -20,35 +20,35 @@ using System;
 
 namespace MCForge.Commands
 {
-    public class CmdGlobalCLS : Command
-    {
-        public override string name { get { return "globalcls"; } }
-        public override string shortcut { get { return "gcls"; } }
-        public override string type { get { return "other"; } }
-        public override bool museumUsable { get { return true; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
+	public class CmdGlobalCLS : Command
+	{
+		public override string name { get { return "globalcls"; } }
+		public override string shortcut { get { return "gcls"; } }
+		public override string type { get { return "other"; } }
+		public override bool museumUsable { get { return true; } }
+		public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
-        public override void Use(Player p, string message)
-        {
-            int i = 0;
-            for (i = 0; i < 20; i++)
-            {
-                Player.players.ForEach(delegate(Player p1) { BlankMessage(p1); });
-            }
-            Player.GlobalMessage("%4Global Chat Cleared.");
-        }
-        //Yes this does work
-        //Trust me...I'm a doctor
-        public void BlankMessage(Player p)
-        {
-            byte[] buffer = new byte[65];
-            Player.StringFormat(" ", 64).CopyTo(buffer, 1);
-            p.SendRaw(13, buffer);
-            buffer = null;
-        }
-        public override void Help(Player p)
-        {
-            Player.SendMessage(p, "/globalcls - Clears the chat for all users.");
-        }
-    }
+		public override void Use(Player p, string message)
+		{
+			int i = 0;
+			for (i = 0; i < 20; i++)
+			{
+				Player.players.ForEach(delegate(Player p1) { BlankMessage(p1); });
+			}
+			Player.GlobalMessage("%4Global Chat Cleared.");
+		}
+		//Yes this does work
+		//Trust me...I'm a doctor
+		public void BlankMessage(Player p)
+		{
+			byte[] buffer = new byte[65];
+			Player.StringFormat(" ", 64).CopyTo(buffer, 1);
+			p.SendRaw(13, buffer);
+			buffer = null;
+		}
+		public override void Help(Player p)
+		{
+			Player.SendMessage(p, "/globalcls - Clears the chat for all users.");
+		}
+	}
 }

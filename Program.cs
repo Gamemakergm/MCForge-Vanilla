@@ -39,6 +39,8 @@ namespace Starter
         static bool needsToRestart = false;
         static string parent = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
         //Console.ReadLine() is ignored while Starter is set as Windows Application in properties. (At least on Windows)
+
+        [STAThread]
         static void Main(string[] args)
         {
             Environment.CurrentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

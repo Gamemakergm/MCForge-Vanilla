@@ -21,6 +21,7 @@ using System.Data;
 using System.Linq;
 using System.Collections.Generic;
 using MCForge.SQL;
+using System.Text.RegularExpressions;
 //using MySql.Data.MySqlClient;
 //using MySql.Data.Types;
 
@@ -38,37 +39,16 @@ namespace MCForge.Commands
 
         public override void Use(Player p, string message)
         {
-            if (message == "") { Help(p); return; }
+            if (String.IsNullOrEmpty(message.Trim())) { Help(p); return; }
+            if ( !Regex.IsMatch(message.ToLower(), @"^[a-z0-9]*?$") ) {
+                Player.SendMessage(p, "That is not allowed");
+                return;
+            }
             if (message[0] == '@')
             {
                 message = message.Remove(0, 1).Trim();
                 Player who = Player.Find(message);
-                if (Server.devs.Contains(message))
-                {
-                    Player.SendMessage(p, "You can't ban a MCForge Developer!");
-                    if (p != null)
-                    {
-                        Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " attempted to ban a MCForge Developer!");
-                    }
-                    else
-                    {
-                        Player.GlobalMessage(Server.DefaultColor + "The Console attempted to ban a MCForge Developer!");
-                    }
-                    return;
-                }
-                if (Server.gcmodhasprotection(message))
-                {
-                    Player.SendMessage(p, "You can't ban a Global Chat Moderator!");
-                    if (p != null)
-                    {
-                        Player.GlobalMessage(p.color + p.name + Server.DefaultColor + " attempted to ban a Global Chat Moderator!");
-                    }
-                    else
-                    {
-                        Player.GlobalMessage(Server.DefaultColor + "The Console attempted to ban a Global Chat Moderator!");
-                    }
-                    return;
-                }
+               
                 if (who == null)
                 {
                     DataTable ip;

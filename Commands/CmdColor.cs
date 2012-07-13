@@ -21,10 +21,8 @@ using MCForge.SQL;
 //using MySql.Data.Types;
 
 
-namespace MCForge.Commands
-{
-    public class CmdColor : Command
-    {
+namespace MCForge.Commands {
+    public class CmdColor : Command {
         public override string name { get { return "color"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return "other"; } }
@@ -32,36 +30,18 @@ namespace MCForge.Commands
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
         public CmdColor() { }
 
-        public override void Use(Player p, string message)
-        {
-            if (message == "" || message.Split(' ').Length > 2) { Help(p); return; }
+        public override void Use(Player p, string message) {
+            if ( message == "" || message.Split(' ').Length > 2 ) { Help(p); return; }
             int pos = message.IndexOf(' ');
-            if (pos != -1)
-            {
+            if ( pos != -1 ) {
                 Player who = Player.Find(message.Substring(0, pos));
-                if (!Server.devs.Contains(p.name) && !Server.gcmodhasprotection(p.name)) {
-                if (p != null && who.group.Permission > p.group.Permission) { Player.SendMessage(p, "You cannot change the color of someone ranked higher than you!"); return; }
-                }
-                if (who == null) { Player.SendMessage(p, "There is no player \"" + message.Substring(0, pos) + "\"!"); return; }
-                if (Server.devs.Contains(who.name))
-                    {
-                    	if (!Server.devs.Contains(p.name))
-                    	{
-                        Player.SendMessage(p, "You can't change the color of a developer.");
-                        return;
-                    	}
-                    }
-                if (Server.gcmods.Contains(who.name))
-                {
-                    if (!Server.devs.Contains(p.name)||!Server.gcmods.Contains(p.name))
-                    {
-                        Player.SendMessage(p, "You can't change the color of a Global Chat Moderator.");
-                        return;
-                    }
-                }
-                if (message.Substring(pos + 1) == "del")
-                {
-                    if (Server.useMySQL) MySQL.executeQuery("UPDATE Players SET color = '' WHERE name = '" + who.name + "'"); else SQLite.executeQuery("UPDATE Players SET color = '' WHERE name = '" + who.name + "'");
+
+                if ( p != null && who.group.Permission > p.group.Permission ) { Player.SendMessage(p, "You cannot change the color of someone ranked higher than you!"); return; }
+
+                if ( who == null ) { Player.SendMessage(p, "There is no player \"" + message.Substring(0, pos) + "\"!"); return; }
+
+                if ( message.Substring(pos + 1) == "del" ) {
+                    if ( Server.useMySQL ) MySQL.executeQuery("UPDATE Players SET color = '' WHERE name = '" + who.name + "'"); else SQLite.executeQuery("UPDATE Players SET color = '' WHERE name = '" + who.name + "'");
                     Player.GlobalChat(who, who.color + "*" + Name(who.name) + " color reverted to " + who.group.color + "their group's default" + Server.DefaultColor + ".", false);
                     who.color = who.group.color;
 
@@ -71,18 +51,16 @@ namespace MCForge.Commands
                     return;
                 }
                 string color = c.Parse(message.Substring(pos + 1));
-                if (color == "") { Player.SendMessage(p, "There is no color \"" + message + "\"."); }
-                else if (color == who.color) { Player.SendMessage(p, who.name + " already has that color."); }
-                else
-                {
+                if ( color == "" ) { Player.SendMessage(p, "There is no color \"" + message + "\"."); }
+                else if ( color == who.color ) { Player.SendMessage(p, who.name + " already has that color."); }
+                else {
                     //Player.GlobalChat(who, p.color + "*" + p.name + "&e changed " + who.color + Name(who.name) +
                     //                  " color to " + color +
                     //                  c.Name(color) + "&e.", false);
-                    if (Server.useMySQL) MySQL.executeQuery("UPDATE Players SET color = '" + c.Name(color) + "' WHERE name = '" + who.name + "'"); else SQLite.executeQuery("UPDATE Players SET color = '" + c.Name(color) + "' WHERE name = '" + who.name + "'");
+                    if ( Server.useMySQL ) MySQL.executeQuery("UPDATE Players SET color = '" + c.Name(color) + "' WHERE name = '" + who.name + "'"); else SQLite.executeQuery("UPDATE Players SET color = '" + c.Name(color) + "' WHERE name = '" + who.name + "'");
 
                     Player.GlobalChat(who, who.color + "*" + Name(who.name) + " color changed to " + color + c.Name(color) + Server.DefaultColor + ".", false);
-                    if (p == null)
-                    {
+                    if ( p == null ) {
                         Player.SendMessage(p, "*" + Name(who.name) + " color was changed to " + c.Name(color) + ".");
                     }
                     who.color = color;
@@ -92,15 +70,13 @@ namespace MCForge.Commands
                     who.SetPrefix();
                 }
             }
-            else
-            {
-                if (p != null)
-                {
-                    if (message == "del")
-                    {
-                        if (Server.useMySQL) MySQL.executeQuery("UPDATE Players SET color = '' WHERE name = '" + p.name + "'"); else 
+            else {
+                if ( p != null ) {
+                    if ( message == "del" ) {
+                        if ( Server.useMySQL ) MySQL.executeQuery("UPDATE Players SET color = '' WHERE name = '" + p.name + "'");
+                        else
 
-                        Player.GlobalChat(p, p.color + "*" + Name(p.name) + " color reverted to " + p.group.color + "their group's default" + Server.DefaultColor + ".", false);
+                            Player.GlobalChat(p, p.color + "*" + Name(p.name) + " color reverted to " + p.group.color + "their group's default" + Server.DefaultColor + ".", false);
                         p.color = p.group.color;
 
                         Player.GlobalDie(p, false);
@@ -109,11 +85,10 @@ namespace MCForge.Commands
                         return;
                     }
                     string color = c.Parse(message);
-                    if (color == "") { Player.SendMessage(p, "There is no color \"" + message + "\"."); }
-                    else if (color == p.color) { Player.SendMessage(p, "You already have that color."); }
-                    else
-                    {
-                        if (Server.useMySQL) MySQL.executeQuery("UPDATE Players SET color = '" + c.Name(color) + "' WHERE name = '" + p.name + "'"); else SQLite.executeQuery("UPDATE Players SET color = '" + c.Name(color) + "' WHERE name = '" + p.name + "'");
+                    if ( color == "" ) { Player.SendMessage(p, "There is no color \"" + message + "\"."); }
+                    else if ( color == p.color ) { Player.SendMessage(p, "You already have that color."); }
+                    else {
+                        if ( Server.useMySQL ) MySQL.executeQuery("UPDATE Players SET color = '" + c.Name(color) + "' WHERE name = '" + p.name + "'"); else SQLite.executeQuery("UPDATE Players SET color = '" + c.Name(color) + "' WHERE name = '" + p.name + "'");
 
                         Player.GlobalChat(p, p.color + "*" + Name(p.name) + " color changed to " + color + c.Name(color) + Server.DefaultColor + ".", false);
                         p.color = color;
@@ -125,16 +100,14 @@ namespace MCForge.Commands
                 }
             }
         }
-        public override void Help(Player p)
-        {
+        public override void Help(Player p) {
             Player.SendMessage(p, "/color [player] <color/del>- Changes the nick color.  Using 'del' removes color.");
             Player.SendMessage(p, "&0black &1navy &2green &3teal &4maroon &5purple &6gold &7silver");
             Player.SendMessage(p, "&8gray &9blue &alime &baqua &cred &dpink &eyellow &fwhite");
         }
-        static string Name(string name)
-        {
+        static string Name(string name) {
             string ch = name[name.Length - 1].ToString().ToLower();
-            if (ch == "s" || ch == "x") { return name + Server.DefaultColor + "'"; }
+            if ( ch == "s" || ch == "x" ) { return name + Server.DefaultColor + "'"; }
             else { return name + Server.DefaultColor + "'s"; }
         }
     }

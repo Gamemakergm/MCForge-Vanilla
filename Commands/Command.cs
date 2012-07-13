@@ -27,7 +27,7 @@ namespace MCForge
 		public abstract string shortcut { get; }
 		public abstract string type { get; }
 		public abstract bool museumUsable { get; }
-        public abstract LevelPermission defaultRank { get; }
+		public abstract LevelPermission defaultRank { get; }
 		public abstract void Use(Player p, string message);
 		public abstract void Help(Player p);
 		public bool isIntervalized;
@@ -67,7 +67,6 @@ namespace MCForge
 			all.Add(new CmdBotSet());
 			all.Add(new CmdBotSummon());
 			all.Add(new CmdC4());
-            all.Add(new CmdDrawface());
 			all.Add(new CmdCalculate());
 			all.Add(new CmdChain());
 			all.Add(new CmdChangeLog());
@@ -117,9 +116,9 @@ namespace MCForge
 			all.Add(new CmdFollow());
 			all.Add(new CmdFreeze());
 			all.Add(new CmdGarbage());
-            all.Add(new CmdGcaccept());
-            all.Add(new CmdGcrules());
-            all.Add(new CmdGcbanlistupdate());
+			all.Add(new CmdGcaccept());
+			all.Add(new CmdGcrules());
+			all.Add(new CmdGcbanlistupdate());
 			all.Add(new CmdGifToCin());
 			all.Add(new CmdGive());
 			all.Add(new CmdGlobal());
@@ -148,7 +147,6 @@ namespace MCForge
 			all.Add(new CmdJail());
 			all.Add(new CmdJoker());
 			all.Add(new CmdKick());
-			all.Add(new CmdKickAll());
 			all.Add(new CmdKickban());
 			all.Add(new CmdKill());
 			all.Add(new CmdKillPhysics());
@@ -245,7 +243,7 @@ namespace MCForge
 			all.Add(new CmdSave());
 			all.Add(new CmdSay());
 			all.Add(new CmdSCinema());
-            all.Add(new CmdSearch());
+			all.Add(new CmdSearch());
 			all.Add(new CmdSeen());
 			all.Add(new CmdSend());
 			all.Add(new CmdSendCmd());
@@ -313,20 +311,19 @@ namespace MCForge
 			all.Add(new CmdXmute());
 			all.Add(new CmdXspawn());
 			all.Add(new CmdXundo());
-			all.Add(new CmdZTime());
 			all.Add(new CmdZombieGame());
 			all.Add(new CmdZone());
 			all.Add(new CmdZz());
 			core.commands = new List<Command>(all.commands);
 			Scripting.Autoload();
 		}
-        /// <summary>
-        /// Add a command to the server
-        /// </summary>
-        /// <param name="command">The command to add</param>
-        public void AddCommand(Command command)
-        {
-            all.Add(command);
-        }
+		/// <summary>
+		/// Add a command to the server
+		/// </summary>
+		/// <param name="command">The command to add</param>
+		public void AddCommand(Command command)
+		{
+			all.Add(command);
+		}
 	}
 }

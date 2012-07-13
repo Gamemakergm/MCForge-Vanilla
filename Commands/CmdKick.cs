@@ -51,16 +51,6 @@ namespace MCForge.Commands {
                     return;
                 }
             }
-            if (Server.devs.Contains(who.name)) {
-                    Player.SendMessage(p, "You can't kick a MCForge Developer!");
-                Player.GlobalChat(p, (p != null ? (p.color + p.name) : "Console ") + Server.DefaultColor + " tried to kick " + who.color + who.name + Server.DefaultColor + " but failed, because " + who.color + who.name + Server.DefaultColor + " is a developer", false);
-                    return;
-            }
-            if (Server.gcmodhasprotection(who.name)) {
-                    Player.SendMessage(p, "You can't kick a Global Chat Moderator!");
-                    Player.GlobalChat(p, (p != null ? (p.color + p.name) : "Console ") + Server.DefaultColor + " tried to kick " + who.color + who.name + Server.DefaultColor + " but failed, because " + who.color + who.name + Server.DefaultColor + " is a Global Chat Moderator", false);
-                    return;
-            }
             who.Kick(message);
         }
         public override void Help(Player p) {

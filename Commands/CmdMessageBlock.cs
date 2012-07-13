@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using MCForge.SQL;
+using System.Text.RegularExpressions;
 //using MySql.Data.MySqlClient;
 //using MySql.Data.Types;
 
@@ -33,47 +34,46 @@ namespace MCForge.Commands {
         public CmdMessageBlock() { }
 
         public override void Use(Player p, string message) {
-            if (message == "") { Help(p); return; }
+            if ( message == "" ) { Help(p); return; }
 
             string current = "";
             string cmdparts = "";
 
             /*Fix by alecdent*/
-            try 
-            {
-                foreach (var com in Command.all.commands) {
-                    if (com.type.Contains("mod")) {
+            try {
+                foreach ( var com in Command.all.commands ) {
+                    if ( com.type.Contains("mod") ) {
                         current = "/" + com.name;
 
                         cmdparts = message.Split(' ')[0].ToLower().ToString();
-                        if (cmdparts[0] == '/') {
-                            if (current == cmdparts.ToLower()) {
+                        if ( cmdparts[0] == '/' ) {
+                            if ( current == cmdparts.ToLower() ) {
                                 p.SendMessage("You can't use that command in your messageblock!");
                                 return;
                             }
                         }
 
                         cmdparts = message.Split(' ')[1].ToLower().ToString();
-                        if (cmdparts[0] == '/') {
-                            if (current == cmdparts.ToLower()) {
+                        if ( cmdparts[0] == '/' ) {
+                            if ( current == cmdparts.ToLower() ) {
                                 p.SendMessage("You can't use that command in your messageblock!");
                                 return;
                             }
                         }
-                        if (com.shortcut != "") {
+                        if ( com.shortcut != "" ) {
                             current = "/" + com.name;
 
                             cmdparts = message.Split(' ')[0].ToLower().ToString();
-                            if (cmdparts[0] == '/') {
-                                if (current == cmdparts.ToLower()) {
+                            if ( cmdparts[0] == '/' ) {
+                                if ( current == cmdparts.ToLower() ) {
                                     p.SendMessage("You can't use that command in your messageblock!");
                                     return;
                                 }
                             }
 
                             cmdparts = message.Split(' ')[1].ToLower().ToString();
-                            if (cmdparts[0] == '/') {
-                                if (current == cmdparts.ToLower()) {
+                            if ( cmdparts[0] == '/' ) {
+                                if ( current == cmdparts.ToLower() ) {
                                     p.SendMessage("You can't use that command in your messageblock!");
                                     return;
                                 }
@@ -89,7 +89,7 @@ namespace MCForge.Commands {
             cpos.message = "";
 
             try {
-                switch (message.Split(' ')[0]) {
+                switch ( message.Split(' ')[0] ) {
                     case "air": cpos.type = Block.MsgAir; break;
                     case "water": cpos.type = Block.MsgWater; break;
                     case "lava": cpos.type = Block.MsgLava; break;
@@ -101,7 +101,7 @@ namespace MCForge.Commands {
             }
             catch { cpos.type = Block.MsgWhite; cpos.message = message; }
 
-            if (cpos.message == "") cpos.message = message.Substring(message.IndexOf(' ') + 1);
+            if ( cpos.message == "" ) cpos.message = message.Substring(message.IndexOf(' ') + 1);
             p.blockchangeObject = cpos;
 
             Player.SendMessage(p, "Place where you wish the message block to go."); p.ClearBlockchange();
@@ -119,21 +119,26 @@ namespace MCForge.Commands {
 
             cpos.message = cpos.message.Replace("'", "\\'");
 
+            if ( !Regex.IsMatch(cpos.message.ToLower(), @"^[a-z0-9]*?$") ) {
+                Player.SendMessage(p, "That is not allowed");
+                return;
+            }
+
             DataTable Messages = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Messages" + p.level.name + "` WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z) : SQLite.fillData("SELECT * FROM `Messages" + p.level.name + "` WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z);
             Messages.Dispose();
 
-            if (Messages.Rows.Count == 0) {
-                if (Server.useMySQL) MySQL.executeQuery("INSERT INTO `Messages" + p.level.name + "` (X, Y, Z, Message) VALUES (" + (int)x + ", " + (int)y + ", " + (int)z + ", '" + cpos.message + "')"); else SQLite.executeQuery("INSERT INTO `Messages" + p.level.name + "` (X, Y, Z, Message) VALUES (" + (int)x + ", " + (int)y + ", " + (int)z + ", '" + cpos.message + "')");
+            if ( Messages.Rows.Count == 0 ) {
+                if ( Server.useMySQL ) MySQL.executeQuery("INSERT INTO `Messages" + p.level.name + "` (X, Y, Z, Message) VALUES (" + (int)x + ", " + (int)y + ", " + (int)z + ", '" + cpos.message + "')"); else SQLite.executeQuery("INSERT INTO `Messages" + p.level.name + "` (X, Y, Z, Message) VALUES (" + (int)x + ", " + (int)y + ", " + (int)z + ", '" + cpos.message + "')");
             }
             else {
-                if (Server.useMySQL) MySQL.executeQuery("UPDATE `Messages" + p.level.name + "` SET Message='" + cpos.message + "' WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z); else SQLite.executeQuery("UPDATE `Messages" + p.level.name + "` SET Message='" + cpos.message + "' WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z);
+                if ( Server.useMySQL ) MySQL.executeQuery("UPDATE `Messages" + p.level.name + "` SET Message='" + cpos.message + "' WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z); else SQLite.executeQuery("UPDATE `Messages" + p.level.name + "` SET Message='" + cpos.message + "' WHERE X=" + (int)x + " AND Y=" + (int)y + " AND Z=" + (int)z);
             }
 
             Player.SendMessage(p, "Message block placed.");
             p.level.Blockchange(p, x, y, z, cpos.type);
             p.SendBlockchange(x, y, z, cpos.type);
 
-            if (p.staticCommands) p.Blockchange += new Player.BlockchangeEventHandler(Blockchange1);
+            if ( p.staticCommands ) p.Blockchange += new Player.BlockchangeEventHandler(Blockchange1);
         }
 
         struct CatchPos { public string message; public byte type; }
@@ -141,16 +146,16 @@ namespace MCForge.Commands {
         public void showMBs(Player p) {
             p.showMBs = !p.showMBs;
 
-            using (DataTable Messages = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Messages" + p.level.name + "`") : SQLite.fillData("SELECT * FROM `Messages" + p.level.name + "`")) {
+            using ( DataTable Messages = Server.useMySQL ? MySQL.fillData("SELECT * FROM `Messages" + p.level.name + "`") : SQLite.fillData("SELECT * FROM `Messages" + p.level.name + "`") ) {
                 int i;
 
-                if (p.showMBs) {
-                    for (i = 0; i < Messages.Rows.Count; i++)
+                if ( p.showMBs ) {
+                    for ( i = 0; i < Messages.Rows.Count; i++ )
                         p.SendBlockchange((ushort)Messages.Rows[i]["X"], (ushort)Messages.Rows[i]["Y"], (ushort)Messages.Rows[i]["Z"], Block.MsgWhite);
                     Player.SendMessage(p, "Now showing &a" + i.ToString() + Server.DefaultColor + " MBs.");
                 }
                 else {
-                    for (i = 0; i < Messages.Rows.Count; i++)
+                    for ( i = 0; i < Messages.Rows.Count; i++ )
                         p.SendBlockchange((ushort)Messages.Rows[i]["X"], (ushort)Messages.Rows[i]["Y"], (ushort)Messages.Rows[i]["Z"], p.level.GetTile((ushort)Messages.Rows[i]["X"], (ushort)Messages.Rows[i]["Y"], (ushort)Messages.Rows[i]["Z"]));
                     Player.SendMessage(p, "Now hiding MBs.");
                 }

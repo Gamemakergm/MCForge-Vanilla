@@ -74,6 +74,7 @@ namespace MCForge_.Gui
                 ExitProgram(true);
         }
 
+        [STAThread]
         public static void Main(string[] args)
         {
             startTime = DateTime.Now;

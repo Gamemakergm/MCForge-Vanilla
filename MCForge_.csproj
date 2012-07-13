@@ -94,7 +94,6 @@
     <Compile Include="Ban.cs" />
     <Compile Include="Block.cs" />
     <Compile Include="Commands\CmdC4.cs" />
-    <Compile Include="Commands\CmdDrawFace.cs" />
     <Compile Include="Commands\CmdGcaccept.cs" />
     <Compile Include="Commands\CmdGcbanlistupdate.cs" />
     <Compile Include="Commands\CmdGcrules.cs" />
@@ -102,6 +101,12 @@
     <Compile Include="Commands\CmdSearch.cs" />
     <Compile Include="Commands\CmdTntWars.cs" />
     <Compile Include="Commands\CommandKeywords.cs" />
+    <Compile Include="GUI\ColoredTextBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="GUI\ColoredTextBox.Designer.cs">
+      <DependentUpon>ColoredTextBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Games\CTF\Setup.cs" />
     <Compile Include="GUI\Games\TntWarsGame.cs" />
     <Compile Include="GUI\LavaMapSubmit.cs">
@@ -110,12 +115,22 @@
     <Compile Include="GUI\LavaMapSubmit.Designer.cs">
       <DependentUpon>LavaMapSubmit.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\PortTools.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\PortTools.Designer.cs">
+      <DependentUpon>PortTools.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Textures.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\Textures.Designer.cs">
       <DependentUpon>Textures.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Win32\Margins.cs" />
+    <Compile Include="GUI\Win32\Natives.cs" />
+    <Compile Include="GUI\Win32\RECT.cs" />
+    <Compile Include="GUI\Win32\Utils.cs" />
     <Compile Include="GUI\WoM.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -186,7 +201,6 @@
     <Compile Include="Commands\CmdReview.cs" />
     <Compile Include="Commands\CmdTranslate.cs" />
     <Compile Include="Commands\CmdVIP.cs" />
-    <Compile Include="Commands\CmdZTime.cs" />
     <Compile Include="Commands\CmdBlockSpeed.cs" />
     <Compile Include="DatabaseTransactionHelper.cs" />
     <Compile Include="Database.cs" />
@@ -232,7 +246,6 @@
     <Compile Include="Commands\CmdHigh5.cs" />
     <Compile Include="Commands\CmdIgnore.cs" />
     <Compile Include="Commands\CmdImpersonate.cs" />
-    <Compile Include="Commands\CmdKickAll.cs" />
     <Compile Include="Commands\CmdLockdown.cs" />
     <Compile Include="Commands\CmdLoginMessage.cs" />
     <Compile Include="Commands\CmdLogoutMessage.cs" />
@@ -354,6 +367,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="UPnP.cs" />
     <Compile Include="Util\BigEndianBitConverter.cs" />
     <Compile Include="Util\EBitConverter.cs" />
     <Compile Include="Util\Endianness.cs" />
@@ -571,6 +585,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\LavaMapSubmit.resx">
       <DependentUpon>LavaMapSubmit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\PortTools.resx">
+      <DependentUpon>PortTools.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Textures.resx">
       <DependentUpon>Textures.cs</DependentUpon>
