@@ -39,21 +39,21 @@ namespace MCForge.Commands
             if (pos != -1)
             {
                 Player who = Player.Find(message.Substring(0, pos));
-                if (!Server.devs.Contains(p.name.ToLower()) && !Server.gcmodhasprotection(p.name.ToLower())) {
+                if (!Server.devs.Contains(p.name) && !Server.gcmodhasprotection(p.name)) {
                 if (p != null && who.group.Permission > p.group.Permission) { Player.SendMessage(p, "You cannot change the color of someone ranked higher than you!"); return; }
                 }
                 if (who == null) { Player.SendMessage(p, "There is no player \"" + message.Substring(0, pos) + "\"!"); return; }
-                if (Server.devs.Contains(who.name.ToLower()))
+                if (Server.devs.Contains(who.name))
                     {
-                    	if (!Server.devs.Contains(p.name.ToLower()))
+                    	if (!Server.devs.Contains(p.name))
                     	{
                         Player.SendMessage(p, "You can't change the color of a developer.");
                         return;
                     	}
                     }
-                if (Server.gcmods.Contains(who.name.ToLower()))
+                if (Server.gcmods.Contains(who.name))
                 {
-                    if (!Server.devs.Contains(p.name.ToLower())||!Server.gcmods.Contains(p.name.ToLower()))
+                    if (!Server.devs.Contains(p.name)||!Server.gcmods.Contains(p.name))
                     {
                         Player.SendMessage(p, "You can't change the color of a Global Chat Moderator.");
                         return;

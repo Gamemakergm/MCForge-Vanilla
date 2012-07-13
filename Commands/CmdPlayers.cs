@@ -68,7 +68,7 @@ namespace MCForge.Commands
                 int totalPlayers = 0;
                 foreach (Player pl in Player.players)
                 {
-                    if (!pl.hidden || p == null || p.group.Permission > LevelPermission.Operator || Server.devs.Contains(p.name.ToLower()))
+                    if (!pl.hidden || p == null || p.group.Permission > LevelPermission.Operator || Server.devs.Contains(p.name))
                     {
                         if (String.IsNullOrEmpty(message) || !Group.Exists(message) || Group.Find(message) == pl.group)
                         {
@@ -80,7 +80,7 @@ namespace MCForge.Commands
                                 foundName = pl.name + "-afk";
                             }
 
-                            if (Server.devs.Contains(pl.name.ToLower()))
+                            if (Server.devs.Contains(pl.name))
                             {
                                 if (pl.voice)
                                     devs += " " + "&f+" + Server.DefaultColor + foundName + " (" + pl.level.name + "),";

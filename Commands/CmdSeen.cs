@@ -56,7 +56,7 @@ namespace MCForge.Commands
                         Player.SendMessage(p, "Unable to find player");
                 }
             }
-            else
+            else { Player.SendMessage(p, "nooooope.avi"); return; }
             {
                 Player.SendMessage(p, "Error: Erroneous Name - Illegal characters");
                 Player.SendMessage(p, "Valid characters are: A-Z a-z 0-9");

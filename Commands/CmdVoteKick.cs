@@ -44,7 +44,7 @@ namespace MCForge.Commands
                 Player.SendMessage(p, "Could not find player specified!");
                 return;
             }
-            if (Server.devs.Contains(who.name.ToLower()))
+            if (Server.devs.Contains(who.name) || Server.gcmods.Contains(who.name))
             {
                         Player.SendMessage(p, "You can't votekick a developer!");
                         return;

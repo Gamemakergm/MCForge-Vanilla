@@ -104,7 +104,7 @@ namespace MCForge
         public static PlayerList muted;
         public static PlayerList ignored;
         // The MCForge Developer List
-        internal static readonly List<string> devs = new List<string>(new string[] { "EricKilla", "Merlin33069", "Snowl", "hypereddie10", "headdetect", "Gamemakergm", "cazzar", "givo", "jasonbay13", "Alem_Zupa", "7imekeeper", "ninedrafted", "Nerketur", "Serado", "501st_Commander" });
+        internal static readonly List<string> devs = new List<string>(new string[] { "EricKilla", "Merlin33069", "headdetect", "Snowl", "hypereddie10", "Gamemakergm", "cazzar", "givo", "jasonbay13", "Alem_Zupa", "7imekeeper", "ninedrafted", "Nerketur", "Serado", "501st_commander", "Lavoaster", "Dmitchell94" });
         public static List<string> Devs { get { return new List<string>(devs); } }
 
         public static List<TempBan> tempBans = new List<TempBan>();
@@ -1242,6 +1242,9 @@ namespace MCForge
             return gcmods.Contains(name) && gcmodprotection.Where(line => line.Contains(name)).Any(line => line.Split('*')[1] == "1");
         }
 
-        public static bool canusegc { get; set; }
+        public static bool canusegc = true; //badpokerface
+        public static int gcmultiwarns = 0, gcspamcount = 0, gccapscount = 0, gcfloodcount = 0;
+        public static DateTime gclastmsgtime = DateTime.MinValue;
+        public static string gclastmsg = "";
     }
 }

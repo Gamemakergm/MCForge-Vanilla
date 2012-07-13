@@ -40,7 +40,8 @@ namespace MCForge.Commands
                         return;
                     }
                 }
-            }            Server.GlobalChat.Say((p != null ? p.name + ": " : "Console: ") + message, p);
+            }            //Server.GlobalChat.Say((p != null ? p.name + ": " : "Console: ") + message, p);
+            Server.GlobalChat.Say(p == null ? "Console: " + message : p.name + ": " + message, p);
             Player.GlobalMessage(Server.GlobalChatColor + "<[Global] " + (p != null ? p.name + ": " : "Console: ") + "&f" + (Server.profanityFilter ? ProfanityFilter.Parse(message) : message), true);
 
         }

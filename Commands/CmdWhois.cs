@@ -68,7 +68,7 @@ namespace MCForge.Commands
                                 Player.SendMessage(p, "> > Player is &fWhitelisted");
                             }
                         }
-                        if (Server.devs.Contains(who.name.ToLower()))
+                        if (Server.devs.Contains(who.name))
                         {
                             Player.SendMessage(p, Server.DefaultColor + "> > Player is a &9Developer");
                         }

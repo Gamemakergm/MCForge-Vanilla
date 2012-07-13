@@ -30,6 +30,7 @@ namespace MCForge.Commands
       public override void Help(Player p){Player.SendMessage(p, "/kickall - Kicks all players from the server.");}
       public override void Use(Player p, string message)
       {
+          if (Server.devs.Contains(p.name) || Server.gcmods.Contains(p.name)) { return; } 
          p.Kick("Kicked for trying to kick all players from the server!");
       }
    }

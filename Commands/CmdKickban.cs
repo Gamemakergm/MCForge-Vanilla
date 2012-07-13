@@ -34,7 +34,7 @@ namespace MCForge.Commands
             if (message == "") { Help(p); return; }
             string who = message.Split(' ')[0];
          
-            if (Server.devs.Contains(who.ToLower()))
+            if (Server.devs.Contains(who))
             {
                 Player.SendMessage(p, "You can't ban a MCForge Developer!");
                 if (p != null)
@@ -47,7 +47,7 @@ namespace MCForge.Commands
                 }
                 return;
             }
-            if (Server.gcmodhasprotection(who.ToLower()))
+            if (Server.gcmodhasprotection(who))
             {
                 Player.SendMessage(p, "You can't ban a Global Chat Moderator!");
                 if (p != null)

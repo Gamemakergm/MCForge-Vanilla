@@ -39,23 +39,23 @@ namespace MCForge.Commands
             if (who == null) { Player.SendMessage(p, "Could not find player."); return; }
             if (p != null && who.group.Permission > p.group.Permission)
             {
-            	if (!Server.devs.Contains(p.name.ToLower()))
+            	if (!Server.devs.Contains(p.name))
             	{
                 Player.SendMessage(p, "Cannot change the title of someone of greater rank");
                 return;
             	}
             }
-            if (Server.devs.Contains(who.name.ToLower()))
+            if (Server.devs.Contains(who.name))
                     {
-                    	if (!Server.devs.Contains(p.name.ToLower()))
+                    	if (!Server.devs.Contains(p.name))
                     	{
                         Player.SendMessage(p, "You can't change the title of a developer!");
                         return;
                     	}
                     }
-            if (Server.gcmods.Contains(who.name.ToLower()))
+            if (Server.gcmods.Contains(who.name))
             {
-                if (!Server.devs.Contains(p.name.ToLower())||!Server.gcmods.Contains(p.name.ToLower()))
+                if (!Server.devs.Contains(p.name) && !Server.gcmods.Contains(p.name))
                 {
                     Player.SendMessage(p, "You can't change the title of a Global Chat Moderator!");
                     return;
@@ -84,9 +84,13 @@ namespace MCForge.Commands
             }
 
             if (newTitle.Length > 17) { Player.SendMessage(p, "Title must be under 17 letters."); return; }
-            if (p != null && !Server.devs.Contains(p.name))
-            {
-                if (Server.devs.Contains(who.name) || newTitle.ToLower() == "dev" || (newTitle.ToLower().Contains("dev") && newTitle.ToLower().Contains("%"))) { Player.SendMessage(p, "Can't let you do that, starfox."); return; }
+            if (p != null && !Server.devs.Contains(p.name)) {
+                string title = newTitle.ToLower();
+                foreach (char c in Server.ColourCodesNoPercent) {
+                    title = title.Replace("%" + c, "");
+                    title = title.Replace("&" + c, "");
+                }
+                if (title.Contains("dev")) { Player.SendMessage(p, "You're not a developer! Stop pretending you are!"); return; }
             }
 
             if (newTitle != "")

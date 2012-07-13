@@ -942,6 +942,7 @@ namespace MCForge.Gui
             this.txtCommands.Name = "txtCommands";
             this.txtCommands.Size = new System.Drawing.Size(183, 21);
             this.txtCommands.TabIndex = 28;
+            //this.txtCommands.TextChanged += new System.EventHandler(this.txtCommands_TextChanged);
             this.txtCommands.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCommands_KeyDown);
             // 
             // txtInput
@@ -980,7 +981,7 @@ namespace MCForge.Gui
             this.dgvPlayers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvPlayers.Size = new System.Drawing.Size(246, 250);
             this.dgvPlayers.TabIndex = 37;
-            this.dgvPlayers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPlayers_CellContentClick);
+            //this.dgvPlayers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPlayers_CellContentClick);
             this.dgvPlayers.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.dgvPlayers_RowPrePaint);
             // 
             // label1
@@ -1042,7 +1043,7 @@ namespace MCForge.Gui
             this.UnloadedList.Name = "UnloadedList";
             this.UnloadedList.Size = new System.Drawing.Size(155, 160);
             this.UnloadedList.TabIndex = 1;
-            this.UnloadedList.SelectedIndexChanged += new System.EventHandler(this.UnloadedList_SelectedIndexChanged);
+            //this.UnloadedList.SelectedIndexChanged += new System.EventHandler(this.UnloadedList_SelectedIndexChanged);
             // 
             // ldmapbt
             // 
@@ -1099,7 +1100,7 @@ namespace MCForge.Gui
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(372, 207);
             this.panel2.TabIndex = 48;
-            this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
+            //this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
             // WoM
             // 

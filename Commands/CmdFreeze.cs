@@ -37,12 +37,12 @@ namespace MCForge.Commands
             if (who == null) { Player.SendMessage(p, "Could not find player."); return; }
             else if (who == p) { Player.SendMessage(p, "Cannot freeze yourself."); return; }
             else if (p != null) { if (who.group.Permission >= p.group.Permission) { Player.SendMessage(p, "Cannot freeze someone of equal or greater rank."); return; } }
-            if (Server.devs.Contains(who.name.ToLower()))
+            if (Server.devs.Contains(who.name))
             {
                 Player.SendMessage(p, "You can't freeze a MCForge Developer!");
                 return;
             }
-            if (Server.gcmodhasprotection(who.name.ToLower()))
+            if (Server.gcmodhasprotection(who.name))
             {
                 Player.SendMessage(p, "You can't freeze a Global Chat Moderator!");
                 return;

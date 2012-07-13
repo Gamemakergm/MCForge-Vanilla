@@ -15,12 +15,9 @@
 	or implied. See the Licenses for the specific language governing
 	permissions and limitations under the Licenses.
 */
-using System;
 using System.Collections.Generic;
-using System.Text;
-//using MySql.Data.MySqlClient;
-//using MySql.Data.Types;
 using System.Data;
+using System.Text.RegularExpressions;
 using MCForge.SQL;
 
 
@@ -38,43 +35,48 @@ namespace MCForge.Commands
 
         public override void Use(Player p, string message)
         {
-            if (message == "") message = p.name;
-
-            string originalName = message.ToLower();
-
-            Player who = Player.Find(message);
-            if (who == null)
+            bool messageIsValid = Regex.IsMatch(message.ToLower(), @"^[a-z0-9]*?$");
+            if (messageIsValid)
             {
-                Player.SendMessage(p, "Could not find player. Searching Player DB.");
+                if (message == "") message = p.name;
 
-                DataTable FindIP = Server.useMySQL ? MySQL.fillData("SELECT IP FROM Players WHERE Name='" + message + "'") : SQLite.fillData("SELECT IP FROM Players WHERE Name='" + message + "'");
+                string originalName = message.ToLower();
 
-                if (FindIP.Rows.Count == 0) { Player.SendMessage(p, "Could not find any player by the name entered."); FindIP.Dispose(); return; }
+                Player who = Player.Find(message);
+                if (who == null)
+                {
+                    Player.SendMessage(p, "Could not find player. Searching Player DB.");
 
-                message = FindIP.Rows[0]["IP"].ToString();
-                FindIP.Dispose();
+                    DataTable FindIP = Server.useMySQL ? MySQL.fillData("SELECT IP FROM Players WHERE Name='" + message + "'") : SQLite.fillData("SELECT IP FROM Players WHERE Name='" + message + "'");
+
+                    if (FindIP.Rows.Count == 0) { Player.SendMessage(p, "Could not find any player by the name entered."); FindIP.Dispose(); return; }
+
+                    message = FindIP.Rows[0]["IP"].ToString();
+                    FindIP.Dispose();
+                }
+                else
+                {
+                    message = who.ip;
+                }
+
+                DataTable Clones = Server.useMySQL ? MySQL.fillData("SELECT Name FROM Players WHERE IP='" + message + "'") : SQLite.fillData("SELECT Name FROM Players WHERE IP='" + message + "'");
+
+                if (Clones.Rows.Count == 0) { Player.SendMessage(p, "Could not find any record of the player entered."); return; }
+
+                List<string> foundPeople = new List<string>();
+                for (int i = 0; i < Clones.Rows.Count; ++i)
+                {
+                    if (!foundPeople.Contains(Clones.Rows[i]["Name"].ToString().ToLower()))
+                        foundPeople.Add(Clones.Rows[i]["Name"].ToString().ToLower());
+                }
+
+                Clones.Dispose();
+                if (foundPeople.Count <= 1) { Player.SendMessage(p, originalName + " has no clones."); return; }
+
+                Player.SendMessage(p, "These people have the same IP address:");
+                Player.SendMessage(p, string.Join(", ", foundPeople.ToArray()));
             }
-            else
-            {
-                message = who.ip;
-            }
-
-            DataTable Clones = Server.useMySQL ? MySQL.fillData("SELECT Name FROM Players WHERE IP='" + message + "'") : SQLite.fillData("SELECT Name FROM Players WHERE IP='" + message + "'");
-
-            if (Clones.Rows.Count == 0) { Player.SendMessage(p, "Could not find any record of the player entered."); return; }
-
-            List<string> foundPeople = new List<string>();
-            for (int i = 0; i < Clones.Rows.Count; ++i)
-            {
-                if (!foundPeople.Contains(Clones.Rows[i]["Name"].ToString().ToLower()))
-                    foundPeople.Add(Clones.Rows[i]["Name"].ToString().ToLower());
-            }
-
-            Clones.Dispose();
-            if (foundPeople.Count <= 1) { Player.SendMessage(p, originalName + " has no clones."); return; }
-
-            Player.SendMessage(p, "These people have the same IP address:");
-            Player.SendMessage(p, string.Join(", ", foundPeople.ToArray()));
+            else { Player.SendMessage(p, "noooope.avi"); }
         }
 
         public override void Help(Player p)

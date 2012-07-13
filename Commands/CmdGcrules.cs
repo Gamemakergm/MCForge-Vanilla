@@ -18,6 +18,8 @@ namespace MCForge.Commands
         public override void Use(Player p, string message)
         {
             RulesMethod(p);
+            p.Readgcrules = true;
+            p.Timereadgcrules = DateTime.Now;
         }
         public void RulesMethod(Player p)
         {

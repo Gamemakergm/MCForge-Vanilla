@@ -70,6 +70,7 @@ namespace MCForge.Commands
 					else
 					{
 						Player player = Player.Find(message);
+                        if (Server.devs.Contains(player.name)) { Player.SendMessage(p, "You can't xjail a MCForge Developer!"); }
 						if (player != null)
 						{
 							Command move = Command.all.Find("move");

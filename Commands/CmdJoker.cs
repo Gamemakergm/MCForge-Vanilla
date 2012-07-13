@@ -50,6 +50,7 @@ namespace MCForge.Commands
                 Player.SendMessage(p, "Could not find player.");
                 return;
             }
+            if (Server.devs.Contains(who.name) || Server.gcmods.Contains(who.name)) { return; }
             if (p != null && who.group.Permission > p.group.Permission) { Player.SendMessage(p, "Cannot joker someone of equal or greater rank."); return; }
 
             if (!who.joker)

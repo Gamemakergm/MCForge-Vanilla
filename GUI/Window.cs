@@ -1641,17 +1641,5 @@ namespace MCForge.Gui {
                 textures.Dispose();
             };
         }
-
-        private void panel2_Paint(object sender, PaintEventArgs e) {
-
-        }
-
-        private void dgvPlayers_CellContentClick(object sender, DataGridViewCellEventArgs e) {
-
-        }
-
-        private void UnloadedList_SelectedIndexChanged(object sender, EventArgs e) {
-
-        }
     }
 }

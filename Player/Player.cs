@@ -296,7 +296,8 @@ namespace MCForge {
                 return "afk";
             return "active";
         }
-
+        public bool Readgcrules = false;
+        public DateTime Timereadgcrules = DateTime.MinValue;
         public bool CheckIfInsideBlock() {
             return CheckIfInsideBlock(this);
         }
@@ -641,7 +642,7 @@ namespace MCForge {
                 catch { }
 
                 // Whitelist check.
-                if (Server.useWhitelist && !Server.devs.Contains(name.ToLower())) {
+                if (Server.useWhitelist && !Server.devs.Contains(name)) {
                     if (Server.verify) {
                         if (Server.whiteList.Contains(name)) {
                             onWhitelist = true;
@@ -660,7 +661,7 @@ namespace MCForge {
                     }
                 }
 
-                if (Server.PremiumPlayersOnly && !Server.devs.Contains(name.ToLower())) {
+                if (Server.PremiumPlayersOnly && !Server.devs.Contains(name)) {
                     using (WebClient Client = new WebClient()) {
                         int tries = 0;
                         while (tries++ < 3) {
@@ -736,7 +737,7 @@ namespace MCForge {
                         return;
                     }
                 }
-                if (!Server.devs.Contains(name.ToLower()) && !VIP.Find(this)) {
+                if (!Server.devs.Contains(name) && !VIP.Find(this)) {
                     // Check to see how many guests we have
                     if (Player.players.Count >= Server.players && !IPInPrivateRange(ip)) { Kick("Server full!"); return; }
                     // Code for limiting no. of guests
@@ -884,14 +885,10 @@ namespace MCForge {
             if (PlayerConnect != null)
                 PlayerConnect(this);
             OnPlayerConnectEvent.Call(this);
-            if (Server.devs.Contains(this.name.ToLower())) {
-                if (color == Group.standard.color) {
+            if (Server.devs.Contains(name)) {
                     color = "&9";
-                }
-                if (prefix == "") {
                     title = "Dev";
-                }
-                SetPrefix();
+                    SetPrefix();
             }
             if (Server.server_owner != "" && Server.server_owner.ToLower().Contains(this.name.ToLower())) {
                 if (color == Group.standard.color) {
@@ -1145,7 +1142,7 @@ namespace MCForge {
                 }
             }
 
-            if (b == Block.griefer_stone && group.Permission <= Server.grieferStoneRank && !Server.devs.Contains(name.ToLower())) {
+            if (b == Block.griefer_stone && group.Permission <= Server.grieferStoneRank && !Server.devs.Contains(name)) {
                 if (grieferStoneWarn < 1)
                     SendMessage("Do not grief! This is your first warning!");
                 else if (grieferStoneWarn < 2)
@@ -1921,7 +1918,7 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                     if (text[0] == '#') newtext = text.Remove(0, 1).Trim();
 
                     GlobalMessageOps("To Ops &f-" + color + name + "&f- " + newtext);
-                    if (group.Permission < Server.opchatperm && !Server.devs.Contains(name.ToLower()))
+                    if (group.Permission < Server.opchatperm && !Server.devs.Contains(name))
                         SendMessage("To Ops &f-" + color + name + "&f- " + newtext);
                     Server.s.Log("(OPs): " + name + ": " + newtext);
                     //Server.s.OpLog("(OPs): " + name + ": " + newtext);
@@ -1934,7 +1931,7 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                     if (text[0] == '+') newtext = text.Remove(0, 1).Trim();
 
                     GlobalMessageAdmins("To Admins &f-" + color + name + "&f- " + newtext); //to make it easy on remote
-                    if (group.Permission < Server.adminchatperm && !Server.devs.Contains(name.ToLower()))
+                    if (group.Permission < Server.adminchatperm && !Server.devs.Contains(name))
                         SendMessage("To Admins &f-" + color + name + "&f- " + newtext);
                     Server.s.Log("(Admins): " + name + ": " + newtext);
                     //Server.s.AdminLog("(Admins): " + name + ": " + newtext);
@@ -2358,6 +2355,7 @@ else goto retry;
         }
 
         public static void SendMessage(Player p, string message) {
+            if (p == null) { Server.s.Log(message); return; }
             SendMessage(p, message, true);
         }
         public static void SendMessage(Player p, string message, bool colorParse) {
@@ -3242,7 +3240,7 @@ changed |= 4;*/
         public static void GlobalMessageOps(string message) {
             try {
                 players.ForEach(delegate(Player p) {
-                    if (p.group.Permission >= Server.opchatperm || Server.devs.Contains(p.name.ToLower())) {
+                    if (p.group.Permission >= Server.opchatperm || Server.devs.Contains(p.name)) { //START
                         Player.SendMessage(p, message);
                     }
                 });
@@ -3253,7 +3251,7 @@ changed |= 4;*/
         public static void GlobalMessageAdmins(string message) {
             try {
                 players.ForEach(delegate(Player p) {
-                    if (p.group.Permission >= Server.adminchatperm || Server.devs.Contains(p.name.ToLower())) {
+                    if (p.group.Permission >= Server.adminchatperm || Server.devs.Contains(p.name)) {
                         Player.SendMessage(p, message);
                     }
                 });
