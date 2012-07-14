@@ -1935,11 +1935,15 @@ try { SendBlockchange(pos1.x, pos1.y, pos1.z, Block.waterstill); } catch { }
                     if ( group.Permission < Server.adminchatperm && !Server.devs.Contains(name) )
                         SendMessage("To Admins &f-" + color + name + "&f- " + newtext);
                     Server.s.Log("(Admins): " + name + ": " + newtext);
-                    //Server.s.AdminLog("(Admins): " + name + ": " + newtext);
-                    //IRCBot.Say(name + ": " + newtext, true);
                     Server.IRC.Say(name + ": " + newtext, true);
                     return;
                 }
+
+                if ( InGlobalChat ) {
+                    Command.all.Find("global").Use(this, text); //Didn't want to rewrite the whole command...................................
+                    return;
+                }
+
                 if ( text[0] == ':' ) {
                     if ( PlayingTntWars ) {
                         string newtext = text;

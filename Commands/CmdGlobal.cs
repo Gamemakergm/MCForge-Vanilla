@@ -17,7 +17,12 @@ namespace MCForge.Commands
         //bla
         public override void Use(Player p, string message)
         {
-            if (String.IsNullOrEmpty(message)) { Help(p); return; }
+            if (String.IsNullOrEmpty(message)) { 
+                p.InGlobalChat = !p.InGlobalChat;
+                Player.SendMessage(p, p.InGlobalChat ? "%aGlobal Chat enabled" : "%cGlobal Chat Disabled");
+                return;
+             }
+
             if (!Server.UseGlobalChat) { Player.SendMessage(p, "Global Chat is disabled."); return; }
             if (p != null && p.muted) { Player.SendMessage(p, "You are muted."); return; }
             if (p != null && p.muteGlobal) { Player.SendMessage(p, "You cannot use Global Chat while you have it muted."); return; }
