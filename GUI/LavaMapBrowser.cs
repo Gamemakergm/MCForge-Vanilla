@@ -172,7 +172,7 @@ namespace MCForge.Gui
                 this.listing = true;
                 string data = String.Empty;
                 using (WebClient WEB = new WebClient())
-                    data = WEB.DownloadString(listUrl + "?search=" + Heart.UrlEncode(search));
+                    data = WEB.DownloadString(listUrl + "?search=" + Heart.EncodeUrl(search));
 
                 if (String.IsNullOrEmpty(data))
                 {
@@ -247,7 +247,7 @@ namespace MCForge.Gui
                 }
 
                 using (WebClient WEB = new WebClient())
-                    using (Stream stream = WEB.OpenRead(imgUrl + "?file=" + Heart.UrlEncode(map.image) + "&width=150&height=150&force&png"))
+                    using (Stream stream = WEB.OpenRead(imgUrl + "?file=" + Heart.EncodeUrl(map.image) + "&width=150&height=150&force&png"))
                         img = Image.FromStream(stream);
 
                 if (this.InvokeRequired)

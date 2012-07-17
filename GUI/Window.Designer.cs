@@ -129,6 +129,15 @@ namespace MCForge.Gui
             this.gBCommands = new System.Windows.Forms.GroupBox();
             this.dgvMaps = new System.Windows.Forms.DataGridView();
             this.gBChat = new System.Windows.Forms.GroupBox();
+            this.txtLogMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.nightModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dateStampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.copySelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.txtCommands = new System.Windows.Forms.TextBox();
             this.txtInput = new System.Windows.Forms.TextBox();
@@ -259,21 +268,13 @@ namespace MCForge.Gui
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label33 = new System.Windows.Forms.Label();
             this.txtOpInput = new System.Windows.Forms.TextBox();
-            this.txtLogMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.nightModeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.colorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dateStampToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.copySelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.copyAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txtCommandsUsed = new MCForge.Gui.AutoScrollTextBox();
             this.txtLog = new MCForge.Gui.Components.ColoredTextBox();
             this.PlayersTextBox = new MCForge.Gui.AutoScrollTextBox();
             this.txtGlobalLog = new MCForge.Gui.AutoScrollTextBox();
             this.txtAdminLog = new MCForge.Gui.AutoScrollTextBox();
             this.txtOpLog = new MCForge.Gui.AutoScrollTextBox();
+            this.autoScrollToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mapsStrip.SuspendLayout();
             this.playerStrip.SuspendLayout();
             this.iconContext.SuspendLayout();
@@ -285,6 +286,7 @@ namespace MCForge.Gui
             this.gBCommands.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaps)).BeginInit();
             this.gBChat.SuspendLayout();
+            this.txtLogMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPlayers)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -301,7 +303,6 @@ namespace MCForge.Gui
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.txtLogMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // mapsStrip
@@ -908,6 +909,77 @@ namespace MCForge.Gui
             this.gBChat.TabIndex = 32;
             this.gBChat.TabStop = false;
             this.gBChat.Text = "Chat";
+            // 
+            // txtLogMenuStrip
+            // 
+            this.txtLogMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nightModeToolStripMenuItem,
+            this.colorsToolStripMenuItem,
+            this.dateStampToolStripMenuItem,
+            this.autoScrollToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.copySelectedToolStripMenuItem,
+            this.copyAllToolStripMenuItem,
+            this.toolStripSeparator3,
+            this.clearToolStripMenuItem});
+            this.txtLogMenuStrip.Name = "txtLogMenuStrip";
+            this.txtLogMenuStrip.Size = new System.Drawing.Size(150, 170);
+            // 
+            // nightModeToolStripMenuItem
+            // 
+            this.nightModeToolStripMenuItem.Name = "nightModeToolStripMenuItem";
+            this.nightModeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.nightModeToolStripMenuItem.Text = "Night Theme";
+            this.nightModeToolStripMenuItem.Click += new System.EventHandler(this.nightModeToolStripMenuItem_Click_1);
+            // 
+            // colorsToolStripMenuItem
+            // 
+            this.colorsToolStripMenuItem.Checked = true;
+            this.colorsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
+            this.colorsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.colorsToolStripMenuItem.Text = "Colors";
+            this.colorsToolStripMenuItem.Click += new System.EventHandler(this.colorsToolStripMenuItem_Click_1);
+            // 
+            // dateStampToolStripMenuItem
+            // 
+            this.dateStampToolStripMenuItem.Checked = true;
+            this.dateStampToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dateStampToolStripMenuItem.Name = "dateStampToolStripMenuItem";
+            this.dateStampToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.dateStampToolStripMenuItem.Text = "Date Stamp";
+            this.dateStampToolStripMenuItem.Click += new System.EventHandler(this.dateStampToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(146, 6);
+            // 
+            // copySelectedToolStripMenuItem
+            // 
+            this.copySelectedToolStripMenuItem.Name = "copySelectedToolStripMenuItem";
+            this.copySelectedToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.copySelectedToolStripMenuItem.Text = "Copy Selected";
+            this.copySelectedToolStripMenuItem.Click += new System.EventHandler(this.copySelectedToolStripMenuItem_Click);
+            // 
+            // copyAllToolStripMenuItem
+            // 
+            this.copyAllToolStripMenuItem.Name = "copyAllToolStripMenuItem";
+            this.copyAllToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.copyAllToolStripMenuItem.Text = "Copy All";
+            this.copyAllToolStripMenuItem.Click += new System.EventHandler(this.copyAllToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(146, 6);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
             // label2
             // 
@@ -2291,76 +2363,6 @@ namespace MCForge.Gui
             this.txtOpInput.TabIndex = 30;
             this.txtOpInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtOpInput_KeyDown);
             // 
-            // txtLogMenuStrip
-            // 
-            this.txtLogMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.nightModeToolStripMenuItem,
-            this.colorsToolStripMenuItem,
-            this.dateStampToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.copySelectedToolStripMenuItem,
-            this.copyAllToolStripMenuItem,
-            this.toolStripSeparator3,
-            this.clearToolStripMenuItem});
-            this.txtLogMenuStrip.Name = "txtLogMenuStrip";
-            this.txtLogMenuStrip.Size = new System.Drawing.Size(150, 148);
-            // 
-            // nightModeToolStripMenuItem
-            // 
-            this.nightModeToolStripMenuItem.Name = "nightModeToolStripMenuItem";
-            this.nightModeToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.nightModeToolStripMenuItem.Text = "Night Theme";
-            this.nightModeToolStripMenuItem.Click += new System.EventHandler(this.nightModeToolStripMenuItem_Click_1);
-            // 
-            // colorsToolStripMenuItem
-            // 
-            this.colorsToolStripMenuItem.Checked = true;
-            this.colorsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.colorsToolStripMenuItem.Name = "colorsToolStripMenuItem";
-            this.colorsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.colorsToolStripMenuItem.Text = "Colors";
-            this.colorsToolStripMenuItem.Click += new System.EventHandler(this.colorsToolStripMenuItem_Click_1);
-            // 
-            // dateStampToolStripMenuItem
-            // 
-            this.dateStampToolStripMenuItem.Checked = true;
-            this.dateStampToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.dateStampToolStripMenuItem.Name = "dateStampToolStripMenuItem";
-            this.dateStampToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.dateStampToolStripMenuItem.Text = "Date Stamp";
-            this.dateStampToolStripMenuItem.Click += new System.EventHandler(this.dateStampToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(146, 6);
-            // 
-            // copySelectedToolStripMenuItem
-            // 
-            this.copySelectedToolStripMenuItem.Name = "copySelectedToolStripMenuItem";
-            this.copySelectedToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.copySelectedToolStripMenuItem.Text = "Copy Selected";
-            this.copySelectedToolStripMenuItem.Click += new System.EventHandler(this.copySelectedToolStripMenuItem_Click);
-            // 
-            // copyAllToolStripMenuItem
-            // 
-            this.copyAllToolStripMenuItem.Name = "copyAllToolStripMenuItem";
-            this.copyAllToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.copyAllToolStripMenuItem.Text = "Copy All";
-            this.copyAllToolStripMenuItem.Click += new System.EventHandler(this.copyAllToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(146, 6);
-            // 
-            // clearToolStripMenuItem
-            // 
-            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
-            this.clearToolStripMenuItem.Text = "Clear";
-            this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
-            // 
             // txtCommandsUsed
             // 
             this.txtCommandsUsed.BackColor = System.Drawing.Color.White;
@@ -2382,7 +2384,7 @@ namespace MCForge.Gui
             this.txtLog.Location = new System.Drawing.Point(7, 20);
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
-            this.txtLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Horizontal;
+            this.txtLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
             this.txtLog.Size = new System.Drawing.Size(480, 261);
             this.txtLog.TabIndex = 0;
             this.txtLog.Text = "";
@@ -2439,6 +2441,15 @@ namespace MCForge.Gui
             this.txtOpLog.Size = new System.Drawing.Size(741, 96);
             this.txtOpLog.TabIndex = 29;
             // 
+            // autoScrollToolStripMenuItem
+            // 
+            this.autoScrollToolStripMenuItem.Checked = true;
+            this.autoScrollToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.autoScrollToolStripMenuItem.Name = "autoScrollToolStripMenuItem";
+            this.autoScrollToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.autoScrollToolStripMenuItem.Text = "Auto Scroll";
+            this.autoScrollToolStripMenuItem.Click += new System.EventHandler(this.autoScrollToolStripMenuItem_Click);
+            // 
             // Window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2472,6 +2483,7 @@ namespace MCForge.Gui
             this.gBCommands.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMaps)).EndInit();
             this.gBChat.ResumeLayout(false);
+            this.txtLogMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPlayers)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
@@ -2495,7 +2507,6 @@ namespace MCForge.Gui
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.txtLogMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2713,5 +2724,6 @@ namespace MCForge.Gui
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripMenuItem clearToolStripMenuItem;
         private ToolStripMenuItem dateStampToolStripMenuItem;
+        private ToolStripMenuItem autoScrollToolStripMenuItem;
     }
 }

@@ -38,6 +38,27 @@ namespace MCForge.Gui.Components {
         private bool _nightMode = false;
         private bool _colorize = true;
         private bool _showDateStamp = true;
+        private bool _autoScroll = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to scroll automaticly
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [auto scroll]; otherwise, <c>false</c>.
+        /// </value>
+        [Browsable(true)]
+        [Category("MCForge")]
+        [DefaultValue(true)]
+        public bool AutoScroll {
+            get {
+                return _autoScroll;
+            }
+            set {
+                _autoScroll = value;
+                if ( value )
+                    ScrollToEnd();
+            }
+        }
 
 
         /// <summary>
@@ -46,9 +67,9 @@ namespace MCForge.Gui.Components {
         /// <value>
         ///   <c>true</c> if colorized; otherwise, <c>false</c>.
         /// </value>
-        [Browsable( true )]
-        [Category( "MCForge" )]
-        [DefaultValue( true )]
+        [Browsable(true)]
+        [Category("MCForge")]
+        [DefaultValue(true)]
         public bool Colorize {
             get {
                 return _colorize;
@@ -64,9 +85,9 @@ namespace MCForge.Gui.Components {
         /// <value>
         ///   <c>true</c> if [date stamp]; otherwise, <c>false</c>.
         /// </value>
-        [Browsable( true )]
-        [Category( "MCForge" )]
-        [DefaultValue( true )]
+        [Browsable(true)]
+        [Category("MCForge")]
+        [DefaultValue(true)]
         public bool DateStamp {
             get {
                 return _showDateStamp;
@@ -82,9 +103,9 @@ namespace MCForge.Gui.Components {
         /// <value>
         ///   <c>true</c> if [night mode]; otherwise, <c>false</c>.
         /// </value>
-        [Browsable( true )]
-        [Category( "MCForge" )]
-        [DefaultValue( false )]
+        [Browsable(true)]
+        [Category("MCForge")]
+        [DefaultValue(false)]
         public bool NightMode {
             get {
                 return _nightMode;
@@ -104,14 +125,15 @@ namespace MCForge.Gui.Components {
 
         private string dateStamp {
             get {
-                return "[" + DateTime.Now.ToString( "T" ) + "] ";
+                return "[" + DateTime.Now.ToString("T") + "] ";
             }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ColoredTextBox"/> class.
         /// </summary>
-        public ColoredTextBox() : base() {
+        public ColoredTextBox()
+            : base() {
             InitializeComponent();
         }
 
@@ -119,44 +141,55 @@ namespace MCForge.Gui.Components {
         /// Appends the log.
         /// </summary>
         /// <param name="text">The text to log.</param>
-        public void AppendLog( string text, Color foreColor ) {
+        public void AppendLog(string text, Color foreColor) {
             if ( InvokeRequired ) {
-                Invoke( ( MethodInvoker ) delegate { AppendLog( text, foreColor ); } );
+                Invoke((MethodInvoker)delegate { AppendLog(text, foreColor); });
                 return;
             }
 
             if ( DateStamp )
-                Append( dateStamp, Color.Gray, BackColor );
+                Append(dateStamp, Color.Gray, BackColor);
 
             if ( !Colorize ) {
-                AppendText( text );
+                AppendText(text);
+
+                if ( AutoScroll )
+                    ScrollToEnd();
                 return;
             }
-            if ( !text.Contains( '&' ) && !text.Contains( '%' ) ) {
-                Append( text, foreColor, BackColor );
+            if ( !text.Contains('&') && !text.Contains('%') ) {
+                Append(text, foreColor, BackColor);
+
+                if ( AutoScroll )
+                    ScrollToEnd();
+
                 return;
             }
 
-            string[] messagesSplit = text.Split( new[] { '%', '&' }, StringSplitOptions.RemoveEmptyEntries );
+            string[] messagesSplit = text.Split(new[] { '%', '&' }, StringSplitOptions.RemoveEmptyEntries);
 
             for ( int i = 0; i < messagesSplit.Length; i++ ) {
-                string split = messagesSplit[ i ];
-                if ( String.IsNullOrEmpty( split.Trim() ) )
+                string split = messagesSplit[i];
+                if ( String.IsNullOrEmpty(split.Trim()) )
                     continue;
-                Color? color = Utilities.GetDimColorFromChar( split[ 0 ] );
-                Append( color != null ? split.Substring( 1 ) : split, color ?? foreColor, BackColor );
+                Color? color = Utilities.GetDimColorFromChar(split[0]);
+                Append(color != null ? split.Substring(1) : split, color ?? foreColor, BackColor);
             }
 
+            if ( AutoScroll )
+                ScrollToEnd();
 
-            Refresh();
         }
 
-              /// <summary>
+        /// <summary>
         /// Appends the log.
         /// </summary>
         /// <param name="text">The text to log.</param>
-        public void AppendLog( string text ) {
+        public void AppendLog(string text) {
             AppendLog(text, ForeColor);
+
+            if ( AutoScroll )
+                ScrollToEnd();
         }
 
         /// <summary>
@@ -165,9 +198,9 @@ namespace MCForge.Gui.Components {
         /// <param name="text">The text to log.</param>
         /// <param name="foreColor">Color of the foreground.</param>
         /// <param name="bgColor">Color of the background.</param>
-        private void Append( string text, Color foreColor, Color bgColor ) {
+        private void Append(string text, Color foreColor, Color bgColor) {
             if ( InvokeRequired ) {
-                Invoke( ( MethodInvoker ) delegate { Append( text, foreColor, bgColor ); } );
+                Invoke((MethodInvoker)delegate { Append(text, foreColor, bgColor); });
                 return;
             }
 
@@ -175,21 +208,21 @@ namespace MCForge.Gui.Components {
             SelectionLength = 0;
             SelectionColor = foreColor;
             SelectionBackColor = bgColor;
-            AppendText( text );
+            AppendText(text);
             SelectionBackColor = BackColor;
             SelectionColor = ForeColor;
 
         }
 
-        private void ColoredReader_LinkClicked( object sender, System.Windows.Forms.LinkClickedEventArgs e ) {
-            if ( !e.LinkText.StartsWith( "http://www.minecraft.net/classic/play/" ) ) {
-                if ( MessageBox.Show( "Never open links from people that you don't trust!", "Warning!!", MessageBoxButtons.OKCancel ) == DialogResult.Cancel )
+        private void ColoredReader_LinkClicked(object sender, System.Windows.Forms.LinkClickedEventArgs e) {
+            if ( !e.LinkText.StartsWith("http://www.minecraft.net/classic/play/") ) {
+                if ( MessageBox.Show("Never open links from people that you don't trust!", "Warning!!", MessageBoxButtons.OKCancel) == DialogResult.Cancel )
                     return;
             }
 
             try { Process.Start(e.LinkText); }
             catch { }
-            
+
         }
 
         /// <summary>
@@ -197,15 +230,17 @@ namespace MCForge.Gui.Components {
         /// </summary>
         public void ScrollToEnd() {
             if ( InvokeRequired ) {
-                Invoke( ( MethodInvoker ) ScrollToEnd );
+                Invoke((MethodInvoker)ScrollToEnd);
                 return;
             }
 
-            Select( Text.Length, 0 );
+            Select(Text.Length - 1, 1);
             ScrollToCaret();
+            Invalidate();
+            Refresh();
         }
 
-        
+
 
 
 
@@ -213,30 +248,30 @@ namespace MCForge.Gui.Components {
 
         private RECT _border;
 
-        protected override void WndProc( ref Message m ) {
+        protected override void WndProc(ref Message m) {
             if ( Environment.OSVersion.Platform != PlatformID.Win32NT ) {
-                base.WndProc( ref m );
+                base.WndProc(ref m);
                 return;
             }
 
             switch ( m.Msg ) {
                 case Natives.WM_NCPAINT:
-                    RenderStyle( ref m );
+                    RenderStyle(ref m);
                     break;
                 case Natives.WM_NCCALCSIZE:
-                    CalculateSize( ref m );
+                    CalculateSize(ref m);
                     break;
                 case Natives.WM_THEMECHANGED:
                     UpdateStyles();
                     break;
                 default:
-                    base.WndProc( ref m );
+                    base.WndProc(ref m);
                     break;
             }
         }
 
-        private void CalculateSize( ref Message m ) {
-            base.WndProc( ref m );
+        private void CalculateSize(ref Message m) {
+            base.WndProc(ref m);
 
             if ( !Natives.CanRender() )
                 return;
@@ -246,43 +281,43 @@ namespace MCForge.Gui.Components {
             RECT windowRect;
 
             if ( m.WParam == IntPtr.Zero ) {
-                windowRect = ( RECT ) Marshal.PtrToStructure( m.LParam, typeof( RECT ) );
+                windowRect = (RECT)Marshal.PtrToStructure(m.LParam, typeof(RECT));
             }
             else {
-                par = ( Natives.NCCALCSIZE_PARAMS ) Marshal.PtrToStructure( m.LParam, typeof( Natives.NCCALCSIZE_PARAMS ) );
+                par = (Natives.NCCALCSIZE_PARAMS)Marshal.PtrToStructure(m.LParam, typeof(Natives.NCCALCSIZE_PARAMS));
                 windowRect = par.rgrc0;
             }
 
             RECT contentRect;
-            IntPtr hDC = Natives.GetWindowDC( this.Handle );
-            IntPtr hTheme = Natives.OpenThemeData( this.Handle, "EDIT" );
+            IntPtr hDC = Natives.GetWindowDC(this.Handle);
+            IntPtr hTheme = Natives.OpenThemeData(this.Handle, "EDIT");
 
-            if ( Natives.GetThemeBackgroundContentRect( hTheme, hDC, Natives.EP_EDITTEXT, Natives.ETS_NORMAL, ref windowRect, out contentRect ) == Natives.S_OK ) {
-                contentRect.Inflate( -1, -1 );
-                this._border = new Margins( contentRect.Left - windowRect.Left,
+            if ( Natives.GetThemeBackgroundContentRect(hTheme, hDC, Natives.EP_EDITTEXT, Natives.ETS_NORMAL, ref windowRect, out contentRect) == Natives.S_OK ) {
+                contentRect.Inflate(-1, -1);
+                this._border = new Margins(contentRect.Left - windowRect.Left,
                                                                         contentRect.Top - windowRect.Top,
                                                                          windowRect.Right - contentRect.Right,
-                                                                         windowRect.Bottom - contentRect.Bottom );
+                                                                         windowRect.Bottom - contentRect.Bottom);
 
 
                 if ( m.WParam == IntPtr.Zero ) {
-                    Marshal.StructureToPtr( contentRect, m.LParam, false );
+                    Marshal.StructureToPtr(contentRect, m.LParam, false);
                 }
                 else {
                     par.rgrc0 = contentRect;
-                    Marshal.StructureToPtr( par, m.LParam, false );
+                    Marshal.StructureToPtr(par, m.LParam, false);
                 }
 
-                m.Result = new IntPtr( Natives.WVR_REDRAW );
+                m.Result = new IntPtr(Natives.WVR_REDRAW);
             }
 
-            Natives.CloseThemeData( hTheme );
-            Natives.ReleaseDC( this.Handle, hDC );
+            Natives.CloseThemeData(hTheme);
+            Natives.ReleaseDC(this.Handle, hDC);
 
         }
 
-        private void RenderStyle( ref Message m ) {
-            base.WndProc( ref m );
+        private void RenderStyle(ref Message m) {
+            base.WndProc(ref m);
 
             if ( !Natives.CanRender() ) {
                 return;
@@ -300,13 +335,13 @@ namespace MCForge.Gui.Components {
                 stateId = Natives.ETS_DISABLED;
 
             RECT windowRect;
-            Natives.GetWindowRect( this.Handle, out windowRect );
+            Natives.GetWindowRect(this.Handle, out windowRect);
             windowRect.Right -= windowRect.Left;
             windowRect.Bottom -= windowRect.Top;
             windowRect.Top = 0;
             windowRect.Left = 0;
 
-            IntPtr hDC = Natives.GetWindowDC( this.Handle );
+            IntPtr hDC = Natives.GetWindowDC(this.Handle);
 
             RECT clientRect = windowRect;
             clientRect.Left += this._border.Left;
@@ -314,17 +349,17 @@ namespace MCForge.Gui.Components {
             clientRect.Right -= this._border.Right;
             clientRect.Bottom -= this._border.Bottom;
 
-            Natives.ExcludeClipRect( hDC, clientRect.Left, clientRect.Top, clientRect.Right, clientRect.Bottom );
+            Natives.ExcludeClipRect(hDC, clientRect.Left, clientRect.Top, clientRect.Right, clientRect.Bottom);
 
-            IntPtr hTheme = Natives.OpenThemeData( this.Handle, "EDIT" );
+            IntPtr hTheme = Natives.OpenThemeData(this.Handle, "EDIT");
 
-            if ( Natives.IsThemeBackgroundPartiallyTransparent( hTheme, Natives.EP_EDITTEXT, Natives.ETS_NORMAL ) != 0 )
-                Natives.DrawThemeParentBackground( this.Handle, hDC, ref windowRect );
+            if ( Natives.IsThemeBackgroundPartiallyTransparent(hTheme, Natives.EP_EDITTEXT, Natives.ETS_NORMAL) != 0 )
+                Natives.DrawThemeParentBackground(this.Handle, hDC, ref windowRect);
 
 
-            Natives.DrawThemeBackground( hTheme, hDC, partId, stateId, ref windowRect, IntPtr.Zero );
-            Natives.CloseThemeData( hTheme );
-            Natives.ReleaseDC( this.Handle, hDC );
+            Natives.DrawThemeBackground(hTheme, hDC, partId, stateId, ref windowRect, IntPtr.Zero);
+            Natives.CloseThemeData(hTheme);
+            Natives.ReleaseDC(this.Handle, hDC);
             m.Result = IntPtr.Zero;
         }
 

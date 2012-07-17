@@ -3,26 +3,34 @@ using System.IO;
 using System.Text;
 using System.Net;
 
-namespace MCForge
-{
-    class WOMBeat : Beat
-    {
-        public string URL { get { return "http://direct.worldofminecraft.com/hb.php"; } }
-        public string Parameters { get; set; }
-        public bool Log { get { return false; } }
-        public static bool SetSettings(string IP, string Port, string Name, string Disc, string flags)
-        {
+namespace MCForge {
+
+    internal class WOMBeat : IBeat {
+
+        public string URL {
+            get {
+                return "http://direct.worldofminecraft.com/hb.php";
+            }
+        }
+
+        public bool Persistance {
+            get {
+                return true;
+            }
+        }
+
+        public static bool SetSettings(string IP, string Port, string Name, string Disc, string flags) {
+
             string url = "http://direct.worldofminecraft.com/server.php";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri(url));
             string flag = "&flags=%5B" + flags + "%5D";
-            if (flags.StartsWith("["))
+            if ( flags.StartsWith("[") )
                 flag = "&flags=" + flags;
             string Parameters = "ip=" + IP + "&port=" + Port + "&salt=" + Server.salt + "&alt=" + Name.Replace(' ', '+') + "&desc=" + Disc.Replace(' ', '+') + flag;
 
             int totalTries = 0;
             int totalTriesStream = 0;
-            try
-            {
+            try {
                 totalTries++;
                 totalTriesStream = 0;
                 // Set all the request settings
@@ -33,11 +41,9 @@ namespace MCForge
                 byte[] formData = Encoding.ASCII.GetBytes(Parameters);
                 request.ContentLength = formData.Length;
                 request.Timeout = 15000; // 15 seconds
-                try
-                {
+                try {
                     totalTriesStream++;
-                    using (Stream requestStream = request.GetRequestStream())
-                    {
+                    using ( Stream requestStream = request.GetRequestStream() ) {
                         requestStream.Write(formData, 0, formData.Length);
                         requestStream.Flush();
                         requestStream.Close();
@@ -45,44 +51,33 @@ namespace MCForge
                     }
                     return true;
                 }
-                catch (Exception e) {
-                    Server.ErrorLog(e); 
+                catch ( Exception e ) {
+                    Server.ErrorLog(e);
                     return false;
                 }
             }
-            catch (Exception e) {
+            catch ( Exception e ) {
                 Server.ErrorLog(e);
                 return false;
             }
         }
-        public void Prepare()
-        {
-            Parameters += "&salt=" + Server.salt +
-                "&users=" + Player.number +
-                "&alt=" + Server.Server_ALT +
-                "&desc=" + Server.Server_Disc +
-                "&flags=" + Server.Server_Flag;
+
+        public string Prepare() {
+            return "&port=" + Server.port +
+                          "&max=" + Server.players +
+                          "&name=" + Heart.EncodeUrl(Server.name) +
+                          "&public=" + Server.pub +
+                          "&version=" + Server.version +
+                          "&salt=" + Server.salt +
+                          "&users=" + Player.number +
+                          "&alt=" + Server.Server_ALT +
+                          "&desc=" + Server.Server_Disc +
+                          "&flags=" + Server.Server_Flag;
         }
 
-        public void OnPump(string line)
-        {
-            // Only run the code below if we receive a response
-            /*if (!String.IsNullOrEmpty(line.Trim()))
-            {
-                string newHash = line.Substring(line.LastIndexOf('=') + 1);
+        public void OnResponse(string line) {
 
-                // Run this code if we don't already have a hash or if the hash has changed
-                if (String.IsNullOrEmpty(Server.Hash) || !newHash.Equals(Server.Hash))
-                {
-                    Server.Hash = newHash;
-                    string serverURL = line;
-
-                    //serverURL = "http://" + serverURL.Substring(serverURL.IndexOf('.') + 1);
-                    //Server.s.UpdateUrl(serverURL);
-                    //File.WriteAllText("text/externalurl.txt", serverURL);
-                    //Server.s.Log("URL found: " + serverURL);
-                }
-            }*/
         }
+
     }
 }

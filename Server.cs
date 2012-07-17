@@ -73,7 +73,7 @@ namespace MCForge
 
 		public static int speedPhysics = 250;
 
-		public static Version Version { get { return System.Reflection.Assembly.GetExecutingAssembly().GetName().Version; } }
+		public static Version Version { get { return System.Reflection.Assembly.GetAssembly(typeof(Server)).GetName().Version; } }
 
 		// URL hash for connecting to the server
 		public static string Hash = String.Empty;

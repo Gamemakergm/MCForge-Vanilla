@@ -2330,7 +2330,7 @@ return;
                 socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, delegate(IAsyncResult result) { }, null);
                 buffer = null;
             }
-            catch ( SocketException ) {
+            catch ( SocketException e) {
                 buffer = null;
                 Disconnect();
 #if DEBUG

@@ -1,8 +1,6 @@
 ﻿/*
-	Copyright 2011 MCForge
-	
-	Written by fenderrock87
-	
+	Copyright 2012 MCForge 
+ 
 	Dual-licensed under the	Educational Community License, Version 2.0 and
 	the GNU General Public License, Version 3 (the "Licenses"); you may
 	not use this file except in compliance with the Licenses. You may
@@ -24,14 +22,34 @@ using System.Text;
 
 namespace MCForge
 {
-    public interface Beat
-    {
-        string URL { get; }
-        string Parameters { get; set; }
-        bool Log { get; }
+	public interface IBeat
+	{
+		/// <summary>
+		/// Gets or sets the URL.
+		/// </summary>
+		/// <value>
+		/// The URL.
+		/// </value>
+		string URL {get; }
 
-        void Prepare();
-        void OnPump(string line);
-        
-    }
+		/// <summary>
+		/// Prepares this instance.
+		/// </summary>
+		/// <returns></returns>
+		string Prepare();
+
+		/// <summary>
+		/// Gets a value indicating whether this <see cref="IBeat"/> is persistance.
+		/// </summary>
+		/// <value>
+		///   <c>true</c> if persistance; otherwise, <c>false</c>.
+		/// </value>
+		bool Persistance {get; }
+
+		/// <summary>
+		/// Called when a response is recieved.
+		/// </summary>
+		/// <param name="resonse">The resonse.</param>
+		void OnResponse(string resonse);
+	}
 }

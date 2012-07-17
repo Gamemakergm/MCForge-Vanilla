@@ -28,7 +28,7 @@ namespace MCForge {
 		public const string UrlsUrl = "http://server.mcforge.net/urls.txt";
 
 		private static string _RevisionList = "http://www.mcforge.net/revs.txt";
-		private static string _HeartbeatAnnounce = "http://mcforge.mc-mycraft.com/heartbeat.php";
+		private static string _HeartbeatAnnounce = "http://server.mcforge.net/hbannounce.php";
 		private static string _ArchivePath = "http://www.mcforge.net/archives/exe/";
 
 		static ServerSettings() {
