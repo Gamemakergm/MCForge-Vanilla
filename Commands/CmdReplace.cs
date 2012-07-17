@@ -17,6 +17,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace MCForge.Commands
@@ -34,30 +35,61 @@ namespace MCForge.Commands
         public override void Use(Player p, string message)
         {
             wait = 0;
-            int number = message.Split(' ').Length;
-            if (number != 2) { Help(p); wait = 1; return; }
+            string[] args = message.Split(' ');
+            if (args.Length != 2)
+            {
+                p.SendMessage("Invail number of arguments!");
+                wait = 1;
+                Help(p);
+                return;
+            }
 
-            int pos = message.IndexOf(' ');
-            string t = message.Substring(0, pos).ToLower();
-            string t2 = message.Substring(pos + 1).ToLower();
-            byte type = Block.Byte(t);
-            if (type == 255) { Player.SendMessage(p, "There is no block \"" + t + "\"."); wait = 1; return; }
-            byte type2 = Block.Byte(t2);
-            if (type2 == 255) { Player.SendMessage(p, "There is no block \"" + t2 + "\"."); wait = 1; return; }
+            CatchPos cpos = new CatchPos();
+            List<string> oldType;
 
-            if (!Block.canPlace(p, type) && !Block.BuildIn(type)) { Player.SendMessage(p, "Cannot replace that."); wait = 1; return; }
+            oldType = new List<string>(args[0].Split(','));
 
-            if (!Block.canPlace(p, type2)) { Player.SendMessage(p, "Cannot place that."); wait = 1; return; }
+            oldType = oldType.Distinct().ToList(); // Remove duplicates
 
-            CatchPos cpos; cpos.type2 = type2; cpos.type = type;
-            cpos.x = 0; cpos.y = 0; cpos.z = 0; p.blockchangeObject = cpos;
+            List<string> invalid = new List<string>(); //Check for invalid blocks
+            foreach (string name in oldType)
+                if (Block.Byte(name) == 255)
+                    invalid.Add(name);
+            if (Block.Byte(args[1]) == 255)
+                invalid.Add(args[1]);
+            if (invalid.Count > 0)
+            {
+                p.SendMessage(String.Format("Invalid block{0}: {1}", invalid.Count == 1 ? "" : "s", String.Join(", ", invalid.ToArray())));
+                wait = 1;
+                return;
+            }
+
+            if (oldType.Contains(args[1]))
+                oldType.Remove(args[1]);
+            if (oldType.Count < 1)
+            {
+                p.SendMessage("Replacing a block with the same one would be pointless!");
+                return;
+            }
+
+            cpos.oldType = new List<byte>();
+            foreach (string name in oldType)
+                cpos.oldType.Add(Block.Byte(name));
+            cpos.newType = Block.Byte(args[1]);
+
+            foreach (byte type in cpos.oldType)
+                if (!Block.canPlace(p, type) && !Block.BuildIn(type)) { p.SendMessage("Cannot replace that."); wait = 1; return; }
+            if (!Block.canPlace(p, cpos.newType)) { p.SendMessage("Cannot place that."); wait = 1; return; }
+
+            p.blockchangeObject = cpos;
             Player.SendMessage(p, "Place two blocks to determine the edges.");
             p.ClearBlockchange();
             p.Blockchange += new Player.BlockchangeEventHandler(Blockchange1);
         }
         public override void Help(Player p)
         {
-            Player.SendMessage(p, "/replace [type] [type2] - replace type with type2 inside a selected cuboid");
+            p.SendMessage("/replace [block,block2,...] [new] - replace block with new inside a selected cuboid");
+            p.SendMessage("If more than one block is specified, they will all be replaced.");
         }
         public void Blockchange1(Player p, ushort x, ushort y, ushort z, byte type)
         {
@@ -74,19 +106,12 @@ namespace MCForge.Commands
             byte b = p.level.GetTile(x, y, z);
             p.SendBlockchange(x, y, z, b);
             CatchPos cpos = (CatchPos)p.blockchangeObject;
-            unchecked { if (cpos.type != (byte)-1) { type = cpos.type; } }
             List<Pos> buffer = new List<Pos>();
 
             for (ushort xx = Math.Min(cpos.x, x); xx <= Math.Max(cpos.x, x); ++xx)
-            {
                 for (ushort yy = Math.Min(cpos.y, y); yy <= Math.Max(cpos.y, y); ++yy)
-                {
                     for (ushort zz = Math.Min(cpos.z, z); zz <= Math.Max(cpos.z, z); ++zz)
-                    {
-                        if (p.level.GetTile(xx, yy, zz) == type) { BufferAdd(buffer, xx, yy, zz); }
-                    }
-                }
-            }
+                        if (cpos.oldType.Contains(p.level.GetTile(xx, yy, zz))) { BufferAdd(buffer, xx, yy, zz); }
 
             if (buffer.Count > p.group.maxBlocks)
             {
@@ -102,14 +127,14 @@ namespace MCForge.Commands
             {
                 buffer.ForEach(delegate(Pos pos)
                 {
-                    BlockQueue.Addblock(p, pos.x, pos.y, pos.z, cpos.type2);                  //update block for everyone
+                    BlockQueue.Addblock(p, pos.x, pos.y, pos.z, cpos.newType);                  //update block for everyone
                 });
             }
             else
             {
                 buffer.ForEach(delegate(Pos pos)
                 {
-                    p.level.Blockchange(p, pos.x, pos.y, pos.z, cpos.type2);                  //update block for everyone
+                    p.level.Blockchange(p, pos.x, pos.y, pos.z, cpos.newType);                  //update block for everyone
                 });
             }
 
@@ -125,10 +150,11 @@ namespace MCForge.Commands
         {
             public ushort x, y, z;
         }
-        struct CatchPos
+
+        protected struct CatchPos
         {
-            public byte type;
-            public byte type2;
+            public List<byte> oldType;
+            public byte newType;
             public ushort x, y, z;
         }
 
