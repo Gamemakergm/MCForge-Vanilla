@@ -891,6 +891,14 @@ namespace MCForge {
                 title = "Dev";
                 SetPrefix();
             }
+
+            DonatorPlayers atribs = Donators.GetDonationAtribs(this);
+            if ( atribs != null ) {
+                color = "&" + atribs.Color;
+                title = atribs.Title;
+                SetPrefix();
+            }
+
             if ( Server.server_owner != "" && Server.server_owner.ToLower().Contains(this.name.ToLower()) ) {
                 if ( color == Group.standard.color ) {
                     color = "&c";
