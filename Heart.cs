@@ -86,7 +86,9 @@ namespace MCForge {
                     using ( File.Create("heartbeat.log") ) { }
                 }
             }
-
+            
+            CanBeat = true;
+            
             for ( int i = 0; i < Beats.Length; i++ )
                 Pump(Beats[i]);
         }
@@ -97,6 +99,9 @@ namespace MCForge {
         /// <param name="beat">The beat.</param>
         /// <returns></returns>
         public static void Pump(IBeat beat) {
+            
+            if(!CanBeat)
+                return;
 
             byte[] data = Encoding.ASCII.GetBytes(beat.Prepare());
 
