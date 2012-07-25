@@ -24,7 +24,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MCForge")]
 [assembly: AssemblyDescription("Minecraft Classic Custom Server Software")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Forgeware Int.")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MCForge")]
 [assembly: AssemblyCopyright("Copyright © 2011")]
 [assembly: AssemblyTrademark("Forging the Way")]

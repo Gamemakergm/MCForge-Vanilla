@@ -96,7 +96,7 @@ namespace MCForge.Commands
             {
                 foreach (FileInfo file in fi)
                 {
-                    if (file.Name.Replace(".xml", "") == p.name)
+                    if (file.Name.Replace(".xml", "") == p.name.ToLower())
                     {
                         foundone++;
                     }

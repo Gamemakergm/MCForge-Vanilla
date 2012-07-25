@@ -969,12 +969,16 @@ namespace MCForge {
                 this.hidden = true;
                 this.adminchat = true;
             }
-            if ( Server.verifyadmins == true ) {
-                if ( this.group.Permission >= Server.verifyadminsrank ) {
-                    if ( !Directory.Exists("extra/passwords") || !File.Exists("extra/passwords/" + this.name + ".xml") ) {
+            if (Server.verifyadmins == true)
+            {
+                if (this.group.Permission >= Server.verifyadminsrank)
+                {
+                    if (!Directory.Exists("extra/passwords") || !File.Exists("extra/passwords/" + this.name.ToLower() + ".xml"))
+                    {
                         this.SendMessage("&cPlease set your admin verification password with &a/setpass [Password]!");
                     }
-                    else {
+                    else
+                    {
                         this.SendMessage("&cPlease complete admin verification with &a/pass [Password]!");
                     }
                 }
