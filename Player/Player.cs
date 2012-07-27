@@ -258,6 +258,7 @@ namespace MCForge {
 
         // grief/spam detection
         public static int spamBlockCount = 200;
+        public bool isUsingOpenClassic = false;
         public static int spamBlockTimer = 5;
         Queue<DateTime> spamBlockLog = new Queue<DateTime>(spamBlockCount);
 
@@ -549,7 +550,7 @@ namespace MCForge {
             try {
                 int length = 0; byte msg = buffer[0];
                 // Get the length of the message by checking the first byte
-                switch ( msg ) {
+                switch (msg) {
                     //For wom
                     case (byte)'G':
                         level.textures.ServeCfg(this, buffer);
@@ -558,28 +559,55 @@ namespace MCForge {
                         length = 130;
                         break; // login
                     case 5:
-                        if ( !loggedIn )
+                        if (!loggedIn)
                             goto default;
                         length = 8;
                         break; // blockchange
                     case 8:
-                        if ( !loggedIn )
+                        if (!loggedIn)
                             goto default;
                         length = 9;
                         break; // input
                     case 13:
-                        if ( !loggedIn )
+                        if (!loggedIn)
                             goto default;
                         length = 65;
                         break; // chat
+                    case 16: //OpenClassic
+                        if (!loggedIn)
+                            goto default;
+                        try {
+                            isUsingOpenClassic = true;
+                            String version = enc.GetString(buffer, 0, buffer.Length);
+                            Server.s.Log(name + " is using OpenClassic client, version " + version);
+                            Player.GlobalMessageOps(color + name + Server.DefaultColor + " is using OpenClassic client, version " + version);
+                            return new byte[1];
+                        }
+                        catch
+                            goto default;
+                    case 20: //OpenClassic Key Press
+                        if (!loggedIn || !isUsingOpenClassic)
+                            goto default;
+                        length = 5;
+                        break;
+                    case 25: //OpenClassic Plugins
+                        if (!loggedIn || !isUsingOpenClassic)
+                            goto default;
+                        length = 128;
+                        break;
+                    case 26: //OpenClassic Custom Packet
+                        if (!loggedIn || !isUsingOpenClassic)
+                            goto default;
+                        length = 64 + buffer.Length;
+                        break;
                     default:
-                        if ( !dontmindme )
+                        if (!dontmindme)
                             Kick("Unhandled message id \"" + msg + "\"!");
                         else
                             Server.s.Log(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
                         return new byte[0];
                 }
-                if ( buffer.Length > length ) {
+                if (buffer.Length > length) {
                     byte[] message = new byte[length];
                     Buffer.BlockCopy(buffer, 1, message, 0, length);
 
@@ -589,34 +617,45 @@ namespace MCForge {
                     buffer = tempbuffer;
 
                     // Thread thread = null;
-                    switch ( msg ) {
+                    switch (msg) {
                         case 0:
                             HandleLogin(message);
                             break;
                         case 5:
-                            if ( !loggedIn )
+                            if (!loggedIn)
                                 break;
                             HandleBlockchange(message);
                             break;
                         case 8:
-                            if ( !loggedIn )
+                            if (!loggedIn)
                                 break;
                             HandleInput(message);
                             break;
                         case 13:
-                            if ( !loggedIn )
+                            if (!loggedIn)
                                 break;
                             HandleChat(message);
                             break;
+                        case 20:
+                            int keyID = BitConverter.ToInt32(message, 0);
+                            bool pressed = message[4] == 1;
+                            //TODO Call event
+                            break;
+                        case 25:
+                            //TODO Handle plugin
+                            break;
+                        case 26:
+                            //TODO Handle custom byte
+                            break;
                     }
                     //thread.Start((object)message);
-                    if ( buffer.Length > 0 )
+                    if (buffer.Length > 0)
                         buffer = HandleMessage(buffer);
                     else
                         return new byte[0];
                 }
             }
-            catch ( Exception e ) {
+            catch (Exception e) {
                 Server.ErrorLog(e);
             }
             return buffer;
@@ -820,7 +859,9 @@ namespace MCForge {
                 Server.ErrorLog(e);
                 Player.GlobalMessage("An error occurred: " + e.Message);
             }
-
+            //OpenClassic Client Check
+            SendBlockchange(0, 0, 0, 0);
+            
             DataTable playerDb = Server.useMySQL ? MySQL.fillData("SELECT * FROM Players WHERE Name='" + name + "'") : SQLite.fillData("SELECT * FROM Players WHERE Name='" + name + "'");
 
 
@@ -956,6 +997,7 @@ namespace MCForge {
                     }
                 }
             }
+            
             if ( this.group.Permission < Server.adminchatperm || Server.adminsjoinsilent == false ) {
                 if ( Server.guestJoinNotify == true && this.group.Permission <= LevelPermission.Guest ) {
                     GlobalChat(this, "&a+ " + this.color + this.prefix + this.name + Server.DefaultColor + " " + File.ReadAllText("text/login/" + this.name + ".txt"), false);
