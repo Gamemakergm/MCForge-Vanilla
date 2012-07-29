@@ -388,6 +388,18 @@ namespace MCForge.Levels.Textures
                             textWriter.WriteLine();
                             textWriter.WriteLine(cfg);
                         }
+                        else if (isMusic(worldName, p)) {
+                            byte[] data = getData(worldName);
+                            textWriter.WriteLine("Date: " + DateTime.UtcNow.ToString("R"));
+                            textWriter.WriteLine("Server: Apache/2.2.21 (CentOS)");
+                            textWriter.WriteLine("Last-Modified: " + DateTime.UtcNow.ToString("R"));
+                            textWriter.WriteLine("Accept-Ranges: bytes");
+                            textWriter.WriteLine("Content-Length: " + data.Length);
+                            textWriter.WriteLine("Connection: close");
+                            textWriter.WriteLine("Content-Type: application/octet-stream");
+                            textWriter.WriteLine();
+                            textWriter.WriteLine(data);
+                        }
                         else
                             textWriter.WriteLine("HTTP/1.1 404 Not Found");
                     }
@@ -400,6 +412,18 @@ namespace MCForge.Levels.Textures
             stream.Dispose();
             p.socket.Close();
             p.disconnected = true;
+        }
+        private bool isMusic(string s, Player p) {
+            foreach (string file in p.sounds.Keys) {
+                if (s == file)
+                    return true;
+            }
+            return false;
+        }
+        private byte[] getData(string s) {
+            if (!File.Exists(s))
+                return new byte[0];
+            return File.ReadAllBytes(s);
         }
         #endregion
         #endregion

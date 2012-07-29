@@ -290,6 +290,8 @@ namespace MCForge {
 
         public bool loggedIn;
         public bool InGlobalChat {get; set;}
+        
+        public Dictionary<string, string> sounds = new Dictionary<string, string>();
 
         public static string CheckPlayerStatus(Player p) {
             if ( p.hidden )
@@ -583,8 +585,9 @@ namespace MCForge {
                             Player.GlobalMessageOps(color + name + Server.DefaultColor + " is using OpenClassic client, version " + version);
                             return new byte[1];
                         }
-                        catch
+                        catch {
                             goto default;
+                        }
                     case 20: //OpenClassic Key Press
                         if (!loggedIn || !isUsingOpenClassic)
                             goto default;
@@ -2392,6 +2395,58 @@ return;
 #endif
             }
         }
+        
+        /// <summary>
+        /// Send the client a sound/music
+        /// THIS ONLY WORKS WITH CLIENTS USING OpenClassic
+        /// </summary>
+        /// <param name="filepath">The filepath of the sound file.</param>
+        /// <param name="volume">The volume the client will play the sound/music at</param>
+        /// <param name="pitch">The pitch the client will play the sound/music at</param>
+        /// <param name="isMusic">Wether the sound is a soundeffect or a music</param>
+        /// <param name="x">The X coord to play the sound at (only for soundeffects)</param>
+        /// <param name="y">The Y coord to play the sound at (only for soundeffects)</param>
+        /// <param name="z">The Z coord to play the sound at (only for soundeffects)</param>
+        /// <param name="loop">Wether the music should loop (only for music)</param>
+        public void SendSound(string filepath, float volume, float pitch, bool isMusic, float x, float y, float z, bool loop) {
+            if (!isUsingOpenClassic)
+                return;
+            if (!sounds.ContainsKey(filepath)) {
+                string id = Path.GetRandomFileName().Replace(".", "");
+                string url = (IsLocalIpAddress(ip) ? ip : Server.IP) + ":" + Server.port + "/" + filepath;
+                sounds.Add(filepath, id + "~" + url);
+                byte[] tosend = new byte[130];
+                StringFormat(id, 64).CopyTo(tosend, 0);
+                StringFormat(url, 64).CopyTo(tosend, 64);
+                tosend[128] = (byte)0;
+                tosend[129] = ((isMusic) ? (byte)1 : (byte)0);
+                SendRaw(22, tosend);
+            }
+            string id1 = sounds[filepath].Split('~')[0];
+            byte[] tosend1 = new byte[86];
+            StringFormat(id1, 64).CopyTo(tosend1, 0);
+            BitConverter.GetBytes(x).CopyTo(tosend1, 64);
+            BitConverter.GetBytes(y).CopyTo(tosend1, 68);
+            BitConverter.GetBytes(z).CopyTo(tosend1, 71);
+            BitConverter.GetBytes(volume).CopyTo(tosend1, 75);
+            BitConverter.GetBytes(pitch).CopyTo(tosend1, 78);
+            tosend1[84] = ((isMusic) ? (byte)1 : (byte)0);
+            tosend1[85] = ((loop && isMusic) ? (byte)1 : (byte)0);
+            SendRaw(23, tosend1);
+        }
+        
+        /// <summary>
+        /// Tell the client to stop playing the sound
+        /// </summary>
+        /// <param name="filepath">The filepath of the sound</param>
+        public void StopSound(string filepath) {
+            if (!sounds.ContainsKey(filepath))
+                return;
+            byte[] idb = new byte[64];
+            string id = sounds[filepath].Split('~')[0];
+            StringFormat(id, 64).CopyTo(idb, 0);
+            SendRaw(24, idb);
+        }
 
         public static void SendMessage(Player p, string message) {
             if ( p == null ) { Server.s.Log(message); return; }
@@ -2411,6 +2466,7 @@ return;
                 }
                 return;
             }
+            
             p.SendMessage(p.id, Server.DefaultColor + message, colorParse);
         }
         public void SendMessage(string message) {
@@ -2531,6 +2587,8 @@ return;
             sb.Replace("(down)", enc.GetString(stored));
 
             message = sb.ToString();
+            if (HasBadColorCodes(message))
+                return;
             int totalTries = 0;
             if ( MessageRecieve != null )
                 MessageRecieve(this, message);
