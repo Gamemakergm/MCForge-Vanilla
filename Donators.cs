@@ -36,7 +36,7 @@ namespace MCForge {
 
             DonatorList.Clear();
 
-            string[] lines = e.Result.Split(Environment.NewLine.ToArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] lines = e.Result.Split(new[] {';'}, StringSplitOptions.RemoveEmptyEntries);
 
             foreach ( string line in lines ) {
 

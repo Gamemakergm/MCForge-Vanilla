@@ -258,6 +258,7 @@ namespace MCForge {
 
         // grief/spam detection
         public static int spamBlockCount = 200;
+        public bool isUsingOpenClassic = false;
         public static int spamBlockTimer = 5;
         Queue<DateTime> spamBlockLog = new Queue<DateTime>(spamBlockCount);
 
@@ -289,6 +290,7 @@ namespace MCForge {
 
         public bool loggedIn;
         public bool InGlobalChat { get; set; }
+        public Dictionary<string, string> sounds = new Dictionary<string, string>();
 
         public static string CheckPlayerStatus(Player p) {
             if ( p.hidden )
@@ -552,7 +554,7 @@ namespace MCForge {
             try {
                 int length = 0; byte msg = buffer[0];
                 // Get the length of the message by checking the first byte
-                switch ( msg ) {
+                switch (msg) {
                     //For wom
                     case (byte)'G':
                         level.textures.ServeCfg(this, buffer);
@@ -561,28 +563,56 @@ namespace MCForge {
                         length = 130;
                         break; // login
                     case 5:
-                        if ( !loggedIn )
+                        if (!loggedIn)
                             goto default;
                         length = 8;
                         break; // blockchange
                     case 8:
-                        if ( !loggedIn )
+                        if (!loggedIn)
                             goto default;
                         length = 9;
                         break; // input
                     case 13:
-                        if ( !loggedIn )
+                        if (!loggedIn)
                             goto default;
                         length = 65;
                         break; // chat
+                    case 16: //OpenClassic
+                        if (!loggedIn)
+                            goto default;
+                        try {
+                            isUsingOpenClassic = true;
+                            String version = enc.GetString(buffer, 0, buffer.Length);
+                            Server.s.Log(name + " is using OpenClassic client, version " + version);
+                            Player.GlobalMessageOps(color + name + Server.DefaultColor + " is using OpenClassic client, version " + version);
+                            return new byte[1];
+                        }
+                        catch {
+                            goto default;
+                        }
+                    case 20: //OpenClassic Key Press
+                        if (!loggedIn || !isUsingOpenClassic)
+                            goto default;
+                        length = 5;
+                        break;
+                    case 25: //OpenClassic Plugins
+                        if (!loggedIn || !isUsingOpenClassic)
+                            goto default;
+                        length = 128;
+                        break;
+                    case 26: //OpenClassic Custom Packet
+                        if (!loggedIn || !isUsingOpenClassic)
+                            goto default;
+                        length = 64 + buffer.Length;
+                        break;
                     default:
-                        if ( !dontmindme )
+                        if (!dontmindme)
                             Kick("Unhandled message id \"" + msg + "\"!");
                         else
                             Server.s.Log(Encoding.UTF8.GetString(buffer, 0, buffer.Length));
                         return new byte[0];
                 }
-                if ( buffer.Length > length ) {
+                if (buffer.Length > length) {
                     byte[] message = new byte[length];
                     Buffer.BlockCopy(buffer, 1, message, 0, length);
 
@@ -592,34 +622,45 @@ namespace MCForge {
                     buffer = tempbuffer;
 
                     // Thread thread = null;
-                    switch ( msg ) {
+                    switch (msg) {
                         case 0:
                             HandleLogin(message);
                             break;
                         case 5:
-                            if ( !loggedIn )
+                            if (!loggedIn)
                                 break;
                             HandleBlockchange(message);
                             break;
                         case 8:
-                            if ( !loggedIn )
+                            if (!loggedIn)
                                 break;
                             HandleInput(message);
                             break;
                         case 13:
-                            if ( !loggedIn )
+                            if (!loggedIn)
                                 break;
                             HandleChat(message);
                             break;
+                        case 20:
+                            int keyID = BitConverter.ToInt32(message, 0);
+                            bool pressed = message[4] == 1;
+                            //TODO Call event
+                            break;
+                        case 25:
+                            //TODO Handle plugin
+                            break;
+                        case 26:
+                            //TODO Handle custom byte
+                            break;
                     }
                     //thread.Start((object)message);
-                    if ( buffer.Length > 0 )
+                    if (buffer.Length > 0)
                         buffer = HandleMessage(buffer);
                     else
                         return new byte[0];
                 }
             }
-            catch ( Exception e ) {
+            catch (Exception e) {
                 Server.ErrorLog(e);
             }
             return buffer;
@@ -823,7 +864,9 @@ namespace MCForge {
                 Server.ErrorLog(e);
                 Player.GlobalMessage("An error occurred: " + e.Message);
             }
-
+            //OpenClassic Client Check
+            SendBlockchange(0, 0, 0, 0);
+            
             DataTable playerDb = Server.useMySQL ? MySQL.fillData("SELECT * FROM Players WHERE Name='" + name + "'") : SQLite.fillData("SELECT * FROM Players WHERE Name='" + name + "'");
 
 
@@ -955,6 +998,7 @@ namespace MCForge {
                     }
                 }
             }
+            
             if ( this.group.Permission < Server.adminchatperm || Server.adminsjoinsilent == false ) {
                 if ( Server.guestJoinNotify == true && this.group.Permission <= LevelPermission.Guest ) {
                     GlobalChat(this, "&a+ " + this.color + this.prefix + this.name + Server.DefaultColor + " " + File.ReadAllText("text/login/" + this.name + ".txt"), false);
@@ -968,12 +1012,14 @@ namespace MCForge {
                 this.hidden = true;
                 this.adminchat = true;
             }
-            if ( Server.verifyadmins == true ) {
+			
+            if ( Server.verifyadmins ) {
                 if ( this.group.Permission >= Server.verifyadminsrank ) {
                     if ( !Directory.Exists("extra/passwords") || !File.Exists("extra/passwords/" + this.name + ".dat") ) {
                         this.SendMessage("&cPlease set your admin verification password with &a/setpass [Password]!");
                     }
-                    else {
+                    else
+                    {
                         this.SendMessage("&cPlease complete admin verification with &a/pass [Password]!");
                     }
                 }
@@ -2170,7 +2216,7 @@ return;
                                         }
                                         catch
                                         {
-                                            Server.s.Log("The command data sending failed! If this happens often you should turn it off.");
+                                            Server.s.Log("N");
                                         }
                                     }
                                 }).Start();
@@ -2313,6 +2359,58 @@ return;
 #endif
             }
         }
+        
+        /// <summary>
+        /// Send the client a sound/music
+        /// THIS ONLY WORKS WITH CLIENTS USING OpenClassic
+        /// </summary>
+        /// <param name="filepath">The filepath of the sound file.</param>
+        /// <param name="volume">The volume the client will play the sound/music at</param>
+        /// <param name="pitch">The pitch the client will play the sound/music at</param>
+        /// <param name="isMusic">Wether the sound is a soundeffect or a music</param>
+        /// <param name="x">The X coord to play the sound at (only for soundeffects)</param>
+        /// <param name="y">The Y coord to play the sound at (only for soundeffects)</param>
+        /// <param name="z">The Z coord to play the sound at (only for soundeffects)</param>
+        /// <param name="loop">Wether the music should loop (only for music)</param>
+        public void SendSound(string filepath, float volume, float pitch, bool isMusic, float x, float y, float z, bool loop) {
+            if (!isUsingOpenClassic)
+                return;
+            if (!sounds.ContainsKey(filepath)) {
+                string id = Path.GetRandomFileName().Replace(".", "");
+                string url = (IsLocalIpAddress(ip) ? ip : Server.IP) + ":" + Server.port + "/" + filepath;
+                sounds.Add(filepath, id + "~" + url);
+                byte[] tosend = new byte[130];
+                StringFormat(id, 64).CopyTo(tosend, 0);
+                StringFormat(url, 64).CopyTo(tosend, 64);
+                tosend[128] = (byte)0;
+                tosend[129] = ((isMusic) ? (byte)1 : (byte)0);
+                SendRaw(22, tosend);
+            }
+            string id1 = sounds[filepath].Split('~')[0];
+            byte[] tosend1 = new byte[86];
+            StringFormat(id1, 64).CopyTo(tosend1, 0);
+            BitConverter.GetBytes(x).CopyTo(tosend1, 64);
+            BitConverter.GetBytes(y).CopyTo(tosend1, 68);
+            BitConverter.GetBytes(z).CopyTo(tosend1, 71);
+            BitConverter.GetBytes(volume).CopyTo(tosend1, 75);
+            BitConverter.GetBytes(pitch).CopyTo(tosend1, 78);
+            tosend1[84] = ((isMusic) ? (byte)1 : (byte)0);
+            tosend1[85] = ((loop && isMusic) ? (byte)1 : (byte)0);
+            SendRaw(23, tosend1);
+        }
+        
+        /// <summary>
+        /// Tell the client to stop playing the sound
+        /// </summary>
+        /// <param name="filepath">The filepath of the sound</param>
+        public void StopSound(string filepath) {
+            if (!sounds.ContainsKey(filepath))
+                return;
+            byte[] idb = new byte[64];
+            string id = sounds[filepath].Split('~')[0];
+            StringFormat(id, 64).CopyTo(idb, 0);
+            SendRaw(24, idb);
+        }
 
         public static void SendMessage(Player p, string message) {
             if ( p == null ) { Server.s.Log(message); return; }
@@ -2332,6 +2430,7 @@ return;
                 }
                 return;
             }
+            
             p.SendMessage(p.id, Server.DefaultColor + message, colorParse);
         }
         public void SendMessage(string message) {
@@ -2452,6 +2551,8 @@ return;
             sb.Replace("(down)", enc.GetString(stored));
 
             message = sb.ToString();
+            if (HasBadColorCodes(message))
+                return;
             int totalTries = 0;
             if ( MessageRecieve != null )
                 MessageRecieve(this, message);

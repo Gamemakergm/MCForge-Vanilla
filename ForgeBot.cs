@@ -44,6 +44,11 @@ namespace MCForge {
 			this.channel = channel.Trim(); this.opchannel = opchannel.Trim(); this.nick = nick.Replace(" ", ""); this.server = server;
 			banCmd = new List<string>();
 			if (Server.irc) {
+
+                ConnectionArgs con = new ConnectionArgs(nick, server);
+                con.Port = Server.ircPort;
+                connection = new Connection(con, false, false);
+
 				// Regster events for outgoing
 				Player.PlayerChat += new Player.OnPlayerChat(Player_PlayerChat);
 				Player.PlayerConnect += new Player.OnPlayerConnect(Player_PlayerConnect);
@@ -267,9 +272,7 @@ namespace MCForge {
 			})).Start();*/
 
 			Server.s.Log("Connecting to IRC...");
-			ConnectionArgs con = new ConnectionArgs(nick, server);
-			con.Port = Server.ircPort;
-			connection = new Connection(con, false, false);
+
 			try { connection.Connect(); }
 			catch (Exception e) {
 				Server.s.Log("Failed to connect to IRC!");

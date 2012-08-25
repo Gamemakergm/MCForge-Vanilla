@@ -124,6 +124,7 @@ namespace MCForge {
                 else { Server.gclastmsg = message.ToLower(); Server.gcspamcount = 0; }
             }
             #endregion
+            /*
             #region Caps spam
             int rage = 0;
             for (int i = 0; i < message.Length; i++) { if (caps.IndexOf(message[i]) != -1) { rage++; } }
@@ -140,7 +141,7 @@ namespace MCForge {
                 }
                 if (rage >= 10) { return; }
             }
-            #endregion
+            #endregion*/
             #region Flooding
             TimeSpan t = DateTime.Now - (p == null ? Server.gclastmsgtime : p.lastmsgtime);
             if (t < new TimeSpan(0, 0, 1)) {
