@@ -288,7 +288,7 @@ namespace MCForge {
         public bool muteGlobal;
 
         public bool loggedIn;
-        public bool InGlobalChat {get; set;}
+        public bool InGlobalChat { get; set; }
 
         public static string CheckPlayerStatus(Player p) {
             if ( p.hidden )
@@ -442,7 +442,7 @@ namespace MCForge {
                             afkCount = 0;
 
                         if ( afkCount > Server.afkminutes * 30 ) {
-                            if ( name.Equals("") ) {
+                            if ( name != null && !String.IsNullOrEmpty(name.Trim()) ) {
                                 Command.all.Find("afk").Use(this, "auto: Not moved for " + Server.afkminutes + " minutes");
                                 if ( AFK != null )
                                     AFK(this);
@@ -486,7 +486,10 @@ namespace MCForge {
                 cancelmysql = false;
                 return;
             }
-            if ( Server.useMySQL ) MySQL.executeQuery(commandString); else SQLite.executeQuery(commandString);
+            if ( !Server.useMySQL )
+                SQLite.executeQuery(commandString);
+            else
+                MySQL.executeQuery(commandString);
 
             try {
                 if ( !smileySaved ) {
@@ -651,7 +654,7 @@ namespace MCForge {
                     }
                     else {
                         // Verify Names is off. Gotta check the hard way.
-                        DataTable ipQuery = Server.useMySQL ? MySQL.fillData("SELECT Name FROM Players WHERE IP = '" + ip + "'") : SQLite.fillData("SELECT Name FROM Players WHERE IP = '" + ip + "'");
+                        DataTable ipQuery = Server.useMySQL ? MySQL.fillData(String.Format("SELECT Name FROM Players WHERE IP = '{0}'", ip)) : SQLite.fillData("SELECT Name FROM Players WHERE IP = '" + ip + "'");
 
                         if ( ipQuery.Rows.Count > 0 ) {
                             if ( ipQuery.Rows.Contains(name) && Server.whiteList.Contains(name) ) {
@@ -840,13 +843,9 @@ namespace MCForge {
                 SendMessage("Welcome " + name + "! This is your first visit.");
 
                 if ( Server.useMySQL )
-                    MySQL.executeQuery("INSERT INTO Players (Name, IP, FirstLogin, LastLogin, totalLogin, Title, totalDeaths, Money, totalBlocks, totalKicked, TimeSpent)" +
-                        " VALUES ('" + name + "', '" + ip + "', '" + firstLogin.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', " + totalLogins +
-                        ", '" + prefix + "', " + overallDeath + ", " + money + ", " + loginBlocks + ", " + totalKicked + ", '" + time + "')");
+                    MySQL.executeQuery(String.Format("INSERT INTO Players (Name, IP, FirstLogin, LastLogin, totalLogin, Title, totalDeaths, Money, totalBlocks, totalKicked, TimeSpent) VALUES ('{0}', '{1}', '{2:yyyy-MM-dd HH:mm:ss}', '{3:yyyy-MM-dd HH:mm:ss}', {4}, '{5}', {6}, {7}, {8}, {9}, '{10}')", name, ip, firstLogin, DateTime.Now, totalLogins, prefix, overallDeath, money, loginBlocks, totalKicked, time));
                 else
-                    SQLite.executeQuery("INSERT INTO Players (Name, IP, FirstLogin, LastLogin, totalLogin, Title, totalDeaths, Money, totalBlocks, totalKicked, TimeSpent)" +
-                    " VALUES ('" + name + "', '" + ip + "', '" + firstLogin.ToString("yyyy-MM-dd HH:mm:ss") + "', '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', " + totalLogins +
-                    ", '" + prefix + "', " + overallDeath + ", " + money + ", " + loginBlocks + ", " + totalKicked + ", '" + time + "')");
+                    SQLite.executeQuery(String.Format("INSERT INTO Players (Name, IP, FirstLogin, LastLogin, totalLogin, Title, totalDeaths, Money, totalBlocks, totalKicked, TimeSpent) VALUES ('{0}', '{1}', '{2:yyyy-MM-dd HH:mm:ss}', '{3:yyyy-MM-dd HH:mm:ss}', {4}, '{5}', {6}, {7}, {8}, {9}, '{10}')", name, ip, firstLogin, DateTime.Now, totalLogins, prefix, overallDeath, money, loginBlocks, totalKicked, time));
 
             }
             else {
@@ -971,7 +970,7 @@ namespace MCForge {
             }
             if ( Server.verifyadmins == true ) {
                 if ( this.group.Permission >= Server.verifyadminsrank ) {
-                    if ( !Directory.Exists("extra/passwords") || !File.Exists("extra/passwords/" + this.name + ".xml") ) {
+                    if ( !Directory.Exists("extra/passwords") || !File.Exists("extra/passwords/" + this.name + ".dat") ) {
                         this.SendMessage("&cPlease set your admin verification password with &a/setpass [Password]!");
                     }
                     else {
@@ -1580,38 +1579,6 @@ cliprot = rot;
                     else if ( b1 == Block.MsgAir || b1 == Block.MsgWater || b1 == Block.MsgLava ) {
                         HandleMsgBlock(this, x, (ushort)( (int)y - 1 ), z, b1);
                     }
-                    /*else if (b1 == Block.flagbase)
-{
-if (team != null)
-{
-y = (ushort)(y - 1);
-foreach (Team workTeam in level.ctfgame.teams)
-{
-if (workTeam.flagLocation[0] == x && workTeam.flagLocation[1] == y && workTeam.flagLocation[2] == z)
-{
-if (workTeam == team)
-{
-if (!workTeam.flagishome)
-{
-// level.ctfgame.ReturnFlag(this, workTeam, true);
-}
-else
-{
-if (carryingFlag)
-{
-level.ctfgame.CaptureFlag(this, workTeam, hasflag);
-}
-}
-}
-else
-{
-level.ctfgame.GrabFlag(this, workTeam);
-}
-}
-
-}
-}
-}*/
                 }
             }
             if ( ( b == Block.tntexplosion || b1 == Block.tntexplosion ) && PlayingTntWars ) { }
@@ -2338,7 +2305,7 @@ return;
                 socket.BeginSend(buffer, 0, buffer.Length, SocketFlags.None, delegate(IAsyncResult result) { }, null);
                 buffer = null;
             }
-            catch ( SocketException e) {
+            catch ( SocketException e ) {
                 buffer = null;
                 Disconnect();
 #if DEBUG
@@ -3060,7 +3027,9 @@ changed |= 4;*/
         }
 
         public static bool HasBadColorCodes(string message) {
-            string[] sections = message.Split(new[] {'&', '%'});
+
+
+            string[] sections = message.Split(new[] { '&', '%' });
             for ( int i = 0; i < sections.Length; i++ ) {
 
                 if ( String.IsNullOrEmpty(sections[i].Trim()) && i == 0 ) { //If it starts with a color code
@@ -3068,10 +3037,10 @@ changed |= 4;*/
                 }
 
                 if ( String.IsNullOrEmpty(sections[i].Trim()) && i - 1 != sections.Length ) { //If it ends with a color code
-                    return true;
+                    continue;
                 }
 
-                if ( String.IsNullOrEmpty(sections[i].Substring(1).Trim()) && i - 1 != sections.Length ) {
+                if ( String.IsNullOrEmpty(sections[i]) && i - 1 != sections.Length ) {
                     return true;
                 }
 

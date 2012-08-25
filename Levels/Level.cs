@@ -1500,11 +1500,26 @@ namespace MCForge
                 physicssate = true;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether physics are enabled.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if physics are enabled; otherwise, <c>false</c>.
+        /// </value>
+        public bool PhysicsEnabled {get; set;}
+
         public void Physics()
         {
             int wait = speedPhysics;
             while (true)
             {
+
+                if ( !PhysicsEnabled ) {
+                    Thread.Sleep(500);
+                    continue;
+                }
+
                 try
                 {
                     if (wait > 0) Thread.Sleep(wait);
