@@ -4,6 +4,8 @@
 
 Minecraft Classic Custom Server Software
 
+#This repo is no longer being updated and will be deleted on 4/1/13
+
 ##Important stuff for Modders / Forkers
 - [Example Code Lists](https://github.com/headdetect/MCForge-Examples) - by headdetect
 - [MCForge Wiki](https://github.com/MCForge/MCForge-Vanilla/wiki)
